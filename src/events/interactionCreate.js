@@ -1,26 +1,24 @@
-import { Events } from 'discord.js';
+import { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } from 'discord.js';
 import logger from '../utils/logger.js';
+import { V2Embed } from '../utils/v2Embed.js';
+import { getObtainiumEmbed } from '../utils/obtainiumHelper.js';
 
 export default {
   name: Events.InteractionCreate,
   once: false,
   /**
-   * @param {import('discord.js').Interaction} interaction 
+   * @param {import('discord.js').Interaction} interaction
    */
   async execute(interaction) {
     // Penanganan Button Interactions
     if (interaction.isButton()) {
       if (interaction.customId === 'ping_refresh') {
         try {
-          // Memberitahu Discord bahwa bot menerima klik tombol
+          // Memberitahu Discord secepat mungkin bahwa bot menerima klik tombol
           await interaction.deferUpdate();
-          
+
           const latency = Date.now() - interaction.createdTimestamp;
-          
-          // Import modul secara dinamis untuk efisiensi
-          const { V2Embed } = await import('../utils/v2Embed.js');
-          const { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = await import('discord.js');
-          
+
           const buttonRow = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
               .setCustomId('ping_refresh')
@@ -33,7 +31,7 @@ export default {
             .setTitle('Pong! 🏓')
             .setDescription(
               `*   **Latency Interaksi:** \`${latency}ms\`\n` +
-              `*   **Heartbeat API:** \`${interaction.client.ws.ping}ms\``
+                `*   **Heartbeat API:** \`${interaction.client.ws.ping}ms\``
             )
             .addActionRow(buttonRow)
             .build();
@@ -44,9 +42,33 @@ export default {
             flags: MessageFlags.IsComponentsV2
           });
 
-          logger.info(`[Button Clicked] ping_refresh diproses untuk ${interaction.user.tag} (Latency: ${latency}ms)`);
+          logger.info(
+            `[Button Clicked] ping_refresh diproses untuk ${interaction.user.tag} (Latency: ${latency}ms)`
+          );
         } catch (error) {
           logger.error('[Button Error] Gagal memproses interaksi tombol ping_refresh:', error);
+        }
+      } else if (interaction.customId.startsWith('obtainium_page_')) {
+        try {
+          // Memberitahu Discord secepat mungkin untuk menghindari 'Unknown interaction'
+          await interaction.deferUpdate();
+
+          const pageIndex = parseInt(interaction.customId.replace('obtainium_page_', ''), 10) || 0;
+          const embed = await getObtainiumEmbed(pageIndex);
+
+          await interaction.editReply({
+            components: [embed],
+            flags: MessageFlags.IsComponentsV2
+          });
+
+          logger.info(
+            `[Button Clicked] ${interaction.customId} diproses untuk ${interaction.user.tag}`
+          );
+        } catch (error) {
+          logger.error(
+            `[Button Error] Gagal memproses interaksi tombol ${interaction.customId}:`,
+            error
+          );
         }
       }
       return;
@@ -58,25 +80,32 @@ export default {
     const command = interaction.client.commands.get(interaction.commandName);
 
     if (!command) {
-      logger.warn(`[Command Handler] Slash command /${interaction.commandName} dipanggil tapi tidak terdaftar.`);
+      logger.warn(
+        `[Command Handler] Slash command /${interaction.commandName} dipanggil tapi tidak terdaftar.`
+      );
       return;
     }
 
     // Catat log eksekusi command
-    logger.info(`[Command Executed] /${interaction.commandName} oleh ${interaction.user.tag} di #${interaction.channel.name}`);
+    logger.info(
+      `[Command Executed] /${interaction.commandName} oleh ${interaction.user.tag} di #${interaction.channel.name}`
+    );
 
     try {
       await command.execute(interaction);
     } catch (error) {
-      logger.error(`[Command Error] Terjadi kesalahan saat mengeksekusi /${interaction.commandName}:`, error);
-      
+      logger.error(
+        `[Command Error] Terjadi kesalahan saat mengeksekusi /${interaction.commandName}:`,
+        error
+      );
+
       const errorMessage = 'Maaf, terjadi kesalahan saat menjalankan perintah ini!';
-      
+
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({ content: errorMessage, ephemeral: true });
       } else {
         await interaction.reply({ content: errorMessage, ephemeral: true });
       }
     }
-  },
+  }
 };

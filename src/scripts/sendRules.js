@@ -1,4 +1,11 @@
-import { Client, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } from 'discord.js';
+import {
+  Client,
+  GatewayIntentBits,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  MessageFlags
+} from 'discord.js';
 import dotenv from 'dotenv';
 import logger from '../utils/logger.js';
 import { V2Embed } from '../utils/v2Embed.js';
@@ -18,7 +25,7 @@ client.once('ready', async () => {
 
   try {
     const channel = await client.channels.fetch(CHANNEL_ID);
-    
+
     if (!channel || !channel.isTextBased()) {
       logger.error(`[Script] Channel ID ${CHANNEL_ID} tidak ditemukan atau bukan channel teks!`);
       process.exit(1);
@@ -49,35 +56,29 @@ client.once('ready', async () => {
     const rulesEmbed = new V2Embed()
       .setTitle('Peraturan Server OpenZero Komunitas')
       .setDescription(
-        `Selamat datang di server komunitas OpenZero, wadah kolaborasi bagi pengguna bot OpenZero serta para kontributor proyek sumber terbuka (open-source).\n\n` +
-        `Harap baca dan patuhi peraturan berikut demi kenyamanan bersama:\n\n` +
-        
-        `### 1. Saling Menghormati & Inklusi\n` +
-        `*   Selalu bersikap sopan dan menghargai sesama anggota.\n` +
-        `*   Tindakan pelecehan, ujaran kebencian, rasisme, atau diskriminasi dalam bentuk apa pun dilarang keras.\n\n` +
-        
-        `### 2. Penggunaan Channel Sesuai Topik\n` +
-        `*   Gunakan channel diskusi sesuai dengan topik yang ditentukan. Jaga obrolan pengembangan di channel dev, tanya jawab bot di channel support, dan obrolan umum di general.\n` +
-        `*   Hindari aktivitas spam teks, emoji berlebih, atau mention staf tanpa tujuan yang jelas.\n\n` +
-        
-        `### 3. Keamanan & Integritas Kode\n` +
-        `*   Dilarang membagikan kode berbahaya (malicious code), token grabber, malware, atau perangkat lunak bajakan.\n` +
-        `*   Hargai lisensi kode dan hasil karya pengembang lain. Tindakan plagiarisme tidak akan ditoleransi.\n\n` +
-        
-        `### 4. Larangan Promosi Tanpa Izin\n` +
-        `*   Dilarang membagikan tautan undangan server Discord lain atau promosi komersial tanpa persetujuan pihak moderator.\n` +
-        `*   Gunakan sarana pameran proyek yang disediakan jika ingin mendemokan karya open-source Anda.\n\n` +
-        
-        `### 5. Kepatuhan Terhadap Ketentuan Discord\n` +
-        `*   Seluruh anggota wajib mematuhi Ketentuan Layanan Discord dan Panduan Komunitas Discord setiap saat.\n\n` +
-        
-        `Pelanggaran terhadap peraturan di atas dapat mengakibatkan tindakan administratif mulai dari peringatan, pembatasan akses obrolan, hingga pemblokiran akun dari server.`
+        'Selamat datang di server komunitas OpenZero, wadah kolaborasi bagi pengguna bot OpenZero serta para kontributor proyek sumber terbuka (open-source).\n\n' +
+          'Harap baca dan patuhi peraturan berikut demi kenyamanan bersama:\n\n' +
+          '### 1. Saling Menghormati & Inklusi\n' +
+          '*   Selalu bersikap sopan dan menghargai sesama anggota.\n' +
+          '*   Tindakan pelecehan, ujaran kebencian, rasisme, atau diskriminasi dalam bentuk apa pun dilarang keras.\n\n' +
+          '### 2. Penggunaan Channel Sesuai Topik\n' +
+          '*   Gunakan channel diskusi sesuai dengan topik yang ditentukan. Jaga obrolan pengembangan di channel dev, tanya jawab bot di channel support, dan obrolan umum di general.\n' +
+          '*   Hindari aktivitas spam teks, emoji berlebih, atau mention staf tanpa tujuan yang jelas.\n\n' +
+          '### 3. Keamanan & Integritas Kode\n' +
+          '*   Dilarang membagikan kode berbahaya (malicious code), token grabber, malware, atau perangkat lunak bajakan.\n' +
+          '*   Hargai lisensi kode dan hasil karya pengembang lain. Tindakan plagiarisme tidak akan ditoleransi.\n\n' +
+          '### 4. Larangan Promosi Tanpa Izin\n' +
+          '*   Dilarang membagikan tautan undangan server Discord lain atau promosi komersial tanpa persetujuan pihak moderator.\n' +
+          '*   Gunakan sarana pameran proyek yang disediakan jika ingin mendemokan karya open-source Anda.\n\n' +
+          '### 5. Kepatuhan Terhadap Ketentuan Discord\n' +
+          '*   Seluruh anggota wajib mematuhi Ketentuan Layanan Discord dan Panduan Komunitas Discord setiap saat.\n\n' +
+          'Pelanggaran terhadap peraturan di atas dapat mengakibatkan tindakan administratif mulai dari peringatan, pembatasan akses obrolan, hingga pemblokiran akun dari server.'
       )
       .addActionRow(linkButtons)
       .build();
 
     // Mengedit pesan yang ada
-    logger.info(`[Script] Mengedit pesan Rules...`);
+    logger.info('[Script] Mengedit pesan Rules...');
     await message.edit({
       content: '', // Menghapus pesan teks lama jika ada
       components: [rulesEmbed],

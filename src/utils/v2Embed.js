@@ -14,7 +14,7 @@ export class V2Embed {
 
   /**
    * Mengatur judul untuk V2 Embed
-   * @param {string} title 
+   * @param {string} title
    * @returns {this}
    */
   setTitle(title) {
@@ -24,7 +24,7 @@ export class V2Embed {
 
   /**
    * Mengatur deskripsi/isi utama untuk V2 Embed
-   * @param {string} description 
+   * @param {string} description
    * @returns {this}
    */
   setDescription(description) {
@@ -44,7 +44,7 @@ export class V2Embed {
 
   /**
    * Menambahkan baris komponen (seperti tombol/button) langsung di dalam container embed
-   * @param {import('discord.js').ActionRowBuilder} actionRow 
+   * @param {import('discord.js').ActionRowBuilder} actionRow
    * @returns {this}
    */
   addActionRow(actionRow) {
@@ -58,7 +58,7 @@ export class V2Embed {
    */
   build() {
     const container = new ContainerBuilder();
-    
+
     if (this.accentColor !== null) {
       container.setAccentColor(this.accentColor);
     }
@@ -72,9 +72,7 @@ export class V2Embed {
     }
 
     if (markdown.trim() !== '') {
-      container.addTextDisplayComponents(
-        new TextDisplayBuilder().setContent(markdown)
-      );
+      container.addTextDisplayComponents(new TextDisplayBuilder().setContent(markdown));
     }
 
     // Masukkan semua baris tombol/komponen langsung di dalam container

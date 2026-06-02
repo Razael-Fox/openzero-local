@@ -15,10 +15,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent, // Memerlukan aktivasi di Discord Developer Portal
     GatewayIntentBits.DirectMessages
   ],
-  partials: [
-    Partials.Channel,
-    Partials.Message
-  ]
+  partials: [Partials.Channel, Partials.Message]
 });
 
 // Menangani Error Global agar Bot tidak crash tiba-tiba
@@ -32,14 +29,16 @@ process.on('uncaughtException', (error) => {
 
 async function init() {
   logger.info('[Bot] Memulai inisialisasi bot...');
-  
+
   // Memuat Commands dan Events
   await loadCommands(client);
   await loadEvents(client);
 
   const token = process.env.DISCORD_TOKEN;
   if (!token) {
-    logger.error('[Bot] Token Discord (DISCORD_TOKEN) tidak ditemukan di file .env! Bot tidak dapat login.');
+    logger.error(
+      '[Bot] Token Discord (DISCORD_TOKEN) tidak ditemukan di file .env! Bot tidak dapat login.'
+    );
     process.exit(1);
   }
 

@@ -1,4 +1,10 @@
-import { SlashCommandBuilder, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import {
+  SlashCommandBuilder,
+  MessageFlags,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle
+} from 'discord.js';
 import { V2Embed } from '../../utils/v2Embed.js';
 
 export default {
@@ -6,15 +12,15 @@ export default {
     .setName('ping')
     .setDescription('Mengukur latency bot dan API Discord.')
     .setDMPermission(false),
-  
+
   /**
-   * @param {import('discord.js').ChatInputCommandInteraction} interaction 
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
    */
   async execute(interaction) {
     const start = Date.now();
     await interaction.reply({ content: 'Mengukur latency...' });
     const latency = Date.now() - start;
-    
+
     // Membuat tombol di dalam ActionRow
     const buttonRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
@@ -29,7 +35,7 @@ export default {
       .setTitle('Pong! 🏓')
       .setDescription(
         `*   **Latency Interaksi:** \`${latency}ms\`\n` +
-        `*   **Heartbeat API:** \`${interaction.client.ws.ping}ms\``
+          `*   **Heartbeat API:** \`${interaction.client.ws.ping}ms\``
       )
       .addActionRow(buttonRow)
       .build();
@@ -40,5 +46,5 @@ export default {
       components: [embed],
       flags: MessageFlags.IsComponentsV2
     });
-  },
+  }
 };

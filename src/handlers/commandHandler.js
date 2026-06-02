@@ -9,12 +9,12 @@ const __dirname = path.dirname(__filename);
 
 /**
  * Memuat semua command dari subfolder direktori ../commands ke dalam client.commands
- * @param {import('discord.js').Client} client 
+ * @param {import('discord.js').Client} client
  */
 export async function loadCommands(client) {
   client.commands = new Collection();
   const commandsPath = path.join(__dirname, '../commands');
-  
+
   if (!fs.existsSync(commandsPath)) {
     logger.warn(`Direktori commands tidak ditemukan di ${commandsPath}`);
     return;
@@ -24,11 +24,11 @@ export async function loadCommands(client) {
 
   for (const folder of commandFolders) {
     const folderPath = path.join(commandsPath, folder);
-    
+
     // Pastikan path tersebut adalah direktori (misalnya utility, moderation, dll)
     if (!fs.statSync(folderPath).isDirectory()) continue;
 
-    const commandFiles = fs.readdirSync(folderPath).filter(file => file.endsWith('.js'));
+    const commandFiles = fs.readdirSync(folderPath).filter((file) => file.endsWith('.js'));
 
     for (const file of commandFiles) {
       const filePath = path.join(folderPath, file);
@@ -54,7 +54,7 @@ export async function loadCommands(client) {
 
 /**
  * Mendaftarkan slash commands yang telah di-load ke Discord API secara global
- * @param {import('discord.js').Client} client 
+ * @param {import('discord.js').Client} client
  */
 export async function deployCommands(client) {
   const token = process.env.DISCORD_TOKEN;
@@ -62,7 +62,9 @@ export async function deployCommands(client) {
   const guildId = process.env.GUILD_ID;
 
   if (!token || !clientId) {
-    logger.warn('[Command Handler] DISCORD_TOKEN atau CLIENT_ID tidak diatur di file .env. Melewati registrasi Slash Commands.');
+    logger.warn(
+      '[Command Handler] DISCORD_TOKEN atau CLIENT_ID tidak diatur di file .env. Melewati registrasi Slash Commands.'
+    );
     return;
   }
 
@@ -80,21 +82,21 @@ export async function deployCommands(client) {
 
   try {
     if (guildId && guildId.trim() !== '') {
-      logger.info(`[Command Handler] Memulai pendaftaran ${commandData.length} slash commands secara instan ke Guild (Server) ID: ${guildId}...`);
-
-      await rest.put(
-        Routes.applicationGuildCommands(clientId, guildId),
-        { body: commandData }
+      logger.info(
+        `[Command Handler] Memulai pendaftaran ${commandData.length} slash commands secara instan ke Guild (Server) ID: ${guildId}...`
       );
 
-      logger.info(`[Command Handler] Sukses meregistrasikan slash commands ke Guild ID: ${guildId}!`);
+      await rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commandData });
+
+      logger.info(
+        `[Command Handler] Sukses meregistrasikan slash commands ke Guild ID: ${guildId}!`
+      );
     } else {
-      logger.info(`[Command Handler] Memulai pendaftaran ${commandData.length} slash commands secara global (bisa memakan waktu hingga 1 jam)...`);
-
-      await rest.put(
-        Routes.applicationCommands(clientId),
-        { body: commandData }
+      logger.info(
+        `[Command Handler] Memulai pendaftaran ${commandData.length} slash commands secara global (bisa memakan waktu hingga 1 jam)...`
       );
+
+      await rest.put(Routes.applicationCommands(clientId), { body: commandData });
 
       logger.info('[Command Handler] Sukses meregistrasikan slash commands secara global!');
     }

@@ -41,22 +41,19 @@ const logger = winston.createLogger({
   ),
   transports: [
     // Menyimpan log error ke file
-    new winston.transports.File({ 
-      filename: 'logs/error.log', 
+    new winston.transports.File({
+      filename: 'logs/error.log',
       level: 'error',
       format: timestamp({ format: 'YYYY-MM-DD HH:mm:ss' })
     }),
     // Menyimpan seluruh log ke file
-    new winston.transports.File({ 
+    new winston.transports.File({
       filename: 'logs/combined.log',
       format: timestamp({ format: 'YYYY-MM-DD HH:mm:ss' })
     }),
     // Menampilkan log di console dengan warna Chalk
     new winston.transports.Console({
-      format: combine(
-        timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        consoleFormat
-      )
+      format: combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), consoleFormat)
     })
   ]
 });

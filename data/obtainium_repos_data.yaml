@@ -1,0 +1,2471 @@
+- name: "ColorBlendr"
+  url: "https://github.com/Mahmud0808/ColorBlendr"
+  id: "com.drdisagree.colorblendr"
+  author: "Mahmud0808"
+  description: |
+    An Android app for customizing Material You colors on devices with Android 12+. It lets you tweak accent colors, background saturation, and more for a personalized look.
+  readme: |
+    <div align="center">
+      <img src="https://raw.githubusercontent.com/Mahmud0808/ColorBlendr/master/.github/resources/banner.png" width="100%" alt="Banner">
+    
+    #
+    </div>
+    <p align="center">
+      <a href="https://github.com/Mahmud0808/ColorBlendr"><img alt="Repo Size" src="https://img.shields.io/github/repo-size/Mahmud0808/ColorBlendr?style=for-the-badge"></a>
+      <a href="https://github.com/Mahmud0808/ColorBlendr/releases"><img src="https://img.shields.io/github/downloads/Mahmud0808/ColorBlendr/total?color=%233DDC84&logo=android&logoColor=%23fff&style=for-the-badge" alt="Downloads"></a>
+      <a href="https://t.me/DrDsProjects"><img src="https://img.shields.io/badge/Telegram-Join-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"></a>
+    </p>
+    <div align="center">
+    
+    # ColorBlendr
+    
+    ### Customize Material You colors of your device.
+    </div>
+    <p align="center">
+    Elevate your creativity with effortless material customization. Instantly tweak colors for a personalized touch in just a few taps.
+    </p>
+    <br>
+    <div align="center">
+      <a href="https://f-droid.org/en/packages/com.drdisagree.colorblendr/"><img src="https://raw.githubusercontent.com/Mahmud0808/ColorBlendr/master/.github/resources/fdroid-button.png" width="30%" alt="Get it on F-Droid" /></a>
+      <br>
+      <a href="https://apt.izzysoft.de/packages/com.drdisagree.colorblendr/"><img src="https://raw.githubusercontent.com/Mahmud0808/ColorBlendr/master/.github/resources/izzyondroid-button.png" width="30%" alt="Get it on IzzyOnDroid" /></a>
+      <br>
+      <a href="https://www.buymeacoffee.com/DrDisagree"><img src="https://raw.githubusercontent.com/Mahmud0808/ColorBlendr/master/.github/resources/bmc-button.png" width="30%" alt="Buy me a coffee" /></a>
+      <br><br>
+      <img src="https://raw.githubusercontent.com/Mahmud0808/ColorBlendr/master/.github/resources/features.png" width="100%" alt="Features">
+    </div>
+    
+    ## Features 🔥
+    
+    - Accent saturation changer
+    
+    - Background saturation changer
+    
+    - Background lightness changer
+    
+    - Pitch black theme in dark mode
+    
+    - Manual color overriding
+    
+    - and many more...
+    
+    ## Requirements 🛠
+    
+    - Android 12+ ROM with Material You support
+    
+    - Working **Root**, **Shizuku**, or **Wireless ADB** environment
+    
+    > [!WARNING]
+    > 
+    > SuperSU root is not supported.
+    
+    ## How to Use 🚀
+    
+    - Download and install the apk
+    
+    - Allow permissions for the app
+    
+    - Select **Root**, **Shizuku**, or **Wireless ADB** mode
+    
+    - That's it. Now you are good to go!
+    
+    ## Note 📝
+    
+    - Root is recommended if you want to have the full experience
+    
+    - Shizuku and Wireless ADB are also supported but customizations are limited
+    
+    ## FAQ 🤓
+    
+    <details>
+      <summary>How does ColorBlendr work without root access?</summary>
+    
+    - ColorBlendr utilizes adb commands to change Material You colors, allowing users to modify these colors without needing root access.
+    </details>
+    
+    <details>
+      <summary>How does ColorBlendr work with root access?</summary>
+    
+    - ColorBlendr leverages the [FabricatedOverlay](https://developer.android.com/reference/android/content/om/FabricatedOverlay) API to dynamically change Material You colors at runtime without creating any permanent files.
+    </details>
+    
+    <details>
+      <summary>Why doesn't ColorBlendr work properly on OneUI?</summary>
+    
+    - OneUI uses its own color palette for system apps, not Material You colors. As a result, ColorBlendr's modifications only affect Google apps and other apps that support Material You, but not OneUI system apps.
+    </details>
+    
+    <details>
+      <summary>Why are some features grayed out or cannot be enabled?</summary>
+    
+    - These features either require a specific Android version or higher, or you need root access to unlock all features.
+    </details>
+    
+    <details>
+      <summary>How do I properly uninstall ColorBlendr?</summary>
+    
+    - First, disable the ColorBlendr Service from app settings. Then, uninstall the app and reboot your device.
+    </details>
+    
+    ## Translation 🌐
+    
+    - Assist in translating ColorBlendr into your preferred language through [our Crowdin platform](https://crowdin.com/project/ColorBlendr). Your contribution will help make ColorBlendr accessible to a wider audience.
+    
+    ## Credits 🤝
+    
+    - [@siavash79](https://github.com/siavash79) for helping me.
+    - [@fennifith](https://github.com/fennifith) for color picker.
+    - [@MuntashirAkon](https://github.com/MuntashirAkon) for lib adb.
+    - And everyone who [contributed](https://github.com/Mahmud0808/ColorBlendr/blob/master/docs/contributors.md) and [translated](https://github.com/Mahmud0808/ColorBlendr/blob/master/docs/translators.md)... :)
+    
+
+- name: "Obtainium"
+  url: "https://github.com/ImranR98/Obtainium"
+  id: "dev.imranr.obtainium"
+  author: "ImranR98"
+  description: |
+    Get Android app updates straight from the source.
+  readme: |
+    <div align="center"><a href="https://github.com/Safouene1/support-palestine-banner/blob/master/Markdown-pages/Support.md"><img src="https://raw.githubusercontent.com/Safouene1/support-palestine-banner/master/banner-support.svg" alt="Support Palestine" style="width: 100%;"></a></div>
+    
+    # ![Obtainium Icon](./assets/graphics/icon_small.png) Obtainium
+    
+    Get Android app updates straight from the source.
+    
+    Obtainium allows you to install and update apps directly from their releases pages, and receive notifications when new releases are made available.
+    
+    More info:
+    - [Obtainium Wiki](https://wiki.obtainium.imranr.dev/) ([repository](https://github.com/ImranR98/Obtainium-Wiki))
+    - [Obtainium 101](https://www.youtube.com/watch?v=0MF_v2OBncw) - Tutorial video
+    - [AppVerifier](https://github.com/soupslurpr/AppVerifier) - App verification tool (recommended, integrates with Obtainium)
+    - [apps.obtainium.imranr.dev](https://apps.obtainium.imranr.dev/) - Crowdsourced app configurations ([repository](https://github.com/ImranR98/apps.obtainium.imranr.dev))
+    - [Side Of Burritos - You should use this instead of F-Droid | How to use app RSS feed](https://youtu.be/FFz57zNR_M0) - Original motivation for this app
+    - [Website](https://obtainium.imranr.dev) ([repository](https://github.com/ImranR98/obtainium.imranr.dev))
+    - [Source code](https://github.com/ImranR98/Obtainium)
+    
+    Currently supported App sources:
+    - Open Source - General:
+      - [GitHub](https://github.com/)
+      - [GitLab](https://gitlab.com/)
+      - [Forgejo](https://forgejo.org/) ([Codeberg](https://codeberg.org/))
+      - [F-Droid](https://f-droid.org/)
+      - Third Party F-Droid Repos
+      - [IzzyOnDroid](https://android.izzysoft.de/)
+      - [SourceHut](https://git.sr.ht/)
+    - Other - General:
+      - [APKPure](https://apkpure.net/)
+      - [Aptoide](https://aptoide.com/)
+      - [Uptodown](https://uptodown.com/)
+      - [Huawei AppGallery](https://appgallery.huawei.com/)
+      - [Tencent App Store](https://sj.qq.com/)
+      - [vivo App Store (CN)](https://h5.appstore.vivo.com.cn/)
+      - [RuStore](https://rustore.ru/)
+      - [Farsroid](https://www.farsroid.com)
+      - [CoolApk](https://coolapk.com/)
+      - [RockMods](https://rockmods.net/)
+      - [LiteAPKs](https://liteapks.com/)
+      - [APK4Free](https://apk4free.net/)
+      - Jenkins Jobs
+      - [APKMirror](https://apkmirror.com/) (Track-Only)
+    - Other - App-Specific:
+      - [Telegram App](https://telegram.org/)
+      - [Neutron Code](https://neutroncode.com/)
+    - Direct APK Link
+    - "HTML" (Fallback): Any other URL that returns an HTML page with links to APK files
+    
+    ## Finding App Configurations
+    
+    You can find crowdsourced app configurations at [apps.obtainium.imranr.dev](https://apps.obtainium.imranr.dev).
+    
+    If you can't find the configuration for an app you want, feel free to leave a request on the [discussions page](https://github.com/ImranR98/apps.obtainium.imranr.dev/discussions/new?category=app-requests).
+    
+    Or, contribute some configurations to the website by creating a PR at [this repo](https://github.com/ImranR98/apps.obtainium.imranr.dev).
+    
+    ## Installation
+    
+    [<img src="https://github.com/machiav3lli/oandbackupx/blob/034b226cea5c1b30eb4f6a6f313e4dadcbb0ece4/badge_github.png"
+        alt="Get it on GitHub"
+        height="80">](https://github.com/ImranR98/Obtainium/releases)
+    [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+         alt="Get it on IzzyOnDroid"
+         height="80">](https://apt.izzysoft.de/fdroid/index/apk/dev.imranr.obtainium)
+    [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+        alt="Get it on F-Droid"
+        height="80">](https://f-droid.org/packages/dev.imranr.obtainium.fdroid/)
+         
+    Verification info:
+    - Package ID: `dev.imranr.obtainium`
+    - SHA-256 hash of signing certificate: `B3:53:60:1F:6A:1D:5F:D6:60:3A:E2:F5:0B:E8:0C:F3:01:36:7B:86:B6:AB:8B:1F:66:24:3D:A9:6C:D5:73:62`
+      - Note: The above signature is also valid for the F-Droid flavour of Obtainium, thanks to [reproducible builds](https://f-droid.org/docs/Reproducible_Builds/).
+    - [PGP Public Key](https://keyserver.ubuntu.com/pks/lookup?search=contact%40imranr.dev&fingerprint=on&op=index) (to verify APK hashes)
+    
+    ## Limitations
+    - For some sources, data is gathered using Web scraping and can easily break due to changes in website design. In such cases, more reliable methods may be unavailable.
+    
+    ## Screenshots
+    
+    | <img src="./assets/screenshots/1.apps.png" alt="Apps Page" /> | <img src="./assets/screenshots/2.dark_theme.png" alt="Dark Theme" />           | <img src="./assets/screenshots/3.material_you.png" alt="Material You" />    |
+    | ------------------------------------------------------ | ----------------------------------------------------------------------- | -------------------------------------------------------------------- |
+    | <img src="./assets/screenshots/4.app.png" alt="App Page" />   | <img src="./assets/screenshots/5.app_opts.png" alt="App Options" /> | <img src="./assets/screenshots/6.app_webview.png" alt="App Web View" /> |
+    
+
+- name: "Seal"
+  url: "https://github.com/JunkFood02/Seal"
+  id: "com.junkfood.seal"
+  author: "JunkFood02"
+  description: |
+    🦭 Video/Audio Downloader for Android, based on yt-dlp
+  readme: |
+    <div align="center">
+    
+    <img width="" src="fastlane/metadata/android/en-US/images/icon.png"  width=160 height=160  align="center">
+    
+    # Seal
+    
+    ### Video/Audio Downloader for Android
+    
+    
+    English
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-zh_Hans.md">简体中文</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-zh_Hant.md">繁體中文</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-ar.md">العربية</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-pt.md">Portuguese</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-ua.md">Українська</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-th.md">ภาษาไทย</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-fa.md">فارسی</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-it.md">Italiano</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-az.md">Azərbaycanca</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-ru.md">Русский</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-sr.md">Српски</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-ja.md">日本語</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-id.md">Indonesia</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-hi.md">हिंदी</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/JunkFood02/Seal/blob/main/translations/README-bn.md">বাংলা</a>
+    
+    
+    
+    [![F-Droid](https://img.shields.io/f-droid/v/com.junkfood.seal?color=b4eb12&label=F-Droid&logo=fdroid&logoColor=1f78d2)](https://f-droid.org/en/packages/com.junkfood.seal)
+    [![GitHub release (latest by date)](https://img.shields.io/github/v/release/JunkFood02/Seal?color=black&label=Stable&logo=github)](https://github.com/JunkFood02/Seal/releases/latest/)
+    [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/JunkFood02/Seal?include_prereleases&label=Preview&logo=Github)](https://github.com/JunkFood02/Seal/releases/)
+    [![Keep a Changelog](https://img.shields.io/badge/Changelog-lightgray?style=flat&color=gray&logo=keep-a-changelog)](https://github.com/JunkFood02/Seal/blob/main/CHANGELOG.md)
+    [![GitHub all releases](https://img.shields.io/github/downloads/JunkFood02/Seal/total?label=Downloads&logo=github)](https://github.com/JunkFood02/Seal/releases/)
+    [![GitHub Repo stars](https://img.shields.io/github/stars/JunkFood02/Seal?style=flat&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Im0zNTQtMjQ3IDEyNi03NiAxMjYgNzctMzMtMTQ0IDExMS05Ni0xNDYtMTMtNTgtMTM2LTU4IDEzNS0xNDYgMTMgMTExIDk3LTMzIDE0M1pNMjMzLTgwbDY1LTI4MUw4MC01NTBsMjg4LTI1IDExMi0yNjUgMTEyIDI2NSAyODggMjUtMjE4IDE4OSA2NSAyODEtMjQ3LTE0OUwyMzMtODBabTI0Ny0zNTBaIiBzdHlsZT0iZmlsbDogcmdiKDI0NSwgMjI3LCA2Nik7Ii8%2BCjwvc3ZnPg%3D%3D&color=%23f8e444)](https://github.com/JunkFood02/Seal/stargazers)
+    [![Supported-Sites](https://img.shields.io/badge/Sites-9cf?style=flat&logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIGZpbGw9IiNGRkZGRkYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+CiAgPHBhdGggZD0iTTExLjk5IDJDNi40NyAyIDIgNi40OCAyIDEyczQuNDcgMTAgOS45OSAxMEMxNy41MiAyMiAyMiAxNy41MiAyMiAxMlMxNy41MiAyIDExLjk5IDJ6bTYuOTMgNmgtMi45NWMtLjMyLTEuMjUtLjc4LTIuNDUtMS4zOC0zLjU2IDEuODQuNjMgMy4zNyAxLjkxIDQuMzMgMy41NnpNMTIgNC4wNGMuODMgMS4yIDEuNDggMi41MyAxLjkxIDMuOTZoLTMuODJjLjQzLTEuNDMgMS4wOC0yLjc2IDEuOTEtMy45NnpNNC4yNiAxNEM0LjEgMTMuMzYgNCAxMi42OSA0IDEycy4xLTEuMzYuMjYtMmgzLjM4Yy0uMDguNjYtLjE0IDEuMzItLjE0IDJzLjA2IDEuMzQuMTQgMkg0LjI2em0uODIgMmgyLjk1Yy4zMiAxLjI1Ljc4IDIuNDUgMS4zOCAzLjU2LTEuODQtLjYzLTMuMzctMS45LTQuMzMtMy41NnptMi45NS04SDUuMDhjLjk2LTEuNjYgMi40OS0yLjkzIDQuMzMtMy41NkM4LjgxIDUuNTUgOC4zNSA2Ljc1IDguMDMgOHpNMTIgMTkuOTZjLS44My0xLjItMS40OC0yLjUzLTEuOTEtMy45NmgzLjgyYy0uNDMgMS40My0xLjA4IDIuNzYtMS45MSAzLjk2ek0xNC4zNCAxNEg5LjY2Yy0uMDktLjY2LS4xNi0xLjMyLS4xNi0ycy4wNy0xLjM1LjE2LTJoNC42OGMuMDkuNjUuMTYgMS4zMi4xNiAycy0uMDcgMS4zNC0uMTYgMnptLjI1IDUuNTZjLjYtMS4xMSAxLjA2LTIuMzEgMS4zOC0zLjU2aDIuOTVjLS45NiAxLjY1LTIuNDkgMi45My00LjMzIDMuNTZ6TTE2LjM2IDE0Yy4wOC0uNjYuMTQtMS4zMi4xNC0ycy0uMDYtMS4zNC0uMTQtMmgzLjM4Yy4xNi42NC4yNiAxLjMxLjI2IDJzLS4xIDEuMzYtLjI2IDJoLTMuMzh6IiBzdHlsZT0iZmlsbDogcmdiKDE2MiwgMTk4LCAyMzQpOyIvPgo8L3N2Zz4=&label=Supported)](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
+    [![Telegram Channel](https://img.shields.io/badge/Telegram-Seal-blue?style=flat&logo=telegram)](https://t.me/seal_app)
+    [![Matrix](https://img.shields.io/matrix/seal-space%3Amatrix.org?server_fqdn=matrix.org&style=flat&logo=element&label=Matrix&color=%230DBD8B)
+    ](https://matrix.to/#/#seal-space:matrix.org)
+    
+    
+    </div>
+    
+    
+    ## 📱 Screenshots
+    
+    <div align="center">
+    <div>
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8.jpg" width="30%" />
+    <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/9.jpg" width="30%" />
+    </div>
+    </div>
+    
+    <br>
+    
+    ## 📖 Features
+    
+    - Download videos and audio files from video platforms supported by [yt-dlp](https://github.com/yt-dlp/yt-dlp) (formerly youtube-dl).
+    
+    - Embed metadata and video thumbnail into extracted audio files supported by [mutagen](https://github.com/quodlibet/mutagen).
+    
+    - Download all videos in the playlist with one click.
+    
+    - Use embedded [aria2c](https://github.com/aria2/aria2) as external downloader for all your downloads.
+    
+    - Embed subtitles into the downloaded videos.
+    
+    - Execute custom yt-dlp commands with templates.
+    
+    - Manage in-app downloads and custom command templates.
+    
+    - Easy to use and user-friendly.
+    
+    - [Material Design 3](https://m3.material.io/) style UI, with dynamic color theme.
+    
+    - MAD: UI and logic written with pure Kotlin. Single activity, no fragments, only composable destinations.
+    
+    
+    
+    ## ⬇️ Download
+    
+    For most devices, it is recommended to install the **arm64-v8a** version of the apks
+    
+    - Download the latest stable version from [GitHub releases](https://github.com/JunkFood02/Seal/releases/latest)
+      - Install the [pre-release](https://github.com/JunkFood02/Seal/releases/) versions to help us test out new features & changes
+    
+    - Stable releases are also available on [F-Droid](https://f-droid.org/packages/com.junkfood.seal/)
+    
+    <!-- [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+         alt="Get it on F-Droid"
+         height="70">](https://f-droid.org/packages/com.junkfood.seal/) -->
+    
+    ## 💬 Contact
+    
+    Join our [Telegram Channel](https://t.me/seal_app) or [Matrix Space](https://matrix.to/#/#seal-space:matrix.org) for discussion, announcements, and releases!
+    
+    ## 💖 Sponsors
+    
+    <p><!-- sponsors --><a href="https://github.com/stealthgyro"><img src="https:&#x2F;&#x2F;github.com&#x2F;stealthgyro.png" width="60px" alt="User avatar: Chris Royer" /></a><a href="https://github.com/jhiber"><img src="https:&#x2F;&#x2F;github.com&#x2F;jhiber.png" width="60px" alt="User avatar: " /></a><!-- sponsors --></p>
+    
+    
+    Seal will be always free and open source for everyone. If you like it, please consider [sponsoring me](https://github.com/sponsors/JunkFood02)!
+    
+    ## 🤝 Contributing
+    
+    Contributions are welcome!
+    
+    You can help translate Seal on [Hosted Weblate](https://hosted.weblate.org/projects/seal/).
+    	
+    [![Translate status](https://hosted.weblate.org/widgets/seal/-/strings/multi-auto.svg)](https://hosted.weblate.org/engage/seal/)
+    	
+    >[!Note]
+    >
+    >For submitting bug reports, feature requests, questions, or any other ideas to improve, please read [CONTRIBUTING.md](https://github.com/JunkFood02/Seal/blob/main/CONTRIBUTING.md) for instructions and guidelines first.
+    
+    ## ⭐️ Star History
+    
+    [![Star History Chart](https://api.star-history.com/svg?repos=JunkFood02/Seal&type=Timeline)](https://star-history.com/#JunkFood02/Seal&Timeline)
+    
+    
+    ## 🧱 Credits
+    
+    Seal is a simple GUI of [yt-dlp](https://github.com/yt-dlp/yt-dlp), based on [youtubedl-android](https://github.com/yausername/youtubedl-android)
+    
+    Some of the UI designs and codes are borrowed from [Read You](https://github.com/Ashinch/ReadYou) and [Music You](https://github.com/Kyant0/MusicYou)
+    
+    [dvd](https://github.com/yausername/dvd)
+    
+    [Material color utilities](https://github.com/material-foundation/material-color-utilities)
+    
+    [Monet](https://github.com/Kyant0/Monet)
+    
+    ## 📃 License
+    
+    [![GitHub](https://img.shields.io/github/license/JunkFood02/Seal?style=for-the-badge)](https://github.com/JunkFood02/Seal/blob/main/LICENSE)
+    
+    >[!Warning]
+    >
+    >Except for the source code licensed under the GPLv3 license,
+    >all other parties are prohibited from using Seal's name as a downloader app,
+    >and the same is true for Seal's derivatives.
+    >Derivatives include but are not limited to forks and unofficial builds.
+    
+    <div align="right">
+    <table><td>
+    <a href="#start-of-content">👆 Scroll to top</a>
+    </td></table>
+    </div>
+    
+
+- name: "Unexpected Keyboard"
+  url: "https://github.com/Julow/Unexpected-Keyboard"
+  id: "juloo.keyboard2"
+  author: "Julow"
+  description: |
+    A lightweight keyboard for Android
+  readme: |
+    # Unexpected Keyboard [<img src="https://hosted.weblate.org/widget/unexpected-keyboard/svg-badge.svg" alt="État de la traduction" />](https://hosted.weblate.org/engage/unexpected-keyboard/)
+    
+    ---
+    
+    ⚠️ Google wants to kill the open-source Android community.
+    
+    See [keepandroidopen.org](https://keepandroidopen.org/) and the [F-Droid blog](https://f-droid.org/en/2025/09/29/google-developer-registration-decree.html).
+    
+    ---
+    
+    [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+         alt="Get it on F-Droid"
+         height="80">](https://f-droid.org/packages/juloo.keyboard2/)
+    [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+         alt="Get it on Google Play"
+         height="80">](https://play.google.com/store/apps/details?id=juloo.keyboard2)
+    
+    Lightweight and privacy-conscious virtual keyboard for Android.
+    
+    https://github.com/Julow/Unexpected-Keyboard/assets/2310568/28f8f6fe-ac13-46f3-8c5e-d62443e16d0d
+    
+    The main feature is that you can type more characters by swiping the keys towards the corners.
+    
+    This application was originally designed for programmers using Termux.
+    Now perfect for everyday use.
+    
+    This application contains no ads and is open source.
+    
+    Usage: to apply the symbols located in the corners of each key, slide your finger in the direction of the symbols. For example, the Settings are opened by sliding in the left down corner.
+    
+    | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Screenshot-1" /> | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png" alt="Screenshot-2"/> | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png" alt="Screenshot-3"/> |
+    | --- | --- | --- |
+    | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png" alt="Screenshot-4" /> | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png" alt="Screenshot-5" /> | <img src="/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png" alt="Screenshot-6" /> |
+    
+    ## Help translate the application
+    
+    Improve the application translations [using Weblate](https://hosted.weblate.org/engage/unexpected-keyboard/).
+    
+    [<img src="https://hosted.weblate.org/widget/unexpected-keyboard/multi-auto.svg" alt="État de la traduction" />](https://hosted.weblate.org/engage/unexpected-keyboard/)
+    
+    ## Contributing
+    
+    For instructions on building the application, see
+    [Contributing](CONTRIBUTING.md).
+    
+    ## Acknowledgement
+    
+    The [NLnet foundation](https://nlnet.nl/) funded the work on the spell checking feature.
+    
+
+- name: "Namida"
+  url: "https://github.com/namidaco/namida"
+  id: "com.msob7y.namida"
+  author: "namidaco"
+  description: |
+    A Beautiful and Feature-rich Music & Video Player with Youtube Support, Built in Flutter
+  readme: |
+    <link rel="stylesheet" href="styles.css" />
+    
+    # <div style="margin-right: 18px; margin-top: 18px; display:flex; vertical-align: middle; align-items: center; max-width: 100%;"><img src="assets/namida_icon.png" width="82" style="margin-right: 18px;">Namida</div>
+    
+    A Beautiful and Feature-rich Music & Video Player with Youtube Support, Built in Flutter
+    
+    <a href="https://github.com/flutter/flutter">![](https://img.shields.io/badge/Built%20in-Flutter-%23369FE7)
+    </a>
+    <a href="https://t.me/namida_official">![](https://img.shields.io/badge/Channel-blue?link=https%3A%2F%2Ft.me%2Fnamida_officialt&logo=telegram&logoColor=white)
+    </a>
+    <a href="https://t.me/+FmdfsgKoGmM1ZGFk">![](https://img.shields.io/badge/Chat-blue?link=https%3A%2F%2Ft.me%2F%2BFmdfsgKoGmM1ZGFk&logo=telegram&logoColor=white)
+    </a>
+    <a href="https://discord.gg/WeY7DTVChT">![](https://img.shields.io/badge/Discord-7B55C1?link=https%3A%2F%2Fdiscord.gg%2FWeY7DTVChT&logo=discord&logoColor=white)
+    </a>
+    <a href="https://github.com/namidaco/namida/releases">
+    ![](https://img.shields.io/github/downloads/namidaco/namida/total.svg)
+    </a>
+    <a href="https://github.com/namidaco/namida/releases">
+    [![Hits-of-Code](https://hitsofcode.com/github/namidaco/namida?branch=main)](https://hitsofcode.com/github/namidaco/namida/view?branch=main)
+    </a>
+    <a href="https://github.com/namidaco/namida/releases">
+    [![](https://img.shields.io/endpoint?url=https://ghloc.vercel.app/api/namidaco/namida/badge?style=flat&logo=dart&logoColor=aqua&label=Total%20Lines&color=darkturquoise)](https://ghloc.vercel.app/namidaco/namida?branch=main)
+    </a>
+    
+    <div>
+      <a href="https://github.com/namidaco/namida/releases/latest">
+        <img src="./some stuff/badge_github.png" height="50">
+      </a>
+      &nbsp;
+      <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/namidaco/namida/">
+        <img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" height="50">
+      </a>
+    </div>
+    
+    # Sections:
+    
+    - [Features](#-features)
+      - [Library \& Indexing](#library--indexing)
+      - [Look \& Feel](#look--feel)
+      - [Streaming & Youtube](#streaming--youtube)
+      - [Others](#others)
+      - [Some additional cool features](#some-additional-cool-features)
+    - [Video Integration](#video-integration)
+    - [Screenshots](#screenshots)
+    - [Usage Preview](#usage-preview)
+    - [Installation](#installation)
+    - [Companion Apps](#companion-apps)
+    - [Permission Note](#permission-note)
+    - [Special Thanks](#special-thanks)
+    - [Translate](#translate)
+    - [Contribute](#contribute)
+    - [Donate](#donate)
+    - [Social](#social)
+    - [LICENSE](#license)
+    
+    # 🎉 Features
+    
+    - Everything you might expect from a music player, in addition to the following:
+    
+    ## Library & Indexing
+    
+    - Powerful Indexer & Tag Editor, powered by @jaudiotagger.
+    - Artists and Genres Separators.
+    - Prevent Duplicated Tracks.
+    - Set Minimum File Size & Duration.
+    - Folders-based Library system, with the ability to exclude folders as well.
+    - Sort by almost any property of the track or the album.. etc.
+    
+    ## Look & Feel
+    
+    - Material3-like Theme.
+    - Dynamic Theming, Player Colors are picked from the current album artwork.
+    - Home, Tracks, Albums, Artists, Genres, Playlists, Queues and Folders Pages.
+    - Waveform Seekbar.
+    - Lots of customizations (check out [customization section](#customization-settings)).
+    
+    ## Streaming & Youtube
+    
+    - Best Video & Audio Quality
+    - Audio Only & Data Saver Mode
+    - Support Downloads, Caching & Offline Playback
+    - Video View with gestures support (swipe to control volume, double tap to seek, swipe up/pinch in to enter fullscreen, swipe to seek, long press for 2x speed, etc)
+    - SponsorBlock & Return Youtube Dislike Integration
+    - Segments and Heatmap for videos
+    - Data Saver Mode
+    - Cache Priority System to keep important stuff
+    - Tags config for downloads
+    - Optional Auto title/artist/album extraction for downloads and scrobbling
+    - Downloads output filename builder (similar to yt-dlp)
+    - Multi Library Support (Local/YT/Subsonic/WebDAV)
+    
+    <details>
+    
+    <summary>Available formats & example</summary>
+    
+    - Formats:
+      - `video_id`, `id`: video identifier
+      - `video_url`, `url`: video full url (https://www.youtube.com/watch?v=`id`)
+      - `video_title`, `fulltitle`: video full title
+      - `title`: extracted music title from video title (_Navjaxx - **<ins>Fading Light</ins>** (Slowed)_)
+      - `artist`: extracted music artist from video title (**\*<ins>Navjaxx</ins>** - Fading Light (Slowed)\*) or else `channel`
+      - `genre`: music genre. automatically set to **_Nightcore_** when the video title contains "nightcore".
+      - `ext`: format container extension (mp4, m4a, webm). this is not necessary as it would be added automatically
+      - `channel_fulltitle`: channel full name
+      - `channel`, `uploader`: channel name (excluding ` - Topic`)
+      - `channel_id`, `uploader_id`: channel id
+      - `channel_url`, `uploader_url`: channel url
+      - `timestamp`: UNIX timestamp of the video (milliseconds since epoch)
+      - `upload_date`: upload date of the video, converted to local time (yyyyMMdd)
+      - `view_count`: view count of the video
+      - `like_count`: like count of the video
+      - `description`: video description. links are wrapped in a markdown style
+      - `duration`: video duration in seconds (204)
+      - `duration_string`: video duration formatted (3:24)
+      - `playlist_title`: title of the playlist containing the video
+      - `playlist_id`: id of the playlist containing the video
+      - `playlist`: `playlist_title` if available or else `playlist_id`
+      - `playlist_count`: total videos count in the playlist
+      - `playlist_index`: index of the video in the playlists (starts at 0)
+      - `playlist_autonumber`: position of the video in the playlists (starts at 1)
+      - `none`: empty field. useful for tags to override any other settings
+    
+    - Example:
+    
+    ```bash
+    # [04] music title [(channel name)]
+    [%(playlist_autonumber)s] %(title)s [(%(channel)s)]
+    
+    # saving to separate folders
+    # music playlist/02. music title.m4a
+    %(playlist)s/%(playlist_autonumber)s. %(title)s.%(ext)s
+    ```
+    
+    </details>
+    
+    ## Others:
+    
+    - Lyrics auto fetching & displaying (Synced & Plain) + Support for Word Synced lrc/ttml.
+    - Sleep Timer (Tracks or Minutes)
+    - Crossfade, Play/Pause Fade Effect, along with Skip Silence.
+    - Replay Gain (Normalize Audio)
+    - Control pausing scenarios (calls, notifications, volume 0, etc..)
+    - Search tracks by title, artist, album, filename, even lyrics and more.
+    - Global Tracks Selection
+      - allows u to select from multiple places into the same list.
+    - Never miss your sessions!
+      - persistent and reliable queue system, your sessions are saved for later usage.
+    - Reliable History System
+      - despite being a flexible system (easily modified, manipulated, imported), it lets u specifiy minimum seconds/percentage to count a listen.
+    - Most Played Playlist
+      - find out your top tracks based on your history record.
+    - Custom Playlists Order & Ability to set custom artworks
+    - Left & Right swipe actions for tracks and videos
+    - Artwork Gestures (tap and long press)
+    - Support for `cover.jpg` etc images for folders, & `.info.txt` for displaying small info
+    
+    ## Some additional cool features:
+    
+    - Smort Tracks Generation:
+      - uuh.. with dis advanced algorithm brought for you, u can generate tracks related to one you currently listening to, typically the ones that you often listened to in the same period. based on your history.
+      - also u can generate tracks released around the same time, or from specific range of time, from ratings, from available moods, or randomly.
+    - Animating Thumbnail:
+      - A thumbnail that animates with the current audio peak, looks cool.
+    - Miniplayer Party Mode:
+      - Applies an edge breathing effect, colors can be static or dynamic (all the colors extracted from the artwork)
+    - Particles Effect
+      - they speed up with the audio peak too
+    - Track Play Mode
+      - when playing from search, you can selected whether to play: selected track only, search results, album, first artist or first genre.
+    - Insert after latest inserted
+      - Want to insert multiple tracks one after each other? this will get your back.
+    - Repeat for N times
+      - in addition to normal repeat modes (all, none, one), this one lets you repeat the track for number of times before playing the next track.
+    - Extract feat. & ft. artist
+      - u won't miss the featured artists in the title, they'll have their own entry inside artists tab.
+    - Dive into your memories
+      - Find out ur long partners u forgot about, "lost memories" allows u to meet tracks you listened to around this time, but n years ago
+      - The "Most Played" page also allows you to specify time range, showing ur most beloved tracks at that time
+      - The "Recommended" tracks addition in queue lets you add tracks you usually listened to with the current one
+      - The "Similar Release Date" tracks addition in queue lets you add tracks released around the same time as the current one
+    - <p>CAN IMPORT YOUTUBE HISTORY <img src="some stuff/ong.png" width=16 height=16/></p>
+    - <p>LASTFM TOO AND MAYBE MORE IN FUTURE <img src="some stuff/yoowhat.gif" width=16 height=16/></p>
+    - you gonna find decent amount of options/customizations in the settings and inside dialogs so make sure to check them out.
+    
+    # Video Integration
+    
+    - For Local Library, Namida is capable of playing videos related to the music, Video can be found either locally or fetched from youtube
+    
+    <details>
+    <summary>
+    
+    ###### How locally?
+    
+    </summary>
+    typically looks (inside the folders you specificed) for any matching title, matching goes as following:
+    <br>
+    -- Alan walker - Faded.m4a
+    <br>
+    -- video alAn WaLkER - faDed (480p).mp4
+    <br>
+    the video filename should contain at least one of the following:
+     <br>
+       1. the music filename as shown above.
+     <br>
+       2. title & first artist of the track.
+     <br>
+       3. track youtube id (in track comment tag/filename, see "#How youtube?" section below).
+    <br>
+    note: some cleanup is made to improve the matching, all symbols & whitespaces are ignored.
+    </details>
+    
+    <details>
+    <summary>
+    
+    ###### How youtube?
+    
+    </summary>
+    
+    - looks up in the track comment tag (as they are mostly done by @yt-dlp) or filename for any matching youtube link, if found then it starts downloading (and caches) and plays once it's ready, streaming here isn't a good idea as the priority goes for the music file itself.
+      - for comment tag, any url format should get matched normally.
+      - for filenames, it should contain `v=video_id` or `id=video_id` in order to get matched.
+    
+    </details>
+    
+    - Since v4.0.0, full video library indexing & playback is supported, videos can now be played independently, as well as dedicated videos folder view.
+    
+    # Screenshots
+    
+    <img src="screens/collection_light_1.jpg" class="imgbr"/>
+    <img src="screens/collection_light_2.jpg" class="imgbr"/>
+    <img src="screens/collection_dark_1.jpg" class="imgbr"/>
+    <img src="screens/collection_dark_2.jpg" class="imgbr"/>
+    
+    <details>
+      <summary>
+    
+    ### Customization Settings
+    
+      </summary>
+        <img src="screens/customization_settings.jpg" class="imgbr" width="50%">
+    </details>
+    
+    <details>
+      <summary>
+    
+    ### YouTube Miniplayer
+    
+      </summary>
+        <img src="screens/yt_miniplayer.png" class="imgbr" width="50%">
+    </details>
+    <br>
+    
+    ### Usage Preview
+    
+    | Animating Thumbnail | Recommends & Listens |
+    | --- | --- |
+    | <video src="https://github.com/namidaco/namida/assets/85245079/da47c270-9f45-4ff5-a08e-e99e4b7ebb7c.mp4"> | <video src="https://github.com/namidaco/namida/assets/85245079/72e978b3-6e15-4b4e-948a-03b470802b30.mp4"> |
+    
+    # Installation
+    
+    <div align="center">
+    
+    <table>
+    
+    <tr>
+      <th><div align="center">Platform</div></th>
+      <th><div align="center">Stable</div></th>
+      <th><div align="center">Beta</div></th>
+    </tr>
+    
+    <tr>
+    <td align="center"><b>Android</b></td>
+    <td align="center" width="200">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <a href="https://github.com/namidaco/namida/releases/latest">
+          <img src="./some stuff/badge_github.png" height="50">
+        </a>
+        <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/namidaco/namida/">
+          <img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" height="50" style="margin-top:8px;">
+        </a>
+      </div>
+    </td>
+    <td align="center" width="200">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <a href="https://github.com/namidaco/namida-snapshots/releases/latest">
+          <img src="./some stuff/badge_github.png" height="50">
+        </a>
+        <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/namidaco/namida-snapshots/">
+          <img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" height="50" style="margin-top:8px;">
+        </a>
+      </div>
+    </td>
+    </tr>
+    
+    <tr>
+    <td align="center"><b>Windows</b></td>
+    <td align="center" width="200">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <a href="https://github.com/namidaco/namida/releases/latest">
+          <img src="./some stuff/badge_github.png" height="50">
+        </a>
+      </div>
+    </td>
+    <td align="center" width="200">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <a href="https://github.com/namidaco/namida-snapshots/releases/latest">
+          <img src="./some stuff/badge_github.png" height="50">
+        </a>
+      </div>
+    </td>
+    </tr>
+    
+    <tr>
+    <td align="center"><b>Linux</b> <sub><code>new</code></sub></td>
+    <td align="center"><i>Soon</i></td>
+    <td align="center" width="200">
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <a href="https://github.com/namidaco/namida-snapshots/releases/latest">
+          <img src="./some stuff/badge_github.png" height="50">
+        </a>
+        <a href="#linux-installation"><sub>Installation steps ↓</sub></a>
+      </div>
+    </td>
+    </tr>
+    
+    </table>
+    
+    </div>
+    
+    ### Linux Installation
+    
+    > [!IMPORTANT]
+    > Install dependencies: **mpv** (for playback)
+    > (you may skip this if you used a package manager)
+    >
+    > ```bash
+    > sudo pacman -S mpv     # Arch/Manjaro
+    > sudo apt install mpv   # Debian/Ubuntu/Mint
+    > sudo dnf install mpv   # Fedora/RHEL
+    > ```
+    
+    > [!NOTE]
+    > (Optional) Install **wpe** (for login support) or download the `*_login` variant
+    >
+    > ```bash
+    > # Arch/Manjaro
+    > sudo pacman -S wpewebkit
+    >
+    > # Debian/Ubuntu/Mint
+    > sudo apt install libwpewebkit-2.0-1
+    >
+    > # Fedora/RHEL
+    > sudo dnf install dnf-plugins-core
+    > sudo dnf copr enable philn/wpewebkit
+    > sudo dnf install wpewebkit
+    > ```
+    
+    ```bash
+    # Quick Install
+    curl -fsSL https://raw.githubusercontent.com/namidaco/namida/main/scripts/install_linux_tar.sh | sudo bash
+    
+    # Package managers
+    yay -Sy namida-bin                  # AUR (Arch Linux)
+    paru -Sy namida-bin                 # AUR (Arch Linux)
+    sudo apt install ./namida.deb   # Debian/Ubuntu (download .deb from beta releases)
+    sudo dnf install ./namida.rpm   # Fedora/RHEL (download .rpm from beta releases)
+    
+    # Nix (Home Manager) Installation
+    # Available at: https://codeberg.org/iWisp360/namida-nix
+    ```
+    
+    ### Companion Apps:
+    
+    > [!TIP]
+    > **Community-built tools for an enhanced namida experience**
+    >
+    > - 🔄 [Namida Sync](https://github.com/010101-sans/namida_sync), a tool for syncing namida backups & files across android, windows and linux
+    >   - by [@010101-sans](https://github.com/010101-sans)
+    > - 📊 [Namida Charts](https://github.com/DiWu17/namida_history_app), a companion app that shows yearly, monthly & more listening stats with charts based on namida history
+    >   - by [@DiWu17](https://github.com/DiWu17)
+    > - 🎁 [Namida Wrapped](https://namida-wrapped.vercel.app), a local web ui for generating spotify wrapped-style stats
+    >   - by [@bebrriko](https://github.com/bebrriko)
+    
+    ### Permission Note:
+    
+    #### The permissions namida uses and why:
+    
+    > - `WAKE_LOCK` & `FOREGROUND_SERVICE` & `FOREGROUND_SERVICE_MEDIA_PLAYBACK`: keep app alive for media playback.
+    > - `INTERNET`: for many stuff like artist/album images, streaming & downloading, etc.
+    > - `READ_EXTERNAL_STORAGE` (Android ≤ 12): list files from indexer folders only.
+    > - `READ_MEDIA_AUDIO` (Android 13+): list audio files from indexer folders only.
+    > - `READ_MEDIA_VIDEO` (Android 13+): list video files from indexer folders only (for video playback).
+    > - `READ_MEDIA_IMAGES` (Android 13+): list image files from indexer folders only (for fallback covers).
+    > - `WRITE_EXTERNAL_STORAGE` (Android ≤ 10): same as below but less restrict.
+    > - `MANAGE_EXTERNAL_STORAGE` or `all_files_access` (Android 10+ / requested when needed): used for
+    >   - editing audio tags
+    >   - creating or auto-restoring backups
+    >   - saving artworks
+    >   - deleting files
+    >   - compressing images & fix ytdlp images
+    >   - exporting playlists as m3u
+    >   - downloading youtube content
+    >   - playing tracks from a root folder
+    >   - in-app file browser
+    > - `VIBRATE`: vibrate/haptic feedback while doing some actions (can be turned off in settings).
+    > - `POST_NOTIFICATIONS` (requested when needed): post notifications like history import/download progress
+    > - `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` (requested when needed): improve downloads.
+    > - `WRITE_SETTINGS` (requested when needed): to set audio as ringtone/etc.
+    
+    ### Special Thanks:
+    
+    > - [@MSOB7YY](https://github.com/MSOB7YY) for their youtube client, which powers youtube section.
+    > - [@cameralis](https://github.com/cameralis) for their awesome miniplayer physics.
+    > - [@alexmercerind](https://github.com/alexmercerind) for helping me out a lot.
+    > - [@lusaxweb](https://github.com/lusaxweb) for their awesome Iconsax icon pack.
+    > - All packages' maintainers which made namida possible.
+    >   <br>
+    
+    # Translate
+    
+    - You can help translating Namida to your language on [Translation Repo](https://github.com/namidaco/namida-translations)
+    
+    # Contribute
+    
+    - Building is not currently directly possible, see why on https://github.com/namidaco/namida/issues/37#issuecomment-1780341883
+    
+    <!-- [![Translation status](https://translate.codeberg.org/widget/namida-translations/namicomponent/horizontal-auto.svg)](https://translate.codeberg.org/engage/namida-translations/) -->
+    
+    # Donate
+    
+    - Donation will help improve namida and will show appreciation.
+    
+    <a href="https://www.buymeacoffee.com/namidaco" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 42px;" ></a>
+    <a href="https://ko-fi.com/namidaco" target="_blank"><img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="Ko-fi" style="height: 42px;" ></a>
+    
+    > Bitcoin/ETH/USDT (BEP20): `0x95b2834c84def92860df773d8b3d80d4c296d748`
+    
+    - Don't forget to 🌟 star the repo if you like the project ^^
+    
+    # Social
+    
+    - join us on our platforms for updates, tips, discussion & ideas
+      - [Telegram (Updates)](https://t.me/namida_official)
+      - [Telegram (Chat)](https://t.me/+FmdfsgKoGmM1ZGFk)
+      - [Discord](https://discord.gg/WeY7DTVChT)
+    
+    > [!WARNING]
+    > There are no websites for namidaco/namida other than GitHub & Telegram,
+    > we are not resposible for downloading from other sources.
+    
+    # LICENSE
+    
+    Project is licensed under [EULA](https://github.com/namidaco/namida/blob/main/LICENSE) License.
+    
+    ```
+    © Copyright (C) 2023-present Namidaco <namida.coo@gmail.com>
+    - You may read/compile/modify the code for your personal usage, or for the purpose of contribution for the software.
+    - Redistributing the program as a whole under different name or license without permission is not allowed.
+    ```
+    
+    ---
+    
+    <a href="https://trendshift.io/repositories/9581" target="_blank"><img src="https://trendshift.io/api/badge/repositories/9581" alt="namidaco%2Fnamida | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+    
+    <a href="https://star-history.com/#namidaco/namida&Date">
+     <picture>
+       <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=namidaco/namida&type=Date&theme=dark" />
+       <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=namidaco/namida&type=Date" />
+       <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=namidaco/namida&type=Date" />
+     </picture>
+    </a>
+    
+
+- name: "Nuvio"
+  url: "https://github.com/NuvioMedia/NuvioMobile"
+  id: "com.nuvio.app"
+  author: "NuvioMedia"
+  description: |
+    Official Nuvio Mobile Repository
+  readme: |
+    <div align="center">
+    
+      <img src="https://github.com/tapframe/NuvioTV/blob/main/assets/brand/app_logo_wordmark.png" alt="Nuvio" width="300" />
+      <br />
+      <br />
+    
+      [![Contributors][contributors-shield]][contributors-url]
+      [![Forks][forks-shield]][forks-url]
+      [![Stargazers][stars-shield]][stars-url]
+      [![Issues][issues-shield]][issues-url]
+      [![License][license-shield]][license-url]
+    
+      <p>
+        A modern media hub for Android and iOS built with Kotlin Multiplatform and Compose Multiplatform.
+        <br />
+        Stremio addon ecosystem • Cross-platform
+      </p>
+    
+    </div>
+    
+    ## About
+    
+    Nuvio is the current Kotlin Multiplatform rewrite of the original React Native app. It delivers a shared Compose UI for Android and iOS while keeping the playback-focused experience, collection tools, watch progress flows, downloads, and Stremio addon ecosystem integration that shaped the earlier app.
+    
+    The mobile app is built from a single shared codebase in [composeApp](./composeApp), with native platform entry points for Android and iOS.
+    
+    ## Installation
+    
+    ### Android
+    
+    Download the latest Android build from [GitHub Releases](https://github.com/NuvioMedia/NuvioMobile/releases/latest).
+    
+    ### iOS
+    
+    - [TestFlight](https://testflight.apple.com/join/u4y7MHK9)
+    
+    ## Development
+    
+    ```bash
+    git clone https://github.com/NuvioMedia/NuvioMobile.git
+    cd NuvioMobile
+    ./scripts/run-mobile.sh android
+    # or
+    ./scripts/run-mobile.sh ios
+    ```
+    
+    ### Project Structure
+    
+    - `composeApp/` contains the shared Kotlin Multiplatform and Compose Multiplatform app code.
+    - `composeApp/src/commonMain/` contains shared UI, features, repositories, and platform-agnostic logic.
+    - `composeApp/src/androidMain/` contains Android-specific integrations.
+    - `composeApp/src/iosMain/` contains iOS-specific integrations.
+    - `iosApp/` contains the native Xcode project and iOS entry point.
+    
+    Useful commands:
+    
+    ```bash
+    ./gradlew :composeApp:assembleDebug
+    ./gradlew :composeApp:compileKotlinIosSimulatorArm64
+    ./scripts/build-distribution.sh
+    ```
+    
+    Versioning is driven from `iosApp/Configuration/Version.xcconfig`, which is used as the shared source of truth for both iOS and Android builds.
+    
+    ## Legal & DMCA
+    
+    Nuvio functions solely as a client-side interface for browsing metadata and playing media provided by user-installed extensions and/or user-provided sources. It is intended for content the user owns or is otherwise authorized to access.
+    
+    Nuvio is not affiliated with any third-party extensions, catalogs, sources, or content providers. It does not host, store, or distribute any media content.
+    
+    For comprehensive legal information, including our full disclaimer, third-party extension policy, and DMCA/Copyright information, please visit our [Legal & Disclaimer Page](https://nuvioapp.space/legal).
+    
+    ## Built With
+    
+    - Kotlin Multiplatform
+    - Compose Multiplatform
+    - Kotlin
+    - AndroidX Media3
+    - AVFoundation and native iOS integrations
+    
+    ## Star History
+    
+    <a href="https://www.star-history.com/#NuvioMedia/NuvioMobile&type=date&legend=top-left">
+     <picture>
+       <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=NuvioMedia/NuvioMobile&type=date&theme=dark&legend=top-left" />
+       <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=NuvioMedia/NuvioMobile&type=date&legend=top-left" />
+       <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=NuvioMedia/NuvioMobile&type=date&legend=top-left" />
+     </picture>
+    </a>
+    
+    <!-- MARKDOWN LINKS & IMAGES -->
+    [contributors-shield]: https://img.shields.io/github/contributors/NuvioMedia/NuvioMobile.svg?style=for-the-badge
+    [contributors-url]: https://github.com/NuvioMedia/NuvioMobile/graphs/contributors
+    [forks-shield]: https://img.shields.io/github/forks/NuvioMedia/NuvioMobile.svg?style=for-the-badge
+    [forks-url]: https://github.com/NuvioMedia/NuvioMobile/network/members
+    [stars-shield]: https://img.shields.io/github/stars/NuvioMedia/NuvioMobile.svg?style=for-the-badge
+    [stars-url]: https://github.com/NuvioMedia/NuvioMobile/stargazers
+    [issues-shield]: https://img.shields.io/github/issues/NuvioMedia/NuvioMobile.svg?style=for-the-badge
+    [issues-url]: https://github.com/NuvioMedia/NuvioMobile/issues
+    [license-shield]: https://img.shields.io/github/license/NuvioMedia/NuvioMobile.svg?style=for-the-badge
+    [license-url]: https://github.com/NuvioMedia/NuvioMobile/blob/main/LICENSE
+
+- name: "LibreTorrent"
+  url: "https://github.com/proninyaroslav/libretorrent"
+  id: "org.proninyaroslav.libretorrent"
+  author: "proninyaroslav"
+  description: |
+    Free and Open Source, full-featured torrent client for Android. Mirrored from https://gitlab.com/proninyaroslav/libretorrent
+  readme: |
+    
+    <div align="center">
+    
+    <p><img src="fastlane/metadata/android/en-US/images/icon.png" width="150"></p>
+    <h2><b>LibreTorrent</b></h2>
+    <h4>Copylefted libre full-featured torrent client for Android.</h4>
+    
+    [<img alt="Get it on F-Droid" height="80" src="https://tachibanagenerallaboratories.github.io/images/badges/F-Droid/get-it-on.png">](https://f-droid.org/app/org.proninyaroslav.libretorrent)
+    [<img alt="Get it on OpenAPK" height="80" src="https://www.openapk.net/images/openapk-badge.png">](https://www.openapk.net/libretorrent/org.proninyaroslav.libretorrent/)
+    [<img alt="Get it on APKMirror" height="80" src="https://raw.githubusercontent.com/proninyaroslav/TachibanaGeneralLaboratories.github.io/master/images/badges/APKMirror/get-it-on-apkmirror.png">](https://www.apkmirror.com/apk/proninyaroslav/libretorrent)
+    [<img alt="Get it on Google Play" height="80" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png">](https://play.google.com/store/apps/details?id=org.proninyaroslav.libretorrent)
+    [<img alt="Get it on Aptoide" height="80" src="https://raw.githubusercontent.com/proninyaroslav/TachibanaGeneralLaboratories.github.io/master/images/badges/Aptoide/get-it-on-aptoide.png">](https://libretorrent.en.aptoide.com/app)
+    [<img alt="Direct APK Download" height="80" src="https://tachibanagenerallaboratories.github.io/images/badges/Direct%20Download/direct-apk-download.png">](https://proninyaroslav.ru/mirror/libretorrent)
+    
+    
+    [![Hosted Weblate](https://hosted.weblate.org/widgets/libretorrent/-/svg-badge.svg)](https://hosted.weblate.org/engage/libretorrent/)
+    [![Matrix Room](https://img.shields.io/matrix/libretorrent:matrix.org?label=Matrix%20Room)](https://matrix.to/#libretorrent:matrix.org)
+    [![Chat - Telegram](https://img.shields.io/badge/chat-Telegram-blue.svg)](https://t.me/LibreTorrent)
+    [<img alt="Coverity Scan Build Status" src="https://scan.coverity.com/projects/14421/badge.svg">](https://scan.coverity.com/projects/proninyaroslav-libretorrent)
+    
+    </div>
+    
+    **Issues**: https://gitlab.com/proninyaroslav/libretorrent/issues
+    
+    [Use, see, change and share](https://en.wikipedia.org/wiki/Free_software); [with all](https://en.wikipedia.org/wiki/Copyleft).
+    
+    
+    ---
+    
+    ## Screenshots
+    
+    <div align="center">
+    
+    [<img src="art/screenshots/phone.png" width=160>](art/screenshots/phone.png)
+    [<img src="art/screenshots/phone_dark.png" width=160>](art/screenshots/phone_dark.png)
+    [<img src="art/screenshots/create_torrent.png" width=160>](art/screenshots/create_torrent.png)
+    [<img src="art/screenshots/rss.png" width=160>](art/screenshots/rss.png)
+    [<img src="art/screenshots/tablet.png" width=480>](art/screenshots/tablet.png)
+    
+    </div>
+    
+    ## 📋 Features
+    
+    **[Note for Android 12+]**: Google Play version doesn't have permission to access all files, use another version (F-Droid or direct APK).
+    
+    * BitTorrent 2.0 and WebTorrent support
+    * Select which files to download
+    * Move files while downloading
+    * Auto-move downloaded files to another folder or external drive
+    * Stream files, with sequential downloads
+    * Android TV
+    * Material design, dark and black theme, and tablet UI
+    * Customisable network, battery, and UI settings, etc.
+    * 35+ translations
+    * Scheduling
+    * Auto-downloading, with Atom/RSS manager
+    * Create torrents, with many and big files
+    * HTTP\S and magnet links
+    * DHT, PeX, encryption, LSD, UPnP, NAT*PMP, µTP
+    * IP filtering (eMule dat and PeerGuardian)
+    * Supports proxy for trackers and peers
+    * Based on [libtorrent4j](https://github.com/aldenml/libtorrent4j)
+    * And more
+    
+    ## 🌍 Translations
+    
+    Help translate the app at [Hosted Weblate](https://hosted.weblate.org/engage/libretorrent/)
+    
+    ![languages](https://hosted.weblate.org/widgets/libretorrent/-/multi-auto.svg)
+    
+    ## 💰 Donations
+    
+    The development is 100% funded by heroic people like you. If you have problems with payment or you want to donate in another way, contact me at `proninyaroslav@mail.ru`. Thank you!
+    
+     - **Bitcoin**: `12isaLkH8nZ4DkFguVFeYrGHqQi7EEgUrM `
+     - **USDT TRC20**: `TK79fzUYwRtmANuLjk1Zzhz3hjTaFQbxfg`
+     - **Monero**: `48j4Mo7J7t51EeBf35Lpdmehmi9chUwzSXxHrnjpRJ6fPQafPWvSCdFafw3rA5ZRWievfYEDToNso8VppbJf2RVH9cdZmHa`
+     - **YooMoney (ЮMoney)**: `410011738561939`
+     - **Patreon**: [patreon.com/YaroslavPronin](https://patreon.com/YaroslavPronin)
+     - **Boosty**: [boosty.to/yaroslavpronin/donate](https://boosty.to/yaroslavpronin/donate)
+     - **Amazon.com eGift Cards**: just choose your amount and type e-mail `proninyaroslav@mail.ru`
+    in the gift card details [smile.amazon.com/gp/product/B004LLIKVU](https://smile.amazon.com/gp/product/B004LLIKVU)
+     - **Liberapay**: [![liberapay](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/proninyaroslav/donate)
+    
+    ## 🎉 Contributors
+    
+    Please see [CONTRIBUTING.md](CONTRIBUTING.md)
+    
+    #### Developers
+    
+    * [Yaroslav Pronin](https://gitlab.com/proninyaroslav)
+    
+    ## 🔒 Privacy Policy
+    
+    Please see our [Privacy Policy](PRIVACY.md).
+    
+    ## 📄 License
+    
+    [![Large GPLv3 logo with “Free as in Freedom”](https://www.gnu.org/graphics/gplv3-with-text-136x68.png)](http://www.gnu.org/licenses/gpl-3.0.en.html)
+    
+        Copyright (C) 2016 Yaroslav Pronin <proninyaroslav@mail.ru>
+        This file is part of LibreTorrent.
+        LibreTorrent is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    
+
+- name: "URLCheck"
+  url: "https://github.com/TrianguloY/URLCheck"
+  id: "com.trianguloy.urlchecker"
+  author: "TrianguloY"
+  description: |
+    Android app by TrianguloY: URLCheck
+  readme: |
+    <div align="center">
+    
+    <!-- ---------- Header ---------- -->
+    <img src="./docs/featured.png">
+    <!-- Original background with CC0 from https://www.maxpixel.net/Digital-Network-Internet-Communication-Connections-3537400 -->
+    
+    <!-- title -->
+    
+    # URLCheck
+    
+    <!-- ---------- Badges ---------- -->
+    [![App-Code Size](https://img.shields.io/github/languages/code-size/trianguloy/urlchecker.svg)](https://api.github.com/repos/TrianguloY/URLCheck)
+    [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/TrianguloY/URLCheck)](https://github.com/TrianguloY/URLCheck/pulse/monthly)
+    [![Weblate (translation percentage)](https://hosted.weblate.org/widgets/urlcheck/-/svg-badge.svg)](https://hosted.weblate.org/engage/urlcheck/)
+    [![Development version](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2FTrianguloY%2FURLCheck%2Frefs%2Fheads%2Fmaster%2Fapp%2Fbuild.gradle&search=versionName%20%5B%27%22%5D(.*)%5B%27%22%5D&replace=v%241&label=development%20version&color=darkgrey)](https://github.com/TrianguloY/URLCheck/blob/master/app/build.gradle)
+    
+    [![GitHub version](https://img.shields.io/github/v/release/TrianguloY/URLCheck?logo=github&label=Github%20version&color=white)](https://github.com/TrianguloY/URLCheck/releases)
+    [![F-Droid version](https://img.shields.io/f-droid/v/com.trianguloy.urlchecker?label=F-Droid%20version&logo=fdroid&color=%231e79d3)](https://gitlab.com/fdroid/fdroiddata/-/blob/master/metadata/com.trianguloy.urlchecker.yml)
+    [![Play Store version](https://img.shields.io/endpoint?color=green&logo=googleplay&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.trianguloy.urlchecker%26l%3DPlay%2520Store%2520version%26m%3Dv%24version)](https://play.google.com/store/apps/details?id=com.trianguloy.urlchecker)
+    [![IzzyOnDroid version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapt.izzysoft.de%2Ffdroid%2Fapi%2Fv1%2Fshield%2Fcom.trianguloy.urlchecker&query=message&prefix=v&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IS0tIFVwbG9hZGVkIHRvOiBTVkcgUmVwbywgd3d3LnN2Z3JlcG8uY29tLCBHZW5lcmF0b3I6IFNWRyBSZXBvIE1peGVyIFRvb2xzIC0tPgo8c3ZnIHdpZHRoPSIxMDBweCIgaGVpZ2h0PSIxMDBweCIgdmlld0JveD0iMCAwIDQ4IDQ4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiNGRkZGRkYiIGNsYXNzPSJhIiBkPSJtMTkuMjU2IDI0LjA4Ni0xLjYzNy0xLjczMUwxOCAyMmwxLjY3NSAxLjc0OG00LjY2Ni4wMTRMMjYgMjJsLjM3MS4zNjItMS42NTkgMS42OThNMTcgNDNoMTJjOSAwIDE3LTE4IDQtMjR6TTMgNDNoMTNsMTYtMjRIMTltLTkgMTJDLTMgMjcgMyA2IDE4IDZoOXptMjMtMTNIMjBsOC0xMmgxM3ptLTE1IDlhNCA0IDAgMDE4IDB6bTUuNDk2LTIuNWEuNzUyLjc1MiAwIDEwLjAwNCAwem0tMyAwYS43NS43NSAwIDEwLjAwNCAweiIvPjwvc3ZnPg%3D%3D&label=IzzyOnDroid%20version&color=%2300d3ff)](https://apt.izzysoft.de/fdroid/index/apk/com.trianguloy.urlchecker)
+    
+    <!-- ---------- Download ---------- -->
+    [<img src="./docs/badge_github.png"
+    alt="Get it on GitHub"
+    height="80">](https://github.com/TrianguloY/URLCheck/releases/latest/)
+    [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+    alt="Get it on F-Droid"
+    height="80">](https://f-droid.org/packages/com.trianguloy.urlchecker)
+    [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+    alt="Get it on Google Play"
+    height="80">](https://play.google.com/store/apps/details?id=com.trianguloy.urlchecker)
+    [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+    alt="Get it on IzzyOnDroid"
+    height="80">](https://apt.izzysoft.de/fdroid/index/apk/com.trianguloy.urlchecker)
+    [<img src="https://github.com/user-attachments/assets/713d71c5-3dec-4ec4-a3f2-8d28d025a9c6"
+    alt="Get it on Obtainium"
+    height="80">](https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.trianguloy.urlchecker%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2FTrianguloY%2FURLCheck%22%2C%22author%22%3A%22TrianguloY%22%2C%22name%22%3A%22URLCheck%22%2C%22preferredApkIndex%22%3A0%2C%22additionalSettings%22%3A%22%7B%5C%22includePrereleases%5C%22%3Afalse%2C%5C%22fallbackToOlderReleases%5C%22%3Atrue%2C%5C%22filterReleaseTitlesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22filterReleaseNotesByRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22verifyLatestTag%5C%22%3Afalse%2C%5C%22dontSortReleasesList%5C%22%3Afalse%2C%5C%22useLatestAssetDateAsReleaseDate%5C%22%3Afalse%2C%5C%22releaseTitleAsVersion%5C%22%3Afalse%2C%5C%22trackOnly%5C%22%3Afalse%2C%5C%22versionExtractionRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22matchGroupToUse%5C%22%3A%5C%22%5C%22%2C%5C%22versionDetection%5C%22%3Atrue%2C%5C%22releaseDateAsVersion%5C%22%3Afalse%2C%5C%22useVersionCodeAsOSVersion%5C%22%3Afalse%2C%5C%22apkFilterRegEx%5C%22%3A%5C%22%5C%22%2C%5C%22invertAPKFilter%5C%22%3Afalse%2C%5C%22autoApkFilterByArch%5C%22%3Atrue%2C%5C%22appName%5C%22%3A%5C%22%5C%22%2C%5C%22shizukuPretendToBeGooglePlay%5C%22%3Afalse%2C%5C%22allowInsecure%5C%22%3Afalse%2C%5C%22exemptFromBackgroundUpdates%5C%22%3Afalse%2C%5C%22skipUpdateNotifications%5C%22%3Afalse%2C%5C%22about%5C%22%3A%5C%22%5C%22%2C%5C%22refreshBeforeDownload%5C%22%3Afalse%7D%22%2C%22overrideSource%22%3Anull%7D)
+    
+    
+    <details><summary>Apk details</summary>
+    
+    App package: `com.trianguloy.urlchecker`
+    
+    SHA-256 Hash of Signing Certificate:\
+    Play Store: `F9:A2:D8:D8:94:FA:FE:A1:4C:F6:05:C4:D7:22:AF:D0:49:4D:69:41:1F:60:6A:AA:0B:B1:F2:85:E7:A9:A6:60`\
+    F-Droid: `93:D7:9B:1E:72:D5:A6:B0:BC:68:11:B9:BC:0A:83:18:1C:35:10:D5:8C:11:57:11:40:FF:3F:8A:63:F2:21:74`\
+    GitHub/Obtainium/IzzyOnDroid: `BF:1B:69:C1:4D:A2:42:0C:A7:20:11:F7:2C:F4:83:74:58:EC:5D:3C:C4:B5:38:24:34:37:BC:17:C1:92:01:C6`
+    
+    Note: All three different versions (Play Store, F-droid and Github) are signed with different certificates, so you cannot update one with another unless you uninstall first.\
+    Remember to use the backup/restore functionality to migrate your data!
+    </details>
+    
+    <hr width="75%">
+    
+    <!-- contributors -->
+    
+    ### Android app made by [TrianguloY](https://github.com/TrianguloY)
+    
+    Special contributors: [Ilithy](https://github.com/Ilithy), [PabloOQ](https://github.com/PabloOQ), [anoop-b](https://github.com/anoop-b)
+    
+    All contributors: \
+    [![Contributors](https://contrib.rocks/image?repo=TrianguloY/URLCheck&anon=1)](https://github.com/TrianguloY/URLCheck/graphs/contributors) \
+    and [404potato](https://github.com/404potato) and maybe some more from [Weblate](https://hosted.weblate.org/engage/urlcheck/).
+    
+    <hr>
+    
+    <!-- ---------- Description ---------- -->
+    **URLCheck** acts as an amazingly customizable and powerful intermediary when opening url links, allowing, among other things:
+    to remove trackers, affiliate links, unnecessary elements, check Hosts, facilitating link holding and sharing, protecting against certain phishing techniques and many more...
+    
+    
+    <!-- ---------- Screenshots ---------- -->
+    <div style="display: flex;">
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1-title.png" width=30%>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/2-dialog.png" width=30%>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/3-dialog.png" width=30%>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/4-modules.png" width=30%>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/5-modules.png" width=30%>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/6-modules.png" width=30%>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7-modules.png" width=30%>
+      <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/8-settings.png" width=30%>
+    </div>
+    
+    </div>
+    
+    <!-- ---------- Trademarks ---------- -->
+    
+    Uses:
+    
+    - [VirusTotal](https://www.virustotal.com/gui/)™ is a trademark of Google, Inc
+    - Built-in catalog copied from [ClearURLs](https://docs.clearurls.xyz/latest/specs/rules)
+    - [unshorten.me](https://unshorten.me/) free API by Unshorten.me
+    - [StevenBlack's Hosts](https://github.com/StevenBlack/hosts)
+    
+    <!-- ---------- Contribution & contributors ---------- -->
+    
+    ## Contribution
+    
+    **All help is greatly welcomed!**  
+    Feel free to [**suggest changes**](https://github.com/TrianguloY/URLCheck/issues/new), request a [**new feature**](https://github.com/TrianguloY/URLCheck/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=), create [**bug report**](https://github.com/TrianguloY/URLCheck/issues/new?assignees=&labels=bug&template=bug_report.md&title=) or even [**pull request**](https://help.github.com/articles/about-pull-requests/). _(from a simple typo fix to a full new module or even more!)_  
+    **Translations are also greatly appreciated.**
+    
+    See [CONTRIBUTING](docs/CONTRIBUTING.md) for code or translation details and tips.
+    
+    [![Weblate (translation details)](https://hosted.weblate.org/widgets/urlcheck/-/multi-auto.svg)](https://hosted.weblate.org/engage/urlcheck/)
+    
+    <a href="https://star-history.com/#TrianguloY/URLCheck&Date">
+     <picture>
+       <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=TrianguloY/URLCheck&type=Date&theme=dark" />
+       <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=TrianguloY/URLCheck&type=Date" />
+       <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=TrianguloY/URLCheck&type=Date" />
+     </picture>
+    </a>
+    
+    <!-- ---------- License ---------- -->
+    
+    ## License
+    
+    <div align="center">
+    
+    [<img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png"
+    alt="Creative Commons Attribution 4.0 International"
+    height="40">](http://creativecommons.org/licenses/by/4.0/)
+    
+    </div>
+    
+    You can use parts of this project in your own ones, or upload modified versions of it AS LONG AS you credit me.
+    
+    **How to credit:**
+    
+    - You must add my nick [**TrianguloY**](https://github.com/TrianguloY/) in an `about` or `acknowledgments` section visible to the user.
+    - You must add a link to this [**GitHub main page**](https://github.com/TrianguloY/URLCheck) or subpage (if you used a part of the code or an asset) in an `about` or `acknowledgments` section visible to the user.
+    
+
+- name: "SaverTuner"
+  url: "https://codeberg.org/s1m/savertuner"
+  id: "s1m.savertuner"
+  author: "s1m"
+  description: |
+    Extension to the built-in Android Battery Saver
+  readme: |
+    # SaverTuner
+    Extension to the built-in Android Battery Saver
+    
+    # Description
+    Android's built-in battery saver can be set quite finely. However, it is not configurable out of the box. SaverTuner allows you to take advantage of this built-in battery saver. You can now set different profiles that save the battery more or less aggressively. From a daily optimization that does not affect performance to an extreme optimization that saves power as much as possible.
+    
+    This application is based on [Buoy](https://github.com/tytydraco/Buoy). It adds support for Android 12+, save and restore profiles and improves the settings tiles.
+    
+    [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+         alt="Get it on F-Droid"
+         height="80">](https://f-droid.org/packages/s1m.savertuner/)
+    
+    Or download the latest APK from the [Releases Section](https://codeberg.org/s1m/savertuner/releases).
+    
+    # Features
+    It uses hidden Android settings to specify custom behavior for the built in battery saver. Features include the following toggles:
+    
+    - Advertising to other apps that low power mode is enabled
+    - Android's data saver for metered WiFi or mobile data connections
+    - The built-in dark mode
+    - Launch boost to accelerate app starts
+    - Vibration
+    - Showing window and activity animations
+    - Allowing apps to use the SoundTrigger HAL
+    - Deferring full device backups for later
+    - Deferring app setting backups for later
+    - Using the built-in web firewall to protect against possibly malicious sites
+    - Changing the location access mode restrictions for apps
+    - Reducing the max brightness of the panel
+    - Forcing all apps into standby mode
+    - Forcing all apps to not check data in the background
+    - Disabling unnecessary sensors
+    - Using the Always-On-Display
+    - Putting the device into deep sleep as soon as the screen turns off
+    
+    # Sticky Low Power
+    It also enables something called "sticky" low power mode. Usually, when the device is plugged in and unplugged, the low power mode is then disabled. However, sticky mode re-applies low power mode afterwards to continue saving battery.
+    
+    # Disclaimers
+    Note that this app requires the WRITE_SECURE_SETTINGS permission that can be granted with EITHER a PC using ADB or root. Root is NOT required for this app, it is optional. Android 8.0+ is supported, with more features enabled on Android 10+.
+    
+    The command to grant the permission is:
+    
+    ```
+    adb shell pm grant s1m.savertuner android.permission.WRITE_SECURE_SETTINGS
+    ```
+    
+    Uninstalling the app will not reset the battery saver configuration. You must set the Default profile to undo all changes before uninstalling.
+    
+    # Credit
+    
+    - <https://github.com/tytydraco/Buoy>
+    
+
+- name: "Amarok"
+  url: "https://github.com/deltazefiro/Amarok-Hider"
+  id: "deltazero.amarok.foss"
+  author: "deltazefiro"
+  description: |
+    Hide your private files and apps with a single click.
+  readme: |
+    
+    ![banner](https://github.com/user-attachments/assets/63a8fc76-30a0-4460-85be-4264b1f69334)
+    
+    # Amarok-Hider
+    
+    [![](https://img.shields.io/github/v/release/deltazefiro/Amarok-Hider?label=GithubRelease)](https://github.com/deltazefiro/Amarok-Hider/releases)
+    [![](https://img.shields.io/f-droid/v/deltazero.amarok.foss?color=blue)](https://f-droid.org/zh_Hans/packages/deltazero.amarok.foss/)
+    [![](https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/deltazero.amarok.foss&color=orange)](https://apt.izzysoft.de/fdroid/index/apk/deltazero.amarok.foss)
+    
+    🌐 **ENGLISH** | [简体中文](https://github.com/deltazefiro/Amarok-Hider/blob/main/README.zh.md)
+    
+    ## What is Amarok?
+    
+    Amarok is a lightweight Android privacy tool that shields your files and apps from prying eyes without the overhead of encryption.
+    
+    Traditional encryption tools are secure but slow — decrypting a large movie file or unlocking an app takes time. Amarok acts instantly. It conceals files by obfuscating signatures or adjusting permissions, and hides apps by disabling them or using Xposed hooks. This makes your content invisible to casual snoopers without any performance penalty.  
+    
+    > [!WARNING]
+    > **Amarok is NOT an encryption tool.**  
+    > Amarok hides data but does not cryptographically secure it. Do not use this tool for high-value secrets.
+    
+    ## Features
+    
+    * **One-Click Privacy**: Instantly hide or unhide your selected files and apps.
+    * **High-Speed Performance**: Hides large files instantly by altering signatures (Non-root) or adjusting file permissions (Root).
+    * **Versatile App Hiding**:
+      * **Root-Free Support**: Hides apps from the launcher (supports Shizuku, Dhizuku, and DSM modes).
+      * **Root Support**: Leverages Xposed to *thoroughly* scrub apps from system menus and 3rd-party detection.
+    * **Panic Button**: A discreet floating button to instantly hide everything.
+    * **Quick Settings Tile**: Toggle visibility directly from your control center without opening the main app.
+    * **Secure Access**: Protect Amarok itself with a Password or Fingerprint lock.
+    * **Camouflage Mode**: Disguise Amarok as a Calendar app.
+    
+    ## Screenshots
+    
+    <table>
+      <tr>
+        <td><img src="https://github.com/deltazefiro/Amarok-Hider/assets/41465688/b3fe6b18-cb3e-488b-81cb-ff5ed005664b" alt="Image 1"></td>
+        <td><img src="https://github.com/deltazefiro/Amarok-Hider/assets/41465688/1a6f147c-286a-428c-9470-a469b4dd9f4e" alt="Image 2"></td>
+        <td><img src="https://github.com/deltazefiro/Amarok-Hider/assets/41465688/9b61b94f-26f2-4457-b189-93c75a09e7d5" alt="Image 3"></td>
+      </tr>
+      <tr>
+        <td><img src="https://github.com/deltazefiro/Amarok-Hider/assets/41465688/9ef70932-c242-4cc6-a84d-5b14ddf8a814" alt="Image 4"></td>
+        <td><img src="https://github.com/deltazefiro/Amarok-Hider/assets/41465688/3702143d-dac5-435d-9615-323ada02c63e" alt="Image 5"></td>
+        <td><img src="https://github.com/deltazefiro/Amarok-Hider/assets/41465688/a2016488-0c13-4144-93ed-5ca35179df79" alt="Image 6"></td>
+      </tr>
+    </table>
+    
+    ## Download
+    
+    [![](https://img.shields.io/github/v/release/deltazefiro/Amarok-Hider?label=GithubRelease)](https://github.com/deltazefiro/Amarok-Hider/releases)  
+    [![](https://img.shields.io/f-droid/v/deltazero.amarok.foss?color=blue)](https://f-droid.org/zh_Hans/packages/deltazero.amarok.foss/) (FOSS)  
+    [![](https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/deltazero.amarok.foss&color=orange)](https://apt.izzysoft.de/fdroid/index/apk/deltazero.amarok.foss)  (FOSS) (Pre-release channel)
+    
+    ## Documentation & Usage
+    
+    New to Amarok? Check out our documentation for setup guides on Root, Shizuku, Dhizuku, and other app hiders.
+    
+    [![](https://img.shields.io/badge/AmarokDocs-ClickToView-brightgreen)](https://deltazefiro.github.io/Amarok-doc/en-US/)  
+    
+    ## Contributing
+    
+    Thank you for dedicating your time to contribute to this project!
+    Contributions in all forms are welcomed, including reporting bugs, proposing new features, performing language translations, and submitting code development PRs.
+    
+    > 🤖 **Tips for AI Assistants**  
+    > Please consult `.cursor/rules` for a overview of the project structure.
+    
+    We use [weblate](https://hosted.weblate.org/engage/amarok-hider/) for translations.
+    
+    <a href="https://hosted.weblate.org/engage/amarok-hider/">
+    <img src="https://hosted.weblate.org/widgets/amarok-hider/-/multi-auto.svg" alt="Translation status" />
+    </a>
+    
+    ## Credits
+    
+    A massive thank you to the open-source community:
+    
+    * **[aistra0528/Hail](https://github.com/aistra0528/Hail):** Core reference for the app hiding logic.
+    * **[RikkaApps/Shizuku](https://github.com/RikkaApps/Shizuku) & [iamr0s/Dhizuku](https://github.com/iamr0s/Dhizuku):** For enabling root-less permissions.
+    * **[Icongeek26](https://www.flaticon.com/authors/icongeek26) & [Freepik](https://www.freepik.com):** For the beautiful iconography.
+    * **[Jetbrains](https://www.jetbrains.com/community/opensource/#support):** For providing IDE support.
+    
+    ... and all the dedicated [contributors](https://github.com/deltazefiro/Amarok-Hider/graphs/contributors)!
+    
+    ## Disclaimers
+    
+    **Amarok is provided "as is" without any warranties or conditions.**
+    The user is fully responsible for any harm, data loss, or consequences that may arise from using Amarok. Please backup important data before using hiding tools.
+    
+
+- name: "AntiSplit M"
+  url: "https://github.com/AbdurazaaqMohammed/AntiSplit-M"
+  id: "com.abdurazaaqmohammed.AntiSplit"
+  author: "AbdurazaaqMohammed"
+  description: |
+    App to AntiSplit (merge) split APKs (APKS/XAPK/APKM) to regular .APK file on Android
+  readme: |
+    # AntiSplit M
+    
+    Android app to merge/"AntiSplit" split APKs (APKS/XAPK/APKM) to a regular .APK file
+    
+    This project is a simple GUI implementation of Merge utilities from [REAndroid APKEditor](https://github.com/REAndroid/APKEditor).
+    
+    Some other apps that can perform this task like Apktool M, AntiSplit G2, NP Manager are all closed source. In addition, some older apps have a large problem in not removing the information about splits in the APK from the AndroidManifest.xml. If a merged/non-split APK contains this information it will cause an "App not installed" error on some devices. Fortunately the implementation by REAndroid fixes this issue.
+    
+    Version 2.x - Material You design, support Android 4.4+
+    
+    Version 1.x - Support Android 1.6+
+    
+    ## Usage
+    
+    Video - https://youtu.be/Vk566iMG6Gs
+    
+    There are 3 ways to open a split APK to be merged:
+    
+    - Share the file and select AntiSplit M in the share menu
+    - Press (open) the file and select AntiSplit M in available options
+    - Open the app from launcher and press the first button then select the split APK file.
+    
+    There is also a menu in the app that allows selecting an app from those installed on the device as a split APK. Please try this method if you have problems with selecting a downloaded split APK.
+    
+    Note: An APK must be signed in order to install it (unless you use tool like [Core Patch](https://github.com/LSPosed/CorePatch)). If you are planning to further modify the APK, you only need to sign it after the modifications (Apps like ReVanced Manager will sign it for you). Some apps verify the signature of the APK or take other measures to check if the app was modified, which may cause it to crash on startup.
+    
+    ## Screenshots
+    
+    | Main screen                                 | Settings                               | Selecting from installed apps                                 |
+    | ------------------------------------------- | -------------------------------------- | ------------------------------------------------------------- |
+    | ![Main screen](screenshot/2.2.7_home.jpeg) | ![Settings](screenshot/2.2.7_settings.jpeg) | ![Selecting from installed apps](screenshot/2.2.7_applist.jpeg) |
+    
+    | Dialog allowing splits selection   | Processing                                 | Result                             |
+    | ---------------------------------- | ------------------------------------------ | ---------------------------------- |
+    | ![Dialog](screenshot/2.2.7_splits_list.jpeg) | ![Processing](screenshot/2.2.7_processing.jpeg) | ![Result](screenshot/2.2.7_success.jpeg) |
+    
+    ## Used projects
+    
+    ⭐ [APKEditor](https://github.com/REAndroid/APKEditor) by REAndroid, what makes it all possible
+    
+    - [Android port](https://github.com/MuntashirAkon/apksig-android) of apksig library by MuntashirAkon to sign APKs
+    
+    ## Permissions
+    
+    - Storage permissions - to be able to save files to the same directory as a split APK (this is an option in the app, the storage permission will only be requested upon selecting it)
+    - QUERY_ALL_PACKAGES - to list apps installed on the device (see "Selecting from installed apps" in screenshots above)
+    - REQUEST_INSTALL_PACKAGES - to show an install button allowing prompt to install an app after merging it
+    - Internet permission - to check update for the app (can be disabled in settings)
+    
+    Feel free to request a build of the app with any of these permissions removed.
+    
+
+- name: "NFile"
+  url: "https://github.com/Senzme/NFile"
+  id: "com.rubex.nfile"
+  author: "Senzme"
+  description: |
+    A Beautiful File Manager
+  readme: |
+    # NFile
+    
+    A beautiful File Manager application built with Flutter.
+    
+    ## Overview
+    NFile is designed to provide a highly aesthetic file management experience on Android. It features a stunning interface with an exclusive "Broken" icon pack, dynamic AMOLED-friendly dark mode, and a fluid user experience. 
+    
+    With the latest update, NFile transitions from a simple file explorer to a comprehensive media hub with built-in high-performance players and viewers.
+    
+    ## Features
+    - **Premium UI/UX:** A textured and alpha-blended aesthetic that gives a modern, glassmorphic feel to your file browsing.
+    - **Native Media Indexing:** Lightning-fast gallery views for Images, Videos, and Audio using native device indexing. No more slow recursive scans.
+    - **Built-in Media Players:**
+        - **High-Performance Video Player:** Powered by `media_kit` for smooth playback of high-resolution videos.
+        - **Elegant Audio Player:** Clean playback interface with album art support and precise seeking.
+        - **Pinch-to-Zoom Image Viewer:** View your memories in full detail with smooth gestures.
+    - **Built-in Text Editor:** View and edit `.txt`, `.md`, `.json`, and other code files directly within the app.
+    - **Advanced Sorting:** Filter your media by Newest, Oldest, or Date-wise to find what you need instantly.
+    - **Complete File Operations:** Easily copy, cut, paste, rename, and delete files or folders.
+    - **Quick Categories:** One-tap access to your indexed media libraries.
+    - **Storage Overview:** Visual representation of your device's internal storage usage.
+    - **Fluid UI:** iOS-style bouncy physics and smooth transitions throughout the app.
+    
+    ## Screenshots
+    
+    | | | | |
+    |:---:|:---:|:---:|:---:|
+    | <img src="https://github.com/user-attachments/assets/2d36cbea-e994-4302-b3a3-4b4364e96a41" width="200"> | <img src="https://github.com/user-attachments/assets/66b864ed-2598-477c-bdb4-d045a71e93b9" width="200"> | <img src="https://github.com/user-attachments/assets/874a9d0f-1796-4e4d-9f92-2c8915626376" width="200"> | <img src="https://github.com/user-attachments/assets/ca1e78e0-8e68-4985-bc9c-39e763b8ed74" width="200"> |
+    
+    
+    ## Permissions
+    The application requires the following permissions for full functionality:
+    - `MANAGE_EXTERNAL_STORAGE`: For seamless file operations across the entire device.
+    - `READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO`, `READ_MEDIA_AUDIO`: For high-speed native media indexing.
+    
+    ## Building and Running
+    1. Clone this repository.
+    2. Run `flutter pub get` to install dependencies.
+    3. Run `flutter run` on an Android device (API 21+ required).
+    
+    ## Technologies Used
+    - **Flutter & Dart**
+    - **State Management:** `provider`
+    - **Media Engine:** `media_kit` (Video & Audio playback)
+    - **Indexing:** `photo_manager` & `on_audio_query`
+    - **Permissions:** `permission_handler`
+    - **Viewers:** `photo_view` & `open_filex`
+    
+    ## License
+    GNU GPL v3 License
+    
+
+- name: "SwiftSlate"
+  url: "https://github.com/Musheer360/SwiftSlate"
+  id: "com.musheer360.swiftslate"
+  author: "Musheer360"
+  description: |
+    Android accessibility service for AI-powered text transformation
+  readme: |
+    <div align="center">
+    
+    <br>
+    
+    <img src="playstore-icon.png" width="140" alt="SwiftSlate Icon" />
+    
+    <br>
+    
+    # SwiftSlate
+    
+    ### System-wide AI text assistant for Android — powered by Gemini, Groq, and any OpenAI-compatible endpoint
+    
+    Type a trigger like **`?fix`** at the end of any text, in any app, and watch it get replaced — instantly.
+    
+    <br>
+    
+    [![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#-getting-started)
+    [![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](#%EF%B8%8F-tech-stack)
+    [![Gemini](https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)](#-supported-ai-providers)
+    [![License: MIT](https://img.shields.io/badge/MIT-blue?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+    
+    [![Latest Release](https://img.shields.io/github/v/release/Musheer360/SwiftSlate?style=flat-square&label=Latest&color=brightgreen)](https://github.com/Musheer360/SwiftSlate/releases/latest)
+    [![GitHub Stars](https://img.shields.io/github/stars/Musheer360/SwiftSlate?style=flat-square&color=yellow)](https://github.com/Musheer360/SwiftSlate/stargazers)
+    [![APK Size](https://img.shields.io/badge/APK_Size-~1.2_MB-blue?style=flat-square)](#)
+    [![API 23+](https://img.shields.io/badge/Min_SDK-API_23-orange?style=flat-square)](#)
+    [![Build](https://img.shields.io/github/actions/workflow/status/Musheer360/SwiftSlate/build.yml?branch=master&style=flat-square&label=CI)](https://github.com/Musheer360/SwiftSlate/actions/workflows/build.yml)
+    
+    <br>
+    
+    [<img src="https://img.shields.io/badge/⬇_Download_APK-282828?style=for-the-badge" alt="Download APK" height="36">](https://github.com/Musheer360/SwiftSlate/releases/latest)
+    &nbsp;&nbsp;
+    [<img src="https://img.shields.io/badge/🐛_Report_Bug-282828?style=for-the-badge" alt="Report Bug" height="36">](https://github.com/Musheer360/SwiftSlate/issues)
+    &nbsp;&nbsp;
+    [<img src="https://img.shields.io/badge/💡_Request_Feature-282828?style=for-the-badge" alt="Request Feature" height="36">](https://github.com/Musheer360/SwiftSlate/issues)
+    
+    <br>
+    
+    </div>
+    
+    > [!NOTE]
+    > **SwiftSlate works in most apps** — WhatsApp, Gmail, Twitter/X, Messages, Notes, and more. No copy-pasting. No app switching. Just type and go. Some apps with custom input fields may not be supported ([see limitations](#%EF%B8%8F-known-limitations)).
+    
+    <br>
+    
+    ## 📋 Table of Contents
+    
+    - [Quick Demo](#-quick-demo)
+    - [Features](#-features)
+    - [Built-in Commands](#-built-in-commands)
+    - [Text Replacer Commands](#-text-replacer-commands)
+    - [Supported AI Providers](#-supported-ai-providers)
+    - [Getting Started](#-getting-started)
+    - [How It Works](#%EF%B8%8F-how-it-works)
+    - [Custom Commands](#-custom-commands)
+    - [API Key Management](#-api-key-management)
+    - [Backup & Restore](#-backup--restore)
+    - [App Screens](#-app-screens)
+    - [Screenshots](#-screenshots)
+    - [Localization](#-localization)
+    - [Privacy & Security](#-privacy--security)
+    - [Tech Stack](#%EF%B8%8F-tech-stack)
+    - [Architecture](#-architecture)
+    - [Building from Source](#-building-from-source)
+    - [Contributing](#-contributing)
+    - [Sponsors](#-sponsors)
+    - [Support the Project](#-support-the-project)
+    - [License](#-license)
+    - [Star History](#-star-history)
+    
+    <br>
+    
+    ## ⚡ Quick Demo
+    
+    ```
+    📝  You type       →  "i dont no whats hapening ?fix"
+    ⏳  SwiftSlate      →  ◐ ◓ ◑ ◒  (processing...)
+    ✅  Result         →  "I don't know what's happening."
+    ```
+    
+    ```
+    📝  You type       →  "hey can u send me that file ?formal"
+    ⏳  SwiftSlate      →  ◐ ◓ ◑ ◒  (processing...)
+    ✅  Result         →  "Could you please share the file at your earliest convenience?"
+    ```
+    
+    ```
+    📝  You type       →  "Hello, how are you? ?translate:es"
+    ⏳  SwiftSlate      →  ◐ ◓ ◑ ◒  (processing...)
+    ✅  Result         →  "Hola, ¿cómo estás?"
+    ```
+    
+    <br>
+    
+    ## ✨ Features
+    
+    <table>
+    <tr>
+    <td width="50%">
+    
+    ### 🌐 Works Almost Everywhere
+    Integrates at the system level via Android's Accessibility Service. Works in **most apps** — messaging, email, social media, notes, browsers, and more. Some apps with custom input fields may not be supported ([see limitations](#%EF%B8%8F-known-limitations)).
+    
+    ### ⚡ Instant Inline Replacement
+    Type, trigger, done. The AI response replaces your text directly in the same field — no copy-pasting, no app switching. A spinner (`◐ ◓ ◑ ◒`) shows progress for AI commands; text replacer commands execute instantly.
+    
+    ### 🔑 Multi-Key Rotation
+    Add multiple API keys for automatic round-robin rotation. If one key hits a rate limit, SwiftSlate seamlessly switches to the next.
+    
+    ### 🌙 AMOLED Dark Theme
+    Pure black (`#000000`) Material 3 interface designed for OLED screens — saves battery and looks stunning. Light theme also included.
+    
+    </td>
+    <td width="50%">
+    
+    ### 🤖 Multi-Provider AI
+    Ships with Google Gemini, Groq, or connect **any OpenAI-compatible endpoint** — cloud providers, or **local LLMs** like [Ollama](https://ollama.com), [LM Studio](https://lmstudio.ai), and others running on your network.
+    
+    ### 🛠️ Two Command Types
+    **AI commands** send text to your provider for intelligent transformation. **Text replacer commands** run entirely offline for instant local text manipulation — no API key needed.
+    
+    ### 🔒 Encrypted Key Storage
+    API keys are encrypted with **AES-256-GCM** using the Android Keystore. Your keys never leave your device unencrypted.
+    
+    ### 🌍 Localized in 7 Languages
+    App UI available in English, French, German, Spanish, Portuguese (BR), Hindi, and Simplified Chinese.
+    
+    </td>
+    </tr>
+    </table>
+    
+    <br>
+    
+    ## 🧩 Built-in Commands
+    
+    SwiftSlate ships with **10 AI-powered commands** plus dynamic translation — ready to use out of the box:
+    
+    | Trigger | Action | Example |
+    |:--------|:-------|:--------|
+    | **`?fix`** | Fix grammar, spelling & punctuation | `i dont no whats hapening` → `I don't know what's happening.` |
+    | **`?improve`** | Improve clarity and readability | `The thing is not working good` → `The feature isn't functioning properly.` |
+    | **`?shorten`** | Shorten while keeping meaning | `I wanted to let you know that I will not be able to attend the meeting tomorrow` → `I can't attend tomorrow's meeting.` |
+    | **`?expand`** | Expand with more detail | `Meeting postponed` → `The meeting has been postponed to a later date. We will share the updated schedule soon.` |
+    | **`?formal`** | Rewrite in professional tone | `hey can u send me that file` → `Could you please share the file at your earliest convenience?` |
+    | **`?casual`** | Rewrite in friendly tone | `Please confirm your attendance at the event` → `Hey, you coming to the event? Let me know!` |
+    | **`?emoji`** | Add relevant emojis | `I love this new feature` → `I love this new feature! 🎉❤️✨` |
+    | **`?human`** | Humanize AI-generated text | `I hope this email finds you well. I wanted to delve into...` → `Hope you're doing well. I wanted to dig into...` |
+    | **`?reply`** | Generate a contextual reply | `Do you want to grab lunch tomorrow?` → `Sure, I'd love to! What time works for you?` |
+    | **`?undo`** | Restore text from before the last replacement | Reverts to your original text before AI modified it |
+    | **`?translate:XX`** | Translate to any language | `Hello, how are you?` **`?translate:es`** → `Hola, ¿cómo estás?` |
+    
+    <details>
+    <summary>🌍 <strong>Supported language codes for translation</strong></summary>
+    
+    <br>
+    
+    Use any standard language code with `?translate:XX`:
+    
+    | Code | Language | Code | Language | Code | Language |
+    |:-----|:---------|:-----|:---------|:-----|:---------|
+    | `es` | Spanish | `fr` | French | `de` | German |
+    | `ja` | Japanese | `ko` | Korean | `zh` | Chinese |
+    | `hi` | Hindi | `ar` | Arabic | `pt` | Portuguese |
+    | `it` | Italian | `ru` | Russian | `nl` | Dutch |
+    | `tr` | Turkish | `pl` | Polish | `sv` | Swedish |
+    
+    …and many more. Any ISO 639 language code works — the AI model handles it.
+    
+    </details>
+    
+    <br>
+    
+    ## 🛠️ Text Replacer Commands
+    
+    Beyond AI, you can create **text replacer commands** that run **entirely offline** — no API key, no network, instant execution:
+    
+    | Use Case | Trigger | Replacement | Result |
+    |:---------|:--------|:------------|:-------|
+    | **Signatures** | `?sig` | `— John Doe, CEO` | Appends your signature |
+    | **Canned responses** | `?ty` | `Thank you for reaching out! I'll get back to you shortly.` | Instant reply template |
+    | **Snippets** | `?addr` | `123 Main St, Springfield, IL 62701` | Quick address insertion |
+    | **Shortcuts** | `?email` | `contact@example.com` | Fast email insertion |
+    
+    > [!TIP]
+    > Text replacer commands execute instantly with zero latency — no spinner, no network call. Create them in the **Commands** tab by selecting the **"Text Replacer"** type.
+    
+    <br>
+    
+    ## 🤖 Supported AI Providers
+    
+    | Provider | Models | Notes |
+    |:---------|:-------|:------|
+    | **Google Gemini** (default) | `gemini-2.5-flash-lite`, `gemini-3-flash-preview`, `gemini-3.1-flash-lite-preview` | Free tier available at [aistudio.google.com](https://aistudio.google.com) |
+    | **Groq** | `llama-3.3-70b-versatile`, `llama-3.1-8b-instant`, `openai/gpt-oss-120b`, `openai/gpt-oss-20b`, `meta-llama/llama-4-scout-17b-16e-instruct` | Free tier at [console.groq.com](https://console.groq.com/keys) |
+    | **Custom (OpenAI-compatible)** | Any model your endpoint supports | Works with Ollama, LM Studio, vLLM, any `/v1/chat/completions` endpoint |
+    
+    > [!TIP]
+    > For local LLMs, set the endpoint to your machine's local address (e.g., `http://localhost:11434/v1` for Ollama). HTTP is allowed for `localhost`, `127.0.0.1`, and `10.0.2.2`.
+    
+    <br>
+    
+    ## 🚀 Getting Started
+    
+    ### Prerequisites
+    
+    | Requirement | Details |
+    |:------------|:--------|
+    | **Android Device** | Android 6.0+ (API 23 or higher) |
+    | **API Key** | Free Gemini key at [aistudio.google.com](https://aistudio.google.com), or a key from Groq / any OpenAI-compatible provider. *Not required for text replacer commands.* |
+    
+    ### Installation
+    
+    > [!TIP]
+    > The APK is only ~1.2 MB — lightweight with zero external dependencies for networking or JSON.
+    
+    **1.** Download the latest APK from the [**Releases**](https://github.com/Musheer360/SwiftSlate/releases/latest) page
+    
+    **2.** Install the APK on your device (allow installation from unknown sources if prompted)
+    
+    **3.** Open SwiftSlate and follow the setup below
+    
+    ### Setup in 3 Steps
+    
+    <table>
+    <tr>
+    <td width="33%" align="center">
+    
+    **Step 1**
+    
+    🔑 **Add API Key**
+    
+    Open the **Keys** tab, enter your API key. It's validated before saving. Add multiple keys for rotation.
+    
+    </td>
+    <td width="33%" align="center">
+    
+    **Step 2**
+    
+    ♿ **Enable Service**
+    
+    On the **Dashboard**, tap **"Enable"** → find **"SwiftSlate Assistant"** in Accessibility Settings → toggle it on.
+    
+    </td>
+    <td width="33%" align="center">
+    
+    **Step 3**
+    
+    ✍️ **Start Typing!**
+    
+    Open any app, type your text, add a trigger like `?fix` at the end, and watch the magic happen.
+    
+    </td>
+    </tr>
+    </table>
+    
+    <br>
+    
+    ## ⚙️ How It Works
+    
+    ```mermaid
+    flowchart TD
+        A["📝 You type: 'Hello wrld, how r u ?fix'"] --> B{"🔍 Accessibility Service\ndetects trigger"}
+        B -- "Text Replacer" --> C["⚡ Instant local replacement\n(no network call)"]
+        B -- "AI Command" --> D["🔑 Selects next API key\n(round-robin)"]
+        D --> E["🤖 Sends text + prompt\nto AI provider"]
+        E --> F["⏳ Shows inline spinner\n◐ ◓ ◑ ◒"]
+        F --> G["✅ Replaces text in-place"]
+        C --> G
+    
+        style A fill:#1a1a2e,stroke:#e94560,color:#fff
+        style B fill:#1a1a2e,stroke:#0f3460,color:#fff
+        style C fill:#1a1a2e,stroke:#00b894,color:#fff
+        style D fill:#1a1a2e,stroke:#0f3460,color:#fff
+        style E fill:#1a1a2e,stroke:#0f3460,color:#fff
+        style F fill:#1a1a2e,stroke:#e94560,color:#fff
+        style G fill:#16213e,stroke:#00b894,color:#fff
+    ```
+    
+    <details>
+    <summary>🔧 <strong>Technical deep-dive</strong></summary>
+    
+    <br>
+    
+    1. **Event Listening** — SwiftSlate registers an Accessibility Service that listens for `TYPE_VIEW_TEXT_CHANGED` events across all apps (ignoring its own UI and password fields)
+    2. **Fast Exit Optimization** — For performance, it first checks if the last character of typed text matches any known trigger's last character before doing a full scan
+    3. **Longest Match** — When a potential match is found, it searches for the longest matching trigger at the end of the text
+    4. **Command Routing** — Text replacer commands execute immediately on-device. AI commands proceed to the API call path
+    5. **API Call** — The text + prompt is sent to the configured AI provider using the next available key in the round-robin rotation
+    6. **Inline Spinner** — While waiting for the AI response, a spinner animation (`◐ ◓ ◑ ◒`) replaces the text to provide visual feedback
+    7. **Watchdog Timer** — A 120-second safety timer auto-cancels stuck processing jobs to prevent the service from becoming unresponsive
+    8. **Text Replacement** — The response replaces the original text using `ACTION_SET_TEXT`
+    9. **Fallback Strategy** — If `ACTION_SET_TEXT` fails (some apps don't support it), SwiftSlate falls back to a clipboard-based select-all + paste approach
+    10. **Post-Replace Verification** — A delayed check ensures the IME didn't clobber the replacement, re-applying if needed
+    11. **Bounded Responses** — API responses are capped at 1 MB to prevent memory issues from malformed responses
+    
+    </details>
+    
+    <br>
+    
+    ## 🎨 Custom Commands
+    
+    Create, edit, and manage your own commands in the **Commands** tab.
+    
+    ### Two Types of Custom Commands
+    
+    | Type | How It Works | Needs API Key? | Latency |
+    |:-----|:-------------|:---------------|:--------|
+    | **AI** | Sends text to your AI provider with your custom prompt | Yes | ~1–3 seconds |
+    | **Text Replacer** | Replaces the trigger with a fixed string, entirely offline | No | Instant |
+    
+    ### Example AI Command Ideas
+    
+    | Trigger | Prompt | Use Case |
+    |:--------|:-------|:---------|
+    | `?eli5` | `Explain this like I'm five years old.` | Simplify complex topics |
+    | `?bullet` | `Convert this text into bullet points.` | Quick formatting |
+    | `?headline` | `Rewrite this as a catchy headline.` | Social media posts |
+    | `?code` | `Convert this description into pseudocode.` | Developer shorthand |
+    | `?tldr` | `Summarize this text in one sentence.` | Quick summaries |
+    
+    > [!TIP]
+    > Just describe the transformation you want — SwiftSlate's system instruction automatically ensures the AI returns only the transformed text without extra commentary.
+    
+    <br>
+    
+    ## 🔑 API Key Management
+    
+    SwiftSlate supports multiple API keys with intelligent rotation:
+    
+    | Feature | Details |
+    |:--------|:--------|
+    | **Round-Robin Rotation** | Keys are used in turn to spread usage evenly across all configured keys |
+    | **Rate-Limit Handling** | If a key gets rate-limited (HTTP 429), SwiftSlate tracks the cooldown and skips it automatically |
+    | **Invalid Key Detection** | Keys returning 401/403 errors are marked invalid and excluded from rotation |
+    | **Encrypted Storage** | All keys encrypted with AES-256-GCM via Android Keystore before being saved locally |
+    | **Live Validation** | Keys are validated against the provider's API before being saved |
+    
+    > [!TIP]
+    > Adding **2–3 API keys from different accounts** helps avoid rate limits during heavy use. On the free tier, all keys under the same account share a single quota — so rotation only helps with keys from separate accounts.
+    
+    <br>
+    
+    ## 💾 Backup & Restore
+    
+    Export and import your custom commands as JSON files — useful for migrating to a new device or sharing command sets.
+    
+    - **Export** — Saves all custom commands to a `.json` file via Android's file picker
+    - **Import** — Loads commands from a `.json` file (validates format, trigger prefix, and size limits before importing)
+    
+    Find both options in the **Settings** tab under **Backup & Restore**.
+    
+    > [!NOTE]
+    > Imported commands must use the same trigger prefix currently configured in the app. API keys are **not** included in backups for security.
+    
+    <br>
+    
+    ## 🖥️ App Screens
+    
+    SwiftSlate has **four screens** accessible via the bottom navigation bar:
+    
+    <table>
+    <tr>
+    <td width="25%" valign="top">
+    
+    #### 📊 Dashboard
+    - Service status indicator (green/red)
+    - Enable/disable toggle
+    - API key count
+    - Quick-start guide
+    - Version info & update check
+    
+    </td>
+    <td width="25%" valign="top">
+    
+    #### 🔑 Keys
+    - Add new keys (validated live)
+    - Delete existing keys
+    - AES-256-GCM encryption
+    - Multi-key management
+    - Direct link to get API keys
+    
+    </td>
+    <td width="25%" valign="top">
+    
+    #### 📝 Commands
+    - 10 built-in commands (read-only)
+    - Add custom commands (AI or Text Replacer)
+    - Edit existing custom commands
+    - Delete custom commands
+    
+    </td>
+    <td width="25%" valign="top">
+    
+    #### ⚙️ Settings
+    - **Provider selection** (Gemini, Groq, Custom)
+    - **Model picker** per provider
+    - Custom endpoint URL & model
+    - Trigger prefix customization
+    - Backup & restore commands
+    
+    </td>
+    </tr>
+    </table>
+    
+    <br>
+    
+    ## 📸 Screenshots
+    
+    <div align="center">
+    
+    **Dark Mode**
+    
+    <table>
+    <tr>
+    <td><img src="screenshots/dashboard.png" width="280" alt="Dashboard — Dark" /></td>
+    <td><img src="screenshots/keys.png" width="280" alt="API Keys — Dark" /></td>
+    </tr>
+    <tr>
+    <td><img src="screenshots/commands.png" width="280" alt="Commands — Dark" /></td>
+    <td><img src="screenshots/settings.png" width="280" alt="Settings — Dark" /></td>
+    </tr>
+    </table>
+    
+    **Light Mode**
+    
+    <table>
+    <tr>
+    <td><img src="screenshots/dashboard_light.png" width="280" alt="Dashboard — Light" /></td>
+    <td><img src="screenshots/keys_light.png" width="280" alt="API Keys — Light" /></td>
+    </tr>
+    <tr>
+    <td><img src="screenshots/commands_light.png" width="280" alt="Commands — Light" /></td>
+    <td><img src="screenshots/settings_light.png" width="280" alt="Settings — Light" /></td>
+    </tr>
+    </table>
+    
+    </div>
+    
+    <br>
+    
+    ## 🌍 Localization
+    
+    SwiftSlate's UI is available in **7 languages**:
+    
+    | Language | Code |
+    |:---------|:-----|
+    | 🇺🇸 English | `en` |
+    | 🇫🇷 French | `fr` |
+    | 🇩🇪 German | `de` |
+    | 🇪🇸 Spanish | `es` |
+    | 🇧🇷 Portuguese (Brazil) | `pt-rBR` |
+    | 🇮🇳 Hindi | `hi` |
+    | 🇨🇳 Simplified Chinese | `zh-rCN` |
+    
+    The app automatically uses your device's language. Contributions for additional translations are welcome!
+    
+    <br>
+    
+    ## 🔒 Privacy & Security
+    
+    > [!NOTE]
+    > SwiftSlate is built with privacy as a **core architectural principle**, not an afterthought.
+    
+    | | Concern | How SwiftSlate Handles It |
+    |:--|:--------|:------------------------|
+    | 👁️ | **Text Monitoring** | Only processes text when a trigger command is detected at the end. All other typing is completely ignored. Password fields are always skipped. |
+    | 📡 | **Data Transmission** | Text is sent **only** to the configured AI provider (Google Gemini, Groq, or your custom endpoint). No other servers are ever contacted. Text replacer commands never leave your device. |
+    | 🔐 | **Key Storage** | API keys are encrypted with AES-256-GCM using the Android Keystore system. Encryption failures throw rather than falling back to plaintext. |
+    | 📊 | **Analytics** | **None.** Zero telemetry, zero tracking, zero crash reporting. |
+    | 📖 | **Open Source** | The entire codebase is open for inspection under the MIT License. |
+    | 🔑 | **Permissions** | Only requires the Accessibility Service permission — nothing else. |
+    | 💾 | **Backups** | API keys and settings are excluded from Android cloud backups and device transfers. |
+    
+    <br>
+    
+    ## 🏗️ Tech Stack
+    
+    <table>
+    <tr><td><strong>Language</strong></td><td>Kotlin 2.1</td></tr>
+    <tr><td><strong>UI</strong></td><td>Jetpack Compose · Material 3</td></tr>
+    <tr><td><strong>Async</strong></td><td>Kotlin Coroutines</td></tr>
+    <tr><td><strong>HTTP</strong></td><td><code>HttpURLConnection</code> (zero external dependencies)</td></tr>
+    <tr><td><strong>JSON</strong></td><td><code>org.json</code> (Android built-in)</td></tr>
+    <tr><td><strong>Storage</strong></td><td>SharedPreferences (encrypted via Android Keystore)</td></tr>
+    <tr><td><strong>Core Service</strong></td><td>Android Accessibility Service</td></tr>
+    <tr><td><strong>Build System</strong></td><td>Gradle with Kotlin DSL</td></tr>
+    <tr><td><strong>Java Target</strong></td><td>JDK 17</td></tr>
+    <tr><td><strong>Min SDK</strong></td><td>API 23 (Android 6.0)</td></tr>
+    <tr><td><strong>Target SDK</strong></td><td>API 36</td></tr>
+    </table>
+    
+    > **Zero third-party dependencies** for networking or JSON parsing — SwiftSlate uses only Android's built-in APIs.
+    
+    <br>
+    
+    ## 🏛️ Architecture
+    
+    ```
+    com.musheer360.swiftslate/
+    ├── service/
+    │   └── AssistantService.kt      # Core accessibility service — event listening,
+    │                                 # trigger detection, text replacement, inline spinner
+    ├── api/
+    │   ├── GeminiClient.kt          # Google Gemini API client
+    │   ├── OpenAICompatibleClient.kt # Unified client for Groq + any OpenAI-compatible endpoint
+    │   └── ApiClientUtils.kt        # Shared utilities — response parsing, error handling,
+    │                                 # structured output extraction, system prompt
+    ├── manager/
+    │   ├── KeyManager.kt            # AES-256-GCM encrypted key storage, round-robin rotation,
+    │   │                            # rate-limit tracking, invalid key detection
+    │   └── CommandManager.kt        # Command CRUD, trigger matching (longest-match),
+    │                                # prefix migration, import/export
+    ├── model/
+    │   ├── Command.kt               # Command data class (AI or Text Replacer)
+    │   └── ProviderType.kt          # Provider constants (gemini, groq, custom)
+    ├── ui/
+    │   ├── DashboardScreen.kt       # Service status, key count, quick-start guide
+    │   ├── KeysScreen.kt            # API key management with live validation
+    │   ├── CommandsScreen.kt        # Command list, add/edit/delete with collapsible form
+    │   ├── SettingsScreen.kt        # Provider, model, prefix, backup/restore
+    │   ├── components/              # Reusable UI components (cards, text fields, dividers)
+    │   └── theme/Theme.kt           # AMOLED dark + light Material 3 color schemes
+    ├── MainActivity.kt              # AnimatedContent tab navigation (4 tabs)
+    ├── SwiftSlateViewModel.kt       # Shared ViewModel exposing managers + prefs
+    └── SwiftSlateApp.kt             # Application class — SharedPreferences pre-warming
+    ```
+    
+    <br>
+    
+    ## 🔨 Building from Source
+    
+    ### Prerequisites
+    
+    - [**Android Studio**](https://developer.android.com/studio) (latest stable)
+    - **JDK 17+**
+    - **Android SDK** with API level 36
+    
+    ### Build
+    
+    ```bash
+    # Clone the repository
+    git clone https://github.com/Musheer360/SwiftSlate.git
+    cd SwiftSlate
+    
+    # Build debug APK
+    ./gradlew assembleDebug
+    
+    # Output: app/build/outputs/apk/debug/app-debug.apk
+    ```
+    
+    ### Install on device
+    
+    ```bash
+    adb install app/build/outputs/apk/debug/app-debug.apk
+    ```
+    
+    <details>
+    <summary>📦 <strong>Signed release build</strong></summary>
+    
+    <br>
+    
+    ```bash
+    export KEYSTORE_FILE=/path/to/your/keystore.jks
+    export KEYSTORE_PASSWORD=your_keystore_password
+    export KEY_ALIAS=your_key_alias
+    export KEY_PASSWORD=your_key_password
+    
+    ./gradlew assembleRelease
+    ```
+    
+    </details>
+    
+    <br>
+    
+    ## ⚠️ Known Limitations
+    
+    - **Some apps use custom input fields** that don't support Android's standard text replacement APIs. SwiftSlate includes a clipboard-based fallback, but apps like **WeChat** and **Chrome's address bar** may still not work. Most standard text fields (messaging apps, email composers, notes, etc.) work fine.
+    - **Some OEMs restrict accessibility services.** Certain manufacturers (e.g., OnePlus, Xiaomi) may hide or block third-party accessibility services in their settings UI. If SwiftSlate doesn't appear in your accessibility settings, check for a "Downloaded apps" or "Installed services" section, or try searching for it.
+    
+    <br>
+    
+    ## 🤝 Contributing
+    
+    Contributions are welcome! Here's how to get involved:
+    
+    ```bash
+    # 1. Fork the repository, then:
+    git clone https://github.com/YOUR_USERNAME/SwiftSlate.git
+    cd SwiftSlate
+    
+    # 2. Create a feature branch
+    git checkout -b feature/amazing-feature
+    
+    # 3. Make your changes and commit
+    git commit -m "Add amazing feature"
+    
+    # 4. Push and open a Pull Request
+    git push origin feature/amazing-feature
+    ```
+    
+    ### Ideas for Contributions
+    
+    - 🧩 New built-in commands
+    - 🤖 Additional AI provider integrations
+    - 🎨 UI improvements and new themes
+    - 🌍 Translations for more languages
+    - 📖 Documentation improvements
+    
+    <br>
+    
+    ## 💜 Sponsors
+    
+    SwiftSlate is made possible by the generous support of its sponsors. Thank you!
+    
+    <table>
+    <tr>
+    <td align="center">
+    <a href="https://github.com/lifearien">
+    <img src="https://github.com/lifearien.png" width="80" alt="lifearien" /><br>
+    <strong>@lifearien</strong>
+    </a>
+    </td>
+    </tr>
+    </table>
+    
+    Want to see your name here? [**Become a sponsor →**](https://github.com/sponsors/Musheer360)
+    
+    <br>
+    
+    ## ❤️ Support the Project
+    
+    SwiftSlate is free, open source, and built in my spare time. If it's useful to you, consider supporting its development:
+    
+    - ⭐ **Star this repo** — it helps others discover SwiftSlate
+    - 💖 [**Sponsor on GitHub**](https://github.com/sponsors/Musheer360) — even a small contribution keeps the project going
+    
+    <br>
+    
+    ## 📄 License
+    
+    This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+    
+    <br>
+    
+    ## 📈 Star History
+    
+    <div align="center">
+    
+    <a href="https://star-history.com/#Musheer360/SwiftSlate&Date">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Musheer360/SwiftSlate&type=Date&theme=dark" />
+        <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Musheer360/SwiftSlate&type=Date" />
+        <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Musheer360/SwiftSlate&type=Date" width="600" />
+      </picture>
+    </a>
+    
+    </div>
+    
+    <br>
+    
+    ---
+    
+    <div align="center">
+    
+    <br>
+    
+    Made with ❤️ by [**Musheer Alam**](https://github.com/Musheer360)
+    
+    If SwiftSlate makes your typing life easier, consider giving it a ⭐
+    
+    <br>
+    
+    </div>
+    
+
+- name: "PixelPlayer"
+  url: "https://github.com/theovilardo/PixelPlayer"
+  id: "com.theveloper.pixelplay"
+  author: "theovilardo"
+  description: |
+    privacy-first Android music player built with Material 3 Expressive. Play offline, sync lyrics, fine-tune with equalizer presets, and cast to your devices.
+  readme: |
+    # PixelPlayer 🎵
+    
+    <p align="center">
+      <img src="assets/icon.png" alt="App Icon" width="128"/>
+    </p>
+    
+    <p align="center">
+      <strong>A beautiful, feature-rich music player for Android</strong><br>
+      Built with Jetpack Compose and Material Design 3
+    </p>
+    
+    <p align="center">
+      <img src="assets/screenshot1.jpg" alt="Screenshot 1" width="200" style="border-radius:26px;"/>
+      <img src="assets/screenshot2.jpg" alt="Screenshot 2" width="200" style="border-radius:26px;"/>
+      <img src="assets/screenshot3.jpg" alt="Screenshot 3" width="200" style="border-radius:26px;"/>
+      <img src="assets/screenshot4.jpg" alt="Screenshot 4" width="200" style="border-radius:26px;"/>
+    </p>
+    
+    <p align="center">
+        <a href="https://github.com/theovilardo/PixelPlayer/releases/latest">
+            <img src="https://img.shields.io/github/v/release/theovilardo/PixelPlayer?include_prereleases&logo=github&style=for-the-badge&label=Latest%20Release" alt="Latest Release">
+        </a>
+        <a href="https://github.com/theovilardo/PixelPlayer/releases">
+            <img src="https://img.shields.io/github/downloads/theovilardo/PixelPlayer/total?logo=github&style=for-the-badge" alt="Total Downloads">
+        </a>
+        <img src="https://img.shields.io/badge/Android-10%2B-green?style=for-the-badge&logo=android" alt="Android 11+">
+        <img src="https://img.shields.io/badge/Kotlin-100%25-purple?style=for-the-badge&logo=kotlin" alt="Kotlin">
+    </p>
+    
+    ---
+    
+    ## ‼️ DISCLAIMER
+    - No fork of this project will recieve support, if you use a fork, ask the forker to support you.
+    
+    ---
+    
+    ## ✨ Features
+    
+    ### 🎨 Modern UI/UX
+    - **Material You** - Dynamic color theming that adapts to your wallpaper
+    - **Smooth Animations** - Fluid transitions and micro-interactions
+    - **Customizable UI** - Adjustable corner radius and navigation bar settings
+    - **Dark/Light Theme** - Automatic or manual theme switching
+    - **Album Art Colors** - Dynamic color extraction from album artwork
+    
+    ### 🎵 Powerful Playback
+    - **Media3 ExoPlayer** - Industry-leading audio engine with FFmpeg support
+    - **Background Playback** - Full media session integration
+    - **Queue Management** - Drag-and-drop reordering
+    - **Shuffle & Repeat** - All playback modes supported
+    - **Gapless Playback** - Seamless transitions between tracks
+    - **Custom Transitions** - Configure crossfades between songs
+    
+    ### 📚 Library Management
+    - **Multi-format Support** - MP3, FLAC, AAC, OGG, WAV, and more
+    - **Browse By** - Songs, Albums, Artists, Genres, Folders
+    - **Smart Artist Parsing** - Configurable delimiters for multi-artist tracks
+    - **Album Artist Grouping** - Proper album organization
+    - **Folder Filtering** - Choose which directories to scan
+    
+    ### 🔍 Discovery & Organization
+    - **Full-text Search** - Search across your entire library
+    - **Daily Mix** - AI-powered personalized playlist based on listening habits
+    - **Playlists** - Create and manage custom playlists
+    - **Statistics** - Track your listening history and habits
+    
+    ### 🎤 Lyrics
+    - **Synchronized Lyrics** - LRC format via LRCLIB API
+    - **Lyrics Editing** - Modify or add lyrics to your tracks
+    - **Scrolling Display** - Follow along as you listen
+    
+    ### 🖼️ Artist Artwork
+    - **Deezer Integration** - Automatic artist images from Deezer API
+    - **Smart Caching** - Memory (LRU) + database caching for offline access
+    - **Fallback Icons** - Beautiful placeholders when images unavailable
+    
+    ### 📲 Connectivity
+    - **Chromecast** - Stream to your TV or smart speakers
+    - **Android Auto** - Full Android Auto support for in-car playback (Soon)
+    - **Widgets** - Home screen control with Glance widgets
+    
+    ### ⚙️ Advanced Features
+    - **Tag Editor** - Edit metadata with TagLib (MP3, FLAC, M4A support)
+    - **AI Playlists** - Generate playlists with AI (Supports Gemini, Deepseek, OpenAI, etc.)
+    
+    ---
+    
+    ## 🛠️ Tech Stack
+    
+    | Category | Technology |
+    |----------|------------|
+    | **Language** | [Kotlin](https://kotlinlang.org/) 100% |
+    | **UI Framework** | [Jetpack Compose](https://developer.android.com/jetpack/compose) |
+    | **Design System** | [Material Design 3](https://m3.material.io/) |
+    | **Audio Engine** | [Media3 ExoPlayer](https://developer.android.com/guide/topics/media/media3) + FFmpeg |
+    | **Architecture** | MVVM with StateFlow/SharedFlow |
+    | **DI** | [Hilt](https://dagger.dev/hilt/) |
+    | **Database** | [Room](https://developer.android.com/training/data-storage/room) |
+    | **Networking** | [Retrofit](https://square.github.io/retrofit/) + OkHttp |
+    | **Image Loading** | [Coil](https://coil-kt.github.io/coil/) |
+    | **Async** | Kotlin Coroutines & Flow |
+    | **Background Tasks** | WorkManager |
+    | **Metadata** | [TagLib](https://github.com/nicholaus/taglib-android) |
+    | **Widgets** | [Glance](https://developer.android.com/jetpack/compose/glance) |
+    
+    ---
+    
+    ## 📱 Requirements
+    
+    - **Android 11** (API 30) or higher
+    - **6GB RAM** recommended for smooth performance
+    
+    ---
+    
+    ## 🚀 Getting Started
+    
+    ### Prerequisites
+    
+    - Android Studio Ladybug | 2024.2.1 or newer
+    - Android SDK 29+
+    - JDK 11+
+    
+    ### Installation
+    
+    1. **Clone the repository**
+       ```sh
+       git clone https://github.com/theovilardo/PixelPlayer.git
+       ```
+    
+    2. **Open in Android Studio**
+       - Open Android Studio
+       - Select "Open an Existing Project"
+       - Navigate to the cloned directory
+    
+    3. **Sync and Build**
+       - Wait for Gradle to sync dependencies
+       - Build the project (Build → Make Project)
+    
+    4. **Run**
+       - Connect a device or start an emulator
+       - Click Run (▶️)
+    
+    ---
+    
+    ## ⬇️ Download
+    
+    <p align="center">
+      <a href="https://github.com/theovilardo/PixelPlayer/releases/latest">
+        <img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" alt="Get it on GitHub" height="60">
+      </a>
+    </p>
+    
+    <p align="center">
+      <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://app/%7B%22id%22%3A%22com.theveloper.pixelplay%22%2C%22url%22%3A%22https%3A%2F%2Fgithub.com%2Ftheovilardo%2FPixelPlayer%22%2C%22author%22%3A%22theovilardo%22%2C%22name%22%3A%22PixelPlayer%22%2C%22supportFixedAPKURL%22%3Afalse%7D">
+        <img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="50">
+      </a>
+    </p>
+    
+    ---
+    
+    ## 📂 Project Structure
+    
+    ```
+    app/src/main/java/com/theveloper/pixelplay/
+    ├── data/
+    │   ├── database/       # Room entities, DAOs, migrations
+    │   ├── model/          # Domain models (Song, Album, Artist, etc.)
+    │   ├── network/        # API services (LRCLIB, Deezer)
+    │   ├── preferences/    # DataStore preferences
+    │   ├── repository/     # Data repositories
+    │   ├── service/        # MusicService, HTTP server
+    │   └── worker/         # WorkManager sync workers
+    ├── di/                 # Hilt dependency injection modules
+    ├── presentation/
+    │   ├── components/     # Reusable Compose components
+    │   ├── navigation/     # Navigation graph
+    │   ├── screens/        # Screen composables
+    │   └── viewmodel/      # ViewModels
+    ├── ui/
+    │   ├── glancewidget/   # Home screen widgets
+    │   └── theme/          # Colors, typography, theming
+    └── utils/              # Extensions and utilities
+    ```
+    
+    ---
+    
+    ## 🤝 Contributing
+    
+    Contributions are welcome! Please feel free to submit a Pull Request.
+    
+    1. Fork the Project
+    2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+    3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+    4. Push to the Branch (`git push origin feature/AmazingFeature`)
+    5. Open a Pull Request
+    
+    ---
+    
+    ## 📄 License
+    
+    This project is licensed under a Proprietary License - see the [LICENSE](LICENSE) file for details.
+    
+    ---
+    
+    <p align="center">
+      Made with ❤️ by <a href="https://github.com/theovilardo">theovilardo</a>
+    </p>
+    
+
