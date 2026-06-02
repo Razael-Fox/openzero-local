@@ -1,73 +1,77 @@
 # I'm f#cked up with relying on paid API cloud services. They're really holding my project back f#ck them.
 
-Ini adalah **OpenZero Local Version**—sebuah bot Discord mandiri yang dirancang untuk dijalankan sepenuhnya secara lokal pada perangkat Anda sendiri (seperti PC, Server Rumah, atau Termux di Android). Proyek ini **100% bebas dari ketergantungan API cloud berbayar** (seperti hosting berbayar atau API eksternal yang membatasi penggunaan). Semua data, logging, dan pemrosesan berjalan sepenuhnya di bawah kendali Anda sendiri tanpa biaya langganan tambahan.
+🌐 **Languages:** [English](README.md) | [Bahasa Indonesia](README_ID.md)
 
 ---
 
-## Fitur Utama Bot
-
-1.  **Slash Commands Terintegrasi**: Menggunakan format perintah modern (`/ping` dan `/hello`) langsung dari antarmuka Discord.
-2.  **Layout Embed Premium (Components V2)**: Tampilan informasi bot menggunakan layout modern baru dari Discord (bukan embed lama yang monoton) lengkap dengan tombol interaktif (seperti tombol refresh latency 🔄) yang tertanam langsung di dalam kotak informasi.
-3.  **Logger Konsol & File**: Mencatat setiap aktivitas chat dan eksekusi perintah bot di konsol dengan indikator status Unicode berwarna, serta menyimpannya otomatis ke file log lokal (`logs/`).
-4.  **Auto Status Kehadiran**: Bot secara otomatis menampilkan status bermain game (default: *Playing GTA 6*) saat aktif.
-5.  **Script Admin Peraturan (Rules)**: Perintah cepat bagi pemilik bot untuk mengirim atau mengedit pesan peraturan komunitas yang rapi dan minim emoji di channel server tertentu.
+This is the **OpenZero Local Version**—a self-contained, standalone Discord bot designed to run entirely on your own local machine (such as a PC, Home Server, or Termux on Android). This project is **100% free of paid cloud API dependencies** (meaning no paid hosting or restrictive API limits). All data, logging, and processing run fully under your own control with zero subscription costs.
 
 ---
 
-## Panduan Cara Menggunakan Bot
+## Key Features
 
-Ikuti langkah-langkah di bawah ini untuk menyiapkan, mengundang, dan menjalankan bot Anda di Discord.
+1.  **Pure Slash Commands**: Interacts cleanly using the modern Discord slash command interface (`/ping` and `/hello`).
+2.  **Premium V2 Layouts**: Renders response boxes using Discord's new Message Components V2 system (`ContainerBuilder`, `TextDisplayBuilder`, etc.) with interactive buttons (such as the refresh latency button 🔄) embedded directly inside the container frame.
+3.  **Local Logging**: Tracks chat activities and command executions locally in the console using Chalk colors and Winston log files (`logs/`).
+4.  **Bot Status/Activity**: Automatically sets status activities (e.g., *Playing GTA 6*) on startup.
+5.  **Rules Deployment**: Easily post or edit clean, formatted server rules using a simple command line utility.
 
-### Langkah 1: Persiapan Awal
-Sebelum menggunakan bot, pastikan perangkat Anda sudah terinstal **Node.js** (versi 18 ke atas) dan Anda memiliki akun Discord dengan **Developer Mode** aktif.
+---
 
-### Langkah 2: Dapatkan Token Bot & Client ID
-1.  Buka [Discord Developer Portal](https://discord.com/developers/applications).
-2.  Klik tombol **New Application** di pojok kanan atas, beri nama bot Anda, lalu buat.
-3.  Pergi ke menu **Bot** (di menu sebelah kiri), klik **Reset Token**, lalu salin token yang muncul. Ini adalah `DISCORD_TOKEN` Anda.
-4.  Di halaman yang sama, scroll ke bawah ke bagian **Privileged Gateway Intents**, lalu aktifkan **Message Content Intent** (diperlukan agar bot dapat membaca aktivitas chat untuk logger). Klik **Save Changes**.
-5.  Pergi ke menu **General Information** (di menu sebelah kiri), lalu salin **Application ID** yang tertera. Ini adalah `CLIENT_ID` Anda.
+## How to Use the Bot
 
-### Langkah 3: Mengundang Bot ke Server Discord Anda
-1.  Masih di Discord Developer Portal, pergi ke menu **OAuth2** -> **URL Generator**.
-2.  Di kolom **Scopes**, centang kotak **`bot`** dan **`applications.commands`**.
-3.  Di bawahnya, pada bagian **Bot Permissions**, centang izin dasar berikut:
+Follow these steps to configure, invite, and run your local bot.
+
+### Step 1: Prerequisites
+Ensure you have **Node.js** installed on your system (v18 or higher) and a Discord account with **Developer Mode** enabled.
+
+### Step 2: Get Bot Token & Client ID
+1.  Open the [Discord Developer Portal](https://discord.com/developers/applications).
+2.  Click **New Application** in the top-right corner, name your bot, and create it.
+3.  Navigate to the **Bot** tab on the left menu, click **Reset Token**, and copy the token. This is your `DISCORD_TOKEN`.
+4.  Scroll down to the **Privileged Gateway Intents** section, enable **Message Content Intent** (required for chat logging), and click **Save Changes**.
+5.  Navigate to the **General Information** tab, and copy the **Application ID**. This is your `CLIENT_ID`.
+
+### Step 3: Invite the Bot to Your Server
+1.  In the Developer Portal, go to **OAuth2** -> **URL Generator** on the left menu.
+2.  Under **Scopes**, select the **`bot`** and **`applications.commands`** checkboxes.
+3.  Under **Bot Permissions**, select the following basic permissions:
     *   `Send Messages`
     *   `Read Message History`
     *   `Use Slash Commands`
-4.  Salin link yang digenerate di bagian paling bawah halaman, buka link tersebut di tab browser baru, lalu pilih server Anda untuk mengundang bot masuk.
+4.  Copy the URL generated at the bottom of the page, open it in a new browser tab, and authorize the bot for your server.
 
-### Langkah 4: Dapatkan Server/Guild ID (Opsional tapi Direkomendasikan)
-Agar perintah slash bot (`/ping` dan `/hello`) langsung muncul **seketika** di server Anda tanpa perlu menunggu propagasi global Discord (yang bisa memakan waktu hingga 1 jam):
-1.  Di aplikasi Discord Anda, buka **User Settings** -> **Advanced**, lalu aktifkan **Developer Mode**.
-2.  Klik kanan pada ikon Server Discord Anda di daftar server sebelah kiri, lalu klik **Copy Server ID**. Ini adalah `GUILD_ID` Anda.
+### Step 4: Get Your Server Guild ID (Recommended)
+To make your bot's slash commands appear **instantly** in your test server without waiting for Discord's global propagation (which takes up to 1 hour):
+1.  In Discord, go to **User Settings** -> **Advanced** and enable **Developer Mode**.
+2.  Right-click your Server icon on the left navigation bar and click **Copy Server ID**. This is your `GUILD_ID`.
 
-### Langkah 5: Konfigurasi File Lingkungan (.env)
-1.  Buka folder bot ini di komputer/perangkat Anda.
-2.  Duplikat file `.env.example` dan ubah namanya menjadi `.env`.
-3.  Buka file `.env` tersebut menggunakan teks editor pilihan Anda dan isi nilainya dengan data yang sudah disalin di langkah sebelumnya:
+### Step 5: Configure the Environment File (.env)
+1.  Open the bot project folder.
+2.  Copy `.env.example` and rename the copy to `.env`.
+3.  Open the `.env` file and fill in the values:
     ```env
-    DISCORD_TOKEN=MASUKKAN_TOKEN_BOT_ANDA_DI_SINI
-    CLIENT_ID=MASUKKAN_APPLICATION_ID_BOT_ANDA_DI_SINI
-    GUILD_ID=MASUKKAN_SERVER_ID_ANDA_DI_SINI
+    DISCORD_TOKEN=YOUR_COPIED_BOT_TOKEN
+    CLIENT_ID=YOUR_COPIED_CLIENT_ID
+    GUILD_ID=YOUR_COPIED_SERVER_ID
     ```
 
-### Langkah 6: Mengaktifkan & Menjalankan Bot
-1.  Buka terminal atau command prompt, masuk ke folder tempat bot ini berada.
-2.  Instal pustaka-pustaka pendukung bot dengan mengetik:
-    ```bash
-    npm install
-    ```
-3.  Nyalakan bot dengan mengetik perintah berikut:
-    ```bash
-    npm start
-    ```
-    *(Gunakan `npm run dev` jika Anda ingin bot otomatis me-restart sendiri apabila ada perubahan konfigurasi).*
-4.  Setelah terminal memunculkan log `[Client] Login berhasil!`, bot Anda resmi online!
+### Step 6: Activate & Start the Bot
+1.  Open a terminal in the bot's directory.
+2.  Install the dependencies:
+     ```bash
+     npm install
+     ```
+3.  Start the bot:
+     ```bash
+     npm start
+     ```
+     *(Use `npm run dev` to automatically restart the bot whenever configurations are updated).*
+4.  When you see `[Client] Login berhasil!` in the console, the bot is online!
 
-### Langkah 7: Berinteraksi dengan Bot
-*   Masuk ke server Discord Anda dan ketik perintah `/ping` atau `/hello` di chatbox. Bot akan membalas dengan embed modern.
-*   Jika Anda ingin memposting pesan Peraturan Server resmi ke channel rules yang telah ditentukan, buka terminal baru di folder bot dan jalankan:
+### Step 7: Interact with the Bot
+*   Go to your Discord server and type `/ping` or `/hello`.
+*   To publish or update rules in your rules channel, run the script from the terminal:
     ```bash
     npm run send-rules
     ```
