@@ -1,48 +1,73 @@
-# OpenZero
+# I'm f#cked up with relying on paid API cloud services. They're really holding my project back f#ck them.
 
-<p align="center">
-  <img src="./assets/openzero_full.png" width="600" alt="OpenZero Logo">
-</p>
-
-OpenZero is a modular research and development assistant Discord bot. It is designed to combine advanced AI reasoning with Open Data sources to provide a powerful tool for researchers, developers, and server administrators.
-
-## Status
-
-**Bot aktif sepenuhnya dengan integrasi Delema API.**
-
-## Technology Stack
-
-- **Runtime:** Node.js v18+ (ES Modules)
-- **Framework:** Discord.js v14
-- **Backend API:** Flask (Python) for intensive data fetching.
-- **Database:** MongoDB (for persistent tickets and settings).
-- **AI Integration:** Multi-provider rotation (Gemini, Llama, Qwen, etc.).
-- **Localization:** Custom i18n system integrated with **Crowdin**.
-
-## Installation
-
-1. Clone the repository.
-2. Create a `.env` file based on `.env.example`.
-3. Fill in the required tokens:
-   - `DISCORD_TOKEN`, `CLIENT_ID`, `GITHUB_TOKEN`
-   - `GEMINI_API_KEY`, `GROQ_API_KEY`, `OPENROUTER_API_KEY`
-   - `MONGODB_URI`
-   - `API_URL`
-   - `APP_MODE` (`production` or `dev`)
-4. Install dependencies:
-   ```bash
-   npm install
-   ```
-5. Clear existing Slash Commands (Recommended):
-   ```bash
-   npm run deploy
-   ```
-
-## Railway Deployment
-
-OpenZero is designed for easy deployment on **Railway**.
-- **Worker Process:** The `Procfile` is configured to run the bot as a background worker.
-- **Environment Variables:** Ensure all keys from `.env.example` are added to your Railway project settings.
+Ini adalah **OpenZero Local Version**—sebuah bot Discord mandiri yang dirancang untuk dijalankan sepenuhnya secara lokal pada perangkat Anda sendiri (seperti PC, Server Rumah, atau Termux di Android). Proyek ini **100% bebas dari ketergantungan API cloud berbayar** (seperti hosting berbayar atau API eksternal yang membatasi penggunaan). Semua data, logging, dan pemrosesan berjalan sepenuhnya di bawah kendali Anda sendiri tanpa biaya langganan tambahan.
 
 ---
-*Help us translate OpenZero at [Crowdin](https://crowdin.com/project/openzero)*
+
+## Fitur Utama Bot
+
+1.  **Slash Commands Terintegrasi**: Menggunakan format perintah modern (`/ping` dan `/hello`) langsung dari antarmuka Discord.
+2.  **Layout Embed Premium (Components V2)**: Tampilan informasi bot menggunakan layout modern baru dari Discord (bukan embed lama yang monoton) lengkap dengan tombol interaktif (seperti tombol refresh latency 🔄) yang tertanam langsung di dalam kotak informasi.
+3.  **Logger Konsol & File**: Mencatat setiap aktivitas chat dan eksekusi perintah bot di konsol dengan indikator status Unicode berwarna, serta menyimpannya otomatis ke file log lokal (`logs/`).
+4.  **Auto Status Kehadiran**: Bot secara otomatis menampilkan status bermain game (default: *Playing GTA 6*) saat aktif.
+5.  **Script Admin Peraturan (Rules)**: Perintah cepat bagi pemilik bot untuk mengirim atau mengedit pesan peraturan komunitas yang rapi dan minim emoji di channel server tertentu.
+
+---
+
+## Panduan Cara Menggunakan Bot
+
+Ikuti langkah-langkah di bawah ini untuk menyiapkan, mengundang, dan menjalankan bot Anda di Discord.
+
+### Langkah 1: Persiapan Awal
+Sebelum menggunakan bot, pastikan perangkat Anda sudah terinstal **Node.js** (versi 18 ke atas) dan Anda memiliki akun Discord dengan **Developer Mode** aktif.
+
+### Langkah 2: Dapatkan Token Bot & Client ID
+1.  Buka [Discord Developer Portal](https://discord.com/developers/applications).
+2.  Klik tombol **New Application** di pojok kanan atas, beri nama bot Anda, lalu buat.
+3.  Pergi ke menu **Bot** (di menu sebelah kiri), klik **Reset Token**, lalu salin token yang muncul. Ini adalah `DISCORD_TOKEN` Anda.
+4.  Di halaman yang sama, scroll ke bawah ke bagian **Privileged Gateway Intents**, lalu aktifkan **Message Content Intent** (diperlukan agar bot dapat membaca aktivitas chat untuk logger). Klik **Save Changes**.
+5.  Pergi ke menu **General Information** (di menu sebelah kiri), lalu salin **Application ID** yang tertera. Ini adalah `CLIENT_ID` Anda.
+
+### Langkah 3: Mengundang Bot ke Server Discord Anda
+1.  Masih di Discord Developer Portal, pergi ke menu **OAuth2** -> **URL Generator**.
+2.  Di kolom **Scopes**, centang kotak **`bot`** dan **`applications.commands`**.
+3.  Di bawahnya, pada bagian **Bot Permissions**, centang izin dasar berikut:
+    *   `Send Messages`
+    *   `Read Message History`
+    *   `Use Slash Commands`
+4.  Salin link yang digenerate di bagian paling bawah halaman, buka link tersebut di tab browser baru, lalu pilih server Anda untuk mengundang bot masuk.
+
+### Langkah 4: Dapatkan Server/Guild ID (Opsional tapi Direkomendasikan)
+Agar perintah slash bot (`/ping` dan `/hello`) langsung muncul **seketika** di server Anda tanpa perlu menunggu propagasi global Discord (yang bisa memakan waktu hingga 1 jam):
+1.  Di aplikasi Discord Anda, buka **User Settings** -> **Advanced**, lalu aktifkan **Developer Mode**.
+2.  Klik kanan pada ikon Server Discord Anda di daftar server sebelah kiri, lalu klik **Copy Server ID**. Ini adalah `GUILD_ID` Anda.
+
+### Langkah 5: Konfigurasi File Lingkungan (.env)
+1.  Buka folder bot ini di komputer/perangkat Anda.
+2.  Duplikat file `.env.example` dan ubah namanya menjadi `.env`.
+3.  Buka file `.env` tersebut menggunakan teks editor pilihan Anda dan isi nilainya dengan data yang sudah disalin di langkah sebelumnya:
+    ```env
+    DISCORD_TOKEN=MASUKKAN_TOKEN_BOT_ANDA_DI_SINI
+    CLIENT_ID=MASUKKAN_APPLICATION_ID_BOT_ANDA_DI_SINI
+    GUILD_ID=MASUKKAN_SERVER_ID_ANDA_DI_SINI
+    ```
+
+### Langkah 6: Mengaktifkan & Menjalankan Bot
+1.  Buka terminal atau command prompt, masuk ke folder tempat bot ini berada.
+2.  Instal pustaka-pustaka pendukung bot dengan mengetik:
+    ```bash
+    npm install
+    ```
+3.  Nyalakan bot dengan mengetik perintah berikut:
+    ```bash
+    npm start
+    ```
+    *(Gunakan `npm run dev` jika Anda ingin bot otomatis me-restart sendiri apabila ada perubahan konfigurasi).*
+4.  Setelah terminal memunculkan log `[Client] Login berhasil!`, bot Anda resmi online!
+
+### Langkah 7: Berinteraksi dengan Bot
+*   Masuk ke server Discord Anda dan ketik perintah `/ping` atau `/hello` di chatbox. Bot akan membalas dengan embed modern.
+*   Jika Anda ingin memposting pesan Peraturan Server resmi ke channel rules yang telah ditentukan, buka terminal baru di folder bot dan jalankan:
+    ```bash
+    npm run send-rules
+    ```

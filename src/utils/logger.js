@@ -1,85 +1,64 @@
-const LogLevel = {
-    INFO: 'INFO',
-    WARN: 'WARN',
-    ERROR: 'ERROR',
-    DEBUG: 'DEBUG',
+import winston from 'winston';
+import chalk from 'chalk';
+
+const { combine, timestamp, printf } = winston.format;
+
+// Peta simbol Unicode untuk setiap tingkat log agar terlihat profesional
+const levelSymbols = {
+  info: 'ℹ 🧭',
+  warn: '⚠ ⚡',
+  error: '✖ 🔥',
+  debug: '⚙ 🛠'
 };
 
-const Colors = {
-    Reset: '\x1b[0m',
-    Bright: '\x1b[1m',
-    Dim: '\x1b[2m',
-    Underscore: '\x1b[4m',
-    Blink: '\x1b[5m',
-    Reverse: '\x1b[7m',
-    Hidden: '\x1b[8m',
+// Format log kustom untuk console dengan simbol dan warna menggunakan Chalk
+const consoleFormat = printf(({ level, message, timestamp }) => {
+  const rawLevel = level.toLowerCase().trim();
+  const symbol = levelSymbols[rawLevel] || '📝';
 
-    FgBlack: '\x1b[30m',
-    FgRed: '\x1b[31m',
-    FgGreen: '\x1b[32m',
-    FgYellow: '\x1b[33m',
-    FgBlue: '\x1b[34m',
-    FgMagenta: '\x1b[35m',
-    FgCyan: '\x1b[36m',
-    FgWhite: '\x1b[37m',
-    FgGray: '\x1b[90m',
+  let coloredLevel = level.toUpperCase();
+  if (rawLevel === 'info') {
+    coloredLevel = chalk.cyan(coloredLevel);
+  } else if (rawLevel === 'warn') {
+    coloredLevel = chalk.yellow(coloredLevel);
+  } else if (rawLevel === 'error') {
+    coloredLevel = chalk.red(coloredLevel);
+  } else if (rawLevel === 'debug') {
+    coloredLevel = chalk.blue(coloredLevel);
+  }
 
-    BgBlack: '\x1b[40m',
-    BgRed: '\x1b[41m',
-    BgGreen: '\x1b[42m',
-    BgYellow: '\x1b[43m',
-    BgBlue: '\x1b[44m',
-    BgMagenta: '\x1b[45m',
-    BgCyan: '\x1b[46m',
-    BgWhite: '\x1b[47m',
-};
+  const grayTimestamp = chalk.gray(`[${timestamp}]`);
+  return `${grayTimestamp} [${symbol} ${coloredLevel}]: ${message}`;
+});
 
-class Logger {
-    static formatMessage(level, message) {
-        const timestamp = new Date().toISOString();
-        let color = Colors.FgWhite;
+// Konfigurasi logger
+const logger = winston.createLogger({
+  level: 'info',
+  format: combine(
+    timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.errors({ stack: true }),
+    winston.format.json()
+  ),
+  transports: [
+    // Menyimpan log error ke file
+    new winston.transports.File({ 
+      filename: 'logs/error.log', 
+      level: 'error',
+      format: timestamp({ format: 'YYYY-MM-DD HH:mm:ss' })
+    }),
+    // Menyimpan seluruh log ke file
+    new winston.transports.File({ 
+      filename: 'logs/combined.log',
+      format: timestamp({ format: 'YYYY-MM-DD HH:mm:ss' })
+    }),
+    // Menampilkan log di console dengan warna Chalk
+    new winston.transports.Console({
+      format: combine(
+        timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        consoleFormat
+      )
+    })
+  ]
+});
 
-        switch (level) {
-            case LogLevel.INFO:
-                color = Colors.FgGreen;
-                break;
-            case LogLevel.WARN:
-                color = Colors.FgYellow;
-                break;
-            case LogLevel.ERROR:
-                color = Colors.FgRed;
-                break;
-            case LogLevel.DEBUG:
-                color = Colors.FgMagenta;
-                break;
-        }
-
-        const coloredTimestamp = `${Colors.FgGray}[${timestamp}]${Colors.Reset}`;
-        const coloredLevel = `${color}${Colors.Bright}[${level}]${Colors.Reset}`;
-
-        return `${coloredTimestamp} ${coloredLevel} ${message}`;
-    }
-
-    static info(message) {
-        console.log(this.formatMessage(LogLevel.INFO, message));
-    }
-
-    static warn(message) {
-        console.warn(this.formatMessage(LogLevel.WARN, message));
-    }
-
-    static error(message, err = null) {
-        console.error(this.formatMessage(LogLevel.ERROR, message));
-        if (err) {
-            console.error(err);
-        }
-    }
-
-    static debug(message) {
-        if (process.env.DEBUG === 'true') {
-            console.debug(this.formatMessage(LogLevel.DEBUG, message));
-        }
-    }
-}
-
-export default Logger;
+export default logger;

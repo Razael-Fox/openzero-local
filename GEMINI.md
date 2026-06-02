@@ -1,51 +1,80 @@
-# OpenZero Project Context
+# OpenZero Discord Bot: Gemini Developer Guide
 
-OpenZero is a modular research assistant Discord bot designed to connect users with Open Data sources. It utilizes a hybrid architecture combining a Node.js-based Discord client and a Python Flask API for specialized data fetching.
+Selamat datang di dokumentasi pengenalan proyek **OpenZero Discord Bot**. Dokumentasi ini dirancang khusus untuk memberikan pemahaman cepat bagi developer maupun model kecerdasan buatan seperti **Google Gemini** mengenai struktur, arsitektur, dan teknologi yang digunakan di dalam proyek ini.
 
-## Project Overview
+## Deskripsi Proyek
 
-- **Discord Bot (Node.js):** Built with `discord.js v14`. It handles user interactions via a hybrid command system (supporting both Slash Commands and legacy Prefix commands).
-- **Backend API (Flask):** A Python service that performs intensive data retrieval from sources like arXiv, Wikipedia, GitHub, and Open Library.
-- **AI Integration:** Implements a robust fallback system using Google (Gemini), Groq (Llama/Mixtral), and OpenRouter (various models). Models are centrally configured in `src/config.js`.
-- **Localization:** A per-guild i18n system (`src/utils/i18n.js`) backed by MongoDB, supporting 31 languages.
+Proyek ini adalah bot Discord dasar yang sangat modular, dibangun dengan **Node.js** dan menggunakan library **discord.js v14 (terbaru)**. Proyek ini mengadopsi arsitektur berbasis handler dinamis untuk mengelola perintah (*Slash Commands*) dan aktivitas (*Events*), serta mengintegrasikan logger kustom berwarna berbasis `winston` dan `chalk`.
 
-## Architecture
+Bot ini juga menjadi percontohan awal dalam penerapan **Discord Message Components V2** (layout modern baru dari Discord API) menggunakan wrapper kustom **`V2Embed`**.
 
-- **`src/index.js`:** Entry point. Initializes the Discord client, handles events, and routes interactions to the appropriate command handler.
-- **`src/commands/`:** Modular command handlers. Each file exports a command object with a `data` (SlashCommandBuilder) and an `execute` method that supports both Message and Interaction contexts.
-- **`src/deploy-commands.js`:** Utility script to register slash commands with Discord.
+---
 
-...
+## Arsitektur Sistem
 
-## Building and Running
+Bot ini terbagi menjadi empat komponen utama (Handlers):
 
-### Node.js Bot
-- **Deploy Commands:** `npm run deploy` (Must be run before slash commands appear in Discord)
-- **Run Bot:** `npm start`
-- **Development Mode:** `npm run dev`
-...
-- **Modular Commands:** When adding a new command, ensure it exports a `data` property and its `execute` method is fully localized using the `await t()` function.
-...
-### Flask API
-- **Setup:** `pip install -r flask_api/requirements.txt`
-- **Run API:** `python flask_api/app.py` (Defaults to port 8080)
+### 1. Log Handler (`src/utils/logger.js`)
+Menggunakan gabungan library `winston` dan `chalk` untuk menghasilkan pencatatan log berwarna yang rapi dengan timestamp abu-abu di terminal, sekaligus menyimpan salinan log ke file `logs/combined.log` (semua aktivitas) dan `logs/error.log` (hanya log tingkat kesalahan).
 
-### Environment Variables (.env)
-The bot requires several keys to function correctly:
-- `DISCORD_TOKEN`: Discord Bot Token.
-- `GITHUB_TOKEN`: GitHub Personal Access Token.
-- `GEMINI_API_KEY`: Google AI Key.
-- `GROQ_API_KEY`: Groq API Key.
-- `OPENROUTER_API_KEY`: OpenRouter API Key.
-- `API_URL`: URL of the running Flask API (Defaults to `http://localhost:8080`).
+### 2. Event Handler (`src/handlers/eventHandler.js`)
+Membaca seluruh file JavaScript di dalam direktori `src/events/` secara otomatis pada startup dan mendaftarkannya ke dalam client Discord listener (`client.on` atau `client.once` berdasarkan properti `once: true/false`).
 
-## Development Conventions
+### 3. Command Handler (`src/handlers/commandHandler.js`)
+Membaca subfolder di dalam `src/commands/` secara dinamis, memuat slash commands ke koleksi client, dan mendaftarkannya ke Discord API. 
+*   **Guild Instant Deployment**: Jika variabel `GUILD_ID` pada berkas `.env` diisi, pendaftaran command akan dilakukan secara **instan** langsung ke server tersebut (sangat direkomendasikan untuk masa development).
+*   **Global Fallback**: Jika dikosongkan, pendaftaran beralih secara global (memakan waktu hingga 1 jam).
 
-- **Modular Commands:** When adding a new command, ensure it is fully localized using the `t()` function from `src/utils/i18n.js`.
-- **AI Fallback:** Use the functions in `src/API/ai_manager.js` to leverage the multi-provider AI system.
-- **Localization:** 
-    - The community manages translations via **Crowdin**.
-    - The master template is `src/locales/en-US.json`.
-    - Translations are exported to `/src/locales/%locale%.json`.
-- **Logging:** Use the colorized `Logger` utility in `src/utils/logger.js` for all console output.
-- **File Watching:** Do not add files to the root directory that trigger `nodemon` restarts unless they are added to `nodemon.json`'s ignore list.
+### 4. Message Handler (`src/events/messageCreate.js`)
+Berfungsi murni sebagai pengawas chat (*chat logs observer*) demi memantau aktivitas server. Penanganan perintah (*commands*) telah sepenuhnya dipindahkan ke Slash Commands murni agar lebih aman dan terstruktur.
+
+---
+
+## Integrasi Discord Components V2 & `V2Embed`
+
+Discord memperkenalkan **Message Components V2** (`ContainerBuilder`, `TextDisplayBuilder`, dll.) untuk menggantikan legacy embeds. Kami membuat utilitas **`src/utils/v2Embed.js`** sebagai kelas pembantu dengan antarmuka fluida (*fluent API*) mirip `EmbedBuilder` tradisional.
+
+### Contoh Pembuatan Embed & Button V2:
+```javascript
+import { V2Embed } from './utils/v2Embed.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } from 'discord.js';
+
+const buttonRow = new ActionRowBuilder().addComponents(
+  new ButtonBuilder().setCustomId('btn_ok').setLabel('Setuju').setStyle(ButtonStyle.Success)
+);
+
+const embed = new V2Embed()
+  .setTitle('Informasi Penting')
+  .setDescription('Silakan klik tombol di bawah untuk menyetujui.')
+  .setColor(0xffd700) // Default warna emas
+  .addActionRow(buttonRow) // Tombol disematkan di dalam kontainer embed
+  .build();
+
+// Kirim dengan flag IsComponentsV2
+await interaction.reply({
+  components: [embed],
+  flags: MessageFlags.IsComponentsV2
+});
+```
+
+---
+
+## Cara Menjalankan Proyek
+
+1. Pasang dependensi proyek:
+   ```bash
+   npm install
+   ```
+2. Salin `.env.example` menjadi `.env` dan lengkapi kredensial Discord Anda:
+   ```env
+   DISCORD_TOKEN=TokenBotAnda
+   CLIENT_ID=IDBotAnda
+   GUILD_ID=IDServerAnda
+   ```
+3. Posting atau edit Peraturan Server (Rules) ke channel spesifik:
+   ```bash
+   npm run send-rules
+   ```
+4. Jalankan bot utama:
+   * **Produksi**: `npm start`
+   * **Development** (hot-reload otomatis): `npm run dev`
