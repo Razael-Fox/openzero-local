@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenZero Bot Documentation</title>
+    <meta name="description" content="Dokumentasi resmi dan panduan penggunaan OpenZero Discord Bot secara lokal. Kelola role, permission, webhook, dan template dengan mudah.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="logo-icon"><i class="fa-solid fa-circle-nodes"></i></span>
+                    <span class="logo-text">Open<span>Zero</span></span>
+                </div>
+                <div class="badge">LOCAL v1.0</div>
+            </div>
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="doc-search" placeholder="Cari panduan..." autocomplete="off">
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Memulai</div>
+                    <a href="#pengenalan" class="nav-link active" id="link-pengenalan"><i class="fa-solid fa-book-open"></i> Pengenalan</a>
+                    <a href="#instalasi" class="nav-link" id="link-instalasi"><i class="fa-solid fa-download"></i> Instalasi & Setup</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Panduan Fitur</div>
+                    <a href="#role-manager" class="nav-link" id="link-role-manager"><i class="fa-solid fa-user-shield"></i> Manajemen Role</a>
+                    <a href="#webhook-manager" class="nav-link" id="link-webhook-manager"><i class="fa-solid fa-link"></i> Manajemen Webhook</a>
+                    <a href="#server-rules" class="nav-link" id="link-server-rules"><i class="fa-solid fa-gavel"></i> Broadcast Peraturan</a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Alat Interaktif</div>
+                    <a href="#permission-calc" class="nav-link" id="link-permission-calc"><i class="fa-solid fa-calculator"></i> Kalkulator Permission</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content-area">
+            <!-- Header/Top Bar -->
+            <header class="content-header">
+                <div class="breadcrumb">
+                    <span class="parent">Dokumentasi</span>
+                    <span class="separator"><i class="fa-solid fa-chevron-right"></i></span>
+                    <span class="child" id="current-breadcrumb">Pengenalan</span>
+                </div>
+                <div class="header-actions">
+                    <a href="https://github.com/Razael-Labs/openzero-local" target="_blank" class="btn btn-github">
+                        <i class="fa-brands fa-github"></i> GitHub Repository
+                    </a>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content-body">
+                
+                <!-- Section: Pengenalan -->
+                <section id="pengenalan" class="doc-section active-section">
+                    <div class="hero-section">
+                        <h1>Bot Discord Mandiri & <br><span class="gradient-text">100% Bebas Biaya Cloud</span></h1>
+                        <p class="hero-desc">OpenZero adalah bot Discord lokal berkinerja tinggi yang dirancang untuk berjalan langsung di PC, Home Server, atau Termux Android Anda dengan performa maksimal dan privasi penuh.</p>
+                        
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+                                <h3>Slash Commands V2</h3>
+                                <p>Antarmuka modern menggunakan Discord Components V2 untuk response box yang indah dan responsif.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="card-icon"><i class="fa-solid fa-lock"></i></div>
+                                <h3>Privasi Penuh</h3>
+                                <p>Semua data konfigurasi, token, dan aktivitas chat disimpan lokal di perangkat Anda.</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="card-icon"><i class="fa-solid fa-server"></i></div>
+                                <h3>Tanpa Cloud API</h3>
+                                <p>Bebas dari limit API eksternal berbayar dan langganan hosting bulanan yang mahal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Instalasi & Setup -->
+                <section id="instalasi" class="doc-section">
+                    <h2 class="section-title">Instalasi & Pengaturan</h2>
+                    <p class="section-subtitle">Ikuti langkah mudah berikut untuk menjalankan OpenZero di perangkat lokal Anda.</p>
+
+                    <div class="steps-container">
+                        <div class="step-item">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h3>Persiapan Lingkungan</h3>
+                                <p>Pastikan perangkat Anda sudah terinstal <a href="https://nodejs.org/" target="_blank">Node.js (v18 ke atas)</a> dan Anda memiliki akun Discord dengan Developer Mode aktif.</p>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h3>Klon Proyek & Instal Dependensi</h3>
+                                <p>Klon repositori ini ke penyimpanan lokal Anda, lalu masuk ke folder proyek dan instal dependensi.</p>
+                                <div class="code-block-wrapper">
+                                    <div class="code-header">
+                                        <span>Terminal</span>
+                                        <button class="btn-copy" onclick="copyText('code-clone')"><i class="fa-regular fa-copy"></i> Salin</button>
+                                    </div>
+                                    <pre><code id="code-clone">git clone https://github.com/Razael-Labs/openzero-local.git
+cd openzero-local
+npm install</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h3>Konfigurasi Token Bot & Server</h3>
+                                <p>Duplikat file <code>.env.example</code> menjadi <code>.env</code> di root folder, kemudian isi variabel lingkungan berikut:</p>
+                                <div class="code-block-wrapper">
+                                    <div class="code-header">
+                                        <span>.env</span>
+                                        <button class="btn-copy" onclick="copyText('code-env')"><i class="fa-regular fa-copy"></i> Salin</button>
+                                    </div>
+                                    <pre><code id="code-env">DISCORD_TOKEN=YOUR_BOT_TOKEN_HERE
+CLIENT_ID=YOUR_BOT_APPLICATION_ID_HERE
+GUILD_ID=YOUR_SERVER_GUILD_ID_HERE</code></pre>
+                                </div>
+                                <div class="alert alert-info">
+                                    <i class="fa-solid fa-circle-info alert-icon"></i>
+                                    <div>
+                                        <strong>Tips:</strong> Aktifkan <strong>Message Content Intent</strong> di Discord Developer Portal agar bot dapat membaca pesan untuk sistem logger lokal.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="step-item">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h3>Jalankan Bot</h3>
+                                <p>Jalankan bot dalam mode pengembangan (dev) untuk auto-reload saat file diedit, atau mode produksi.</p>
+                                <div class="code-block-wrapper">
+                                    <div class="code-header">
+                                        <span>Terminal</span>
+                                        <button class="btn-copy" onclick="copyText('code-start')"><i class="fa-regular fa-copy"></i> Salin</button>
+                                    </div>
+                                    <pre><code id="code-start"># Mode Development (Direkomendasikan saat dev)
+npm run dev
+
+# Mode Produksi
+npm start</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Manajemen Role -->
+                <section id="role-manager" class="doc-section">
+                    <h2 class="section-title">Manajemen Role & Template Izin</h2>
+                    <p class="section-subtitle">Gunakan fitur canggih <code>/role</code> untuk mengelola peran, mengatur hak izin, dan membuat template role khusus dengan proteksi hierarki.</p>
+
+                    <div class="card-info-box">
+                        <h3>Daftar Subcommand <code>/role</code></h3>
+                        
+                        <div class="command-list">
+                            <!-- Command 1 -->
+                            <div class="command-item">
+                                <div class="command-syntax">/role add <span>[user]</span> <span>[role]</span></div>
+                                <div class="command-desc">Memberikan role ke pengguna yang dipilih. Bot akan memverifikasi tingkat hierarki agar role yang diberikan tidak melebihi posisi bot.</div>
+                            </div>
+                            <!-- Command 2 -->
+                            <div class="command-item">
+                                <div class="command-syntax">/role remove <span>[user]</span> <span>[role]</span></div>
+                                <div class="command-desc">Menghapus role dari pengguna yang dipilih dengan proteksi hierarki keamanan.</div>
+                            </div>
+                            <!-- Command 3 -->
+                            <div class="command-item">
+                                <div class="command-syntax">/role id <span>[role]</span></div>
+                                <div class="command-desc">Menampilkan informasi lengkap mengenai role, termasuk ID mentah, nama teks, warna hex, dan nomor posisi hierarki.</div>
+                            </div>
+                            <!-- Command 4 -->
+                            <div class="command-item">
+                                <div class="command-syntax">/role create <span>[name]</span> <span>[template]</span> <span>[color]</span></div>
+                                <div class="command-desc">Membuat role baru dengan memuat preset template izin (<code>owner</code>, <code>admin</code>, <code>mods</code>, <code>member</code>) atau template kustom Anda, serta warna Hex khusus.</div>
+                            </div>
+                            <!-- Command 5 -->
+                            <div class="command-item">
+                                <div class="command-syntax">/role settemplate <span>[role]</span> <span>[template]</span></div>
+                                <div class="command-desc">Reset atau ganti izin role yang sudah ada secara instan berdasarkan template tertentu.</div>
+                            </div>
+                            <!-- Command 6 -->
+                            <div class="command-item">
+                                <div class="command-syntax">/role savetemplate <span>[name]</span> <span>[role]</span></div>
+                                <div class="command-desc">Menyalin izin dari role server yang sudah ada dan menyimpannya sebagai template kustom baru ke dalam database lokal.</div>
+                            </div>
+                            <!-- Command 7 -->
+                            <div class="command-item">
+                                <div class="command-syntax">/role createtemplate <span>[name]</span> <span>[permissions]</span></div>
+                                <div class="command-desc">Membuat template kustom baru langsung dengan mendaftarkan string izin yang dipisahkan oleh koma (contoh: <code>kick,ban,manage_messages</code>).</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-two-cols">
+                        <div class="concept-card">
+                            <h4>4 Preset Template Default</h4>
+                            <ul>
+                                <li><strong>owner</strong>: Memiliki hak akses <code>Administrator</code> penuh.</li>
+                                <li><strong>admin</strong>: Hak moderasi & pengaturan tingkat tinggi seperti kick, ban, kelola pesan, kelola channel, kelola server, mute, deafen, dan move member.</li>
+                                <li><strong>mods</strong>: Hak moderasi harian seperti kick, ban, kelola pesan, mute, deafen, dan memindahkan member.</li>
+                                <li><strong>member</strong>: Hak akses dasar untuk membaca channel, mengirim pesan, menyisipkan link, melampirkan file, dan berbicara di channel suara.</li>
+                            </ul>
+                        </div>
+                        <div class="concept-card">
+                            <h4>Cara Membuat Template Kustom</h4>
+                            <p>Anda dapat membuat template kustom dengan dua cara:</p>
+                            <ol>
+                                <li><strong>Ekspor Role yang Ada:</strong><br><code>/role savetemplate name:moderator_gaming role:@Moderator</code></li>
+                                <li><strong>Definisikan Manual:</strong><br><code>/role createtemplate name:helper permissions:kick,read_history,send_messages</code></li>
+                            </ol>
+                            <p class="tip-text">Gunakan <code>/role listperms</code> untuk melihat semua string izin yang didukung bot.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Manajemen Webhook -->
+                <section id="webhook-manager" class="doc-section">
+                    <h2 class="section-title">Manajemen Webhook</h2>
+                    <p class="section-subtitle">Mudahkan proses integrasi eksternal dengan mengelola Webhook langsung dari Discord menggunakan Slash Command.</p>
+
+                    <div class="webhook-grid">
+                        <div class="command-showcase">
+                            <h3>Membuat Webhook Baru</h3>
+                            <p class="cmd-text"><code>/webhook create title:[Nama Webhook] channel:[Pilih Channel] pfp:[Optional URL Foto Profil]</code></p>
+                            <p>Membuat webhook baru secara cepat pada channel teks, pengumuman, atau suara yang ditunjuk. Fitur ini memerlukan izin <code>ManageWebhooks</code>.</p>
+                            <div class="badge-feature">Modern UI V2 Embed</div>
+                            <p class="desc-small">Saat webhook berhasil dibuat, bot akan membalas dengan embed Components V2 yang menyertakan tombol interaktif <strong>"Salin URL Webhook"</strong>.</p>
+                        </div>
+
+                        <div class="command-showcase">
+                            <h3>Mengecek Informasi Webhook</h3>
+                            <p class="cmd-text"><code>/webhook info id_or_url:[ID atau URL Webhook]</code></p>
+                            <p>Menganalisis dan menampilkan data webhook secara rinci berdasarkan ID webhook atau URL lengkap.</p>
+                            <ul>
+                                <li>Nama Webhook & ID</li>
+                                <li>Target Channel & Server</li>
+                                <li>Pembuat Webhook (User)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section: Broadcast Peraturan -->
+                <section id="server-rules" class="doc-section">
+                    <h2 class="section-title">Sistem Broadcast Peraturan Server</h2>
+                    <p class="section-subtitle">Buat tampilan peraturan server yang rapi, profesional, dan minimalis tanpa banyak emoji menggunakan skrip otomatis.</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-header">
+                            <span>Menjalankan Skrip Aturan</span>
+                            <button class="btn-copy" onclick="copyText('code-rules')"><i class="fa-regular fa-copy"></i> Salin</button>
+                        </div>
+                        <pre><code id="code-rules">npm run send-rules</code></pre>
+                    </div>
+
+                    <div class="info-card-step">
+                        <h4>Cara Kerja & Kustomisasi Skrip:</h4>
+                        <ol>
+                            <li>Buka file skrip pengirim aturan yang berada di <a href="file:///data/data/com.termux/files/home/openzero-local/src/scripts/sendRules.js">src/scripts/sendRules.js</a>.</li>
+                            <li>Sesuaikan isi peraturan, warna embed, dan ID channel target rules pada konstanta di dalam skrip.</li>
+                            <li>Jalankan skrip menggunakan perintah di atas. Skrip akan mengirimkan pesan rules yang terstruktur rapi ke server Anda menggunakan bot.</li>
+                        </ol>
+                    </div>
+                </section>
+
+                <!-- Section: Kalkulator Permission -->
+                <section id="permission-calc" class="doc-section">
+                    <h2 class="section-title">Kalkulator Izin Kustom OpenZero</h2>
+                    <p class="section-subtitle">Pilih izin yang Anda butuhkan di bawah ini untuk menghasilkan string izin yang valid atau bitmask decimal untuk digunakan di perintah <code>/role createtemplate</code>.</p>
+
+                    <div class="calculator-container">
+                        <!-- Permission Checkboxes Grid -->
+                        <div class="calc-panel">
+                            <h3>Pilih Hak Izin</h3>
+                            <div class="checkbox-grid">
+                                <!-- Administrator -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="administrator" data-bit="8">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">administrator</span>
+                                        <span class="perm-desc">Akses administrator penuh (melewati semua izin).</span>
+                                    </div>
+                                </label>
+                                <!-- Manage Server -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="manage_server" data-bit="32">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">manage_server</span>
+                                        <span class="perm-desc">Mengubah nama server, wilayah, dll.</span>
+                                    </div>
+                                </label>
+                                <!-- Manage Roles -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="manage_roles" data-bit="268435456">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">manage_roles</span>
+                                        <span class="perm-desc">Membuat, mengubah, dan menghapus role di bawahnya.</span>
+                                    </div>
+                                </label>
+                                <!-- Manage Channels -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="manage_channels" data-bit="16">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">manage_channels</span>
+                                        <span class="perm-desc">Membuat, mengubah, dan menghapus channel.</span>
+                                    </div>
+                                </label>
+                                <!-- View Audit Log -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="view_audit_log" data-bit="128">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">view_audit_log</span>
+                                        <span class="perm-desc">Melihat log audit perubahan server.</span>
+                                    </div>
+                                </label>
+                                <!-- Kick -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="kick" data-bit="2">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">kick</span>
+                                        <span class="perm-desc">Mengeluarkan anggota dari server.</span>
+                                    </div>
+                                </label>
+                                <!-- Ban -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="ban" data-bit="4">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">ban</span>
+                                        <span class="perm-desc">Memblokir anggota dari server.</span>
+                                    </div>
+                                </label>
+                                <!-- View Channel -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="view_channel" data-bit="1024">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">view_channel</span>
+                                        <span class="perm-desc">Membaca channel teks dan melihat channel suara.</span>
+                                    </div>
+                                </label>
+                                <!-- Send Messages -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="send_messages" data-bit="2048">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">send_messages</span>
+                                        <span class="perm-desc">Mengirimkan pesan di channel teks.</span>
+                                    </div>
+                                </label>
+                                <!-- Embed Links -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="embed_links" data-bit="16384">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">embed_links</span>
+                                        <span class="perm-desc">Menyisipkan link pratinjau konten.</span>
+                                    </div>
+                                </label>
+                                <!-- Attach Files -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="attach_files" data-bit="32768">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">attach_files</span>
+                                        <span class="perm-desc">Mengunggah file atau gambar.</span>
+                                    </div>
+                                </label>
+                                <!-- Read History -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="read_history" data-bit="65536">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">read_history</span>
+                                        <span class="perm-desc">Melihat pesan-pesan terdahulu di channel.</span>
+                                    </div>
+                                </label>
+                                <!-- Manage Messages -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="manage_messages" data-bit="8192">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">manage_messages</span>
+                                        <span class="perm-desc">Menghapus atau menyematkan pesan member lain.</span>
+                                    </div>
+                                </label>
+                                <!-- Connect -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="connect" data-bit="1048576">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">connect</span>
+                                        <span class="perm-desc">Terhubung ke channel suara.</span>
+                                    </div>
+                                </label>
+                                <!-- Speak -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="speak" data-bit="2097152">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">speak</span>
+                                        <span class="perm-desc">Berbicara di channel suara.</span>
+                                    </div>
+                                </label>
+                                <!-- Mute Members -->
+                                <label class="perm-checkbox-card">
+                                    <input type="checkbox" class="perm-calc-cb" value="mute_members" data-bit="4194304">
+                                    <div class="cb-custom"></div>
+                                    <div class="cb-label">
+                                        <span class="perm-name">mute_members</span>
+                                        <span class="perm-desc">Membungkam suara anggota lain di voice channel.</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Results Panel -->
+                        <div class="result-panel">
+                            <h3>Hasil Konfigurasi</h3>
+                            
+                            <div class="preset-selector">
+                                <span>Muat Preset:</span>
+                                <div class="preset-btns">
+                                    <button class="btn btn-sm" onclick="loadPreset('owner')">Owner</button>
+                                    <button class="btn btn-sm" onclick="loadPreset('admin')">Admin</button>
+                                    <button class="btn btn-sm" onclick="loadPreset('mods')">Mods</button>
+                                    <button class="btn btn-sm" onclick="loadPreset('member')">Member</button>
+                                    <button class="btn btn-sm btn-danger" onclick="clearCalculator()">Reset</button>
+                                </div>
+                            </div>
+
+                            <div class="output-group">
+                                <label>1. String Izin (Untuk <code>/role createtemplate</code>)</label>
+                                <div class="output-box">
+                                    <code id="perm-string-output">Pilih izin terlebih dahulu...</code>
+                                    <button class="btn-icon" onclick="copyText('perm-string-output')"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="output-group">
+                                <label>2. Contoh Slash Command Lengkap</label>
+                                <div class="output-box">
+                                    <code id="cmd-example-output">/role createtemplate name:my_custom_role permissions:...</code>
+                                    <button class="btn-icon" onclick="copyText('cmd-example-output')"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div>
+
+                            <div class="output-group">
+                                <label>3. Nilai Bitmask Decimal Total</label>
+                                <div class="output-box">
+                                    <span class="bitmask-num" id="bitmask-decimal-output">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-check-circle"></i> Berhasil disalin!
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
