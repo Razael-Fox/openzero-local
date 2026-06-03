@@ -5,6 +5,119 @@ import {
 } from 'discord.js';
 import { V2Embed } from '../../utils/v2Embed.js';
 import logger from '../../utils/logger.js';
+import fs from 'fs';
+import path from 'path';
+
+// Pastikan direktori data ada dan siapkan path database JSON lokal
+const DATA_DIR = path.resolve('./data');
+const DB_PATH = path.join(DATA_DIR, 'custom_role_templates.json');
+
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// Fungsi helper untuk membaca/menulis database kustom template
+function getCustomTemplates() {
+  if (!fs.existsSync(DB_PATH)) {
+    return {};
+  }
+  try {
+    return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+  } catch (error) {
+    logger.error('[DB Error] Gagal membaca berkas database kustom template:', error);
+    return {};
+  }
+}
+
+function saveCustomTemplates(templates) {
+  try {
+    fs.writeFileSync(DB_PATH, JSON.stringify(templates, null, 2), 'utf8');
+  } catch (error) {
+    logger.error('[DB Error] Gagal menulis berkas database kustom template:', error);
+  }
+}
+
+// Map permission bitmask yang dapat digunakan dalam pembuatan template custom
+const PERMISSION_MAP = {
+  // General Server Permissions
+  'administrator': PermissionFlagsBits.Administrator,
+  'manage_server': PermissionFlagsBits.ManageGuild,
+  'manage_roles': PermissionFlagsBits.ManageRoles,
+  'manage_channels': PermissionFlagsBits.ManageChannels,
+  'view_audit_log': PermissionFlagsBits.ViewAuditLog,
+  
+  // Membership Permissions
+  'kick': PermissionFlagsBits.KickMembers,
+  'ban': PermissionFlagsBits.BanMembers,
+  
+  // Text Channel Permissions
+  'view_channel': PermissionFlagsBits.ViewChannel,
+  'send_messages': PermissionFlagsBits.SendMessages,
+  'embed_links': PermissionFlagsBits.EmbedLinks,
+  'attach_files': PermissionFlagsBits.AttachFiles,
+  'read_history': PermissionFlagsBits.ReadMessageHistory,
+  'manage_messages': PermissionFlagsBits.ManageMessages,
+  
+  // Voice Channel Permissions
+  'connect': PermissionFlagsBits.Connect,
+  'speak': PermissionFlagsBits.Speak,
+  'mute_members': PermissionFlagsBits.MuteMembers,
+  'deafen_members': PermissionFlagsBits.DeafenMembers,
+  'move_members': PermissionFlagsBits.MoveMembers,
+
+  // Application Commands
+  'use_slash': PermissionFlagsBits.UseApplicationCommands
+};
+
+// Preset standard permissions
+const PRESETS = {
+  owner: [PermissionFlagsBits.Administrator],
+  admin: [
+    PermissionFlagsBits.ManageGuild,
+    PermissionFlagsBits.ManageRoles,
+    PermissionFlagsBits.ManageChannels,
+    PermissionFlagsBits.KickMembers,
+    PermissionFlagsBits.BanMembers,
+    PermissionFlagsBits.ViewAuditLog,
+    PermissionFlagsBits.ManageMessages,
+    PermissionFlagsBits.MuteMembers,
+    PermissionFlagsBits.DeafenMembers,
+    PermissionFlagsBits.MoveMembers,
+    PermissionFlagsBits.ViewChannel,
+    PermissionFlagsBits.SendMessages,
+    PermissionFlagsBits.EmbedLinks,
+    PermissionFlagsBits.AttachFiles,
+    PermissionFlagsBits.ReadMessageHistory,
+    PermissionFlagsBits.Connect,
+    PermissionFlagsBits.Speak
+  ],
+  mods: [
+    PermissionFlagsBits.KickMembers,
+    PermissionFlagsBits.BanMembers,
+    PermissionFlagsBits.ViewAuditLog,
+    PermissionFlagsBits.ManageMessages,
+    PermissionFlagsBits.MuteMembers,
+    PermissionFlagsBits.DeafenMembers,
+    PermissionFlagsBits.MoveMembers,
+    PermissionFlagsBits.ViewChannel,
+    PermissionFlagsBits.SendMessages,
+    PermissionFlagsBits.EmbedLinks,
+    PermissionFlagsBits.AttachFiles,
+    PermissionFlagsBits.ReadMessageHistory,
+    PermissionFlagsBits.Connect,
+    PermissionFlagsBits.Speak
+  ],
+  member: [
+    PermissionFlagsBits.ViewChannel,
+    PermissionFlagsBits.SendMessages,
+    PermissionFlagsBits.EmbedLinks,
+    PermissionFlagsBits.AttachFiles,
+    PermissionFlagsBits.ReadMessageHistory,
+    PermissionFlagsBits.Connect,
+    PermissionFlagsBits.Speak,
+    PermissionFlagsBits.UseApplicationCommands
+  ]
+};
 
 export default {
   data: new SlashCommandBuilder()
@@ -74,20 +187,50 @@ export default {
         .addStringOption((option) =>
           option
             .setName('template')
-            .setDescription('Pilih template permission role')
+            .setDescription('Pilih template preset bawaan atau masukkan nama template custom Anda')
             .setRequired(true)
-            .addChoices(
-              { name: 'Owner (Administrator)', value: 'owner' },
-              { name: 'Admin (Manage Server/Roles/Channels)', value: 'admin' },
-              { name: 'Mods (Kick/Ban/Mute/Manage Messages)', value: 'mods' },
-              { name: 'Member (Read/Write/Connect)', value: 'member' }
-            )
         )
         .addStringOption((option) =>
           option
             .setName('color')
             .setDescription('Kode warna HEX untuk role (contoh: #FFD700) (opsional)')
             .setRequired(false)
+        )
+    )
+    // SUBCOMMAND: SETTEMPLATE
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('settemplate')
+        .setDescription('Menetapkan ulang permission role yang ada berdasarkan template.')
+        .addRoleOption((option) =>
+          option
+            .setName('role')
+            .setDescription('Role target yang ingin diubah permission-nya')
+            .setRequired(true)
+        )
+        .addStringOption((option) =>
+          option
+            .setName('template')
+            .setDescription('Pilih nama template preset (owner/admin/mods/member) atau template kustom')
+            .setRequired(true)
+        )
+    )
+    // SUBCOMMAND: SAVETEMPLATE (custom)
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('savetemplate')
+        .setDescription('Menyimpan konfigurasi permission role yang ada saat ini sebagai template kustom baru.')
+        .addStringOption((option) =>
+          option
+            .setName('name')
+            .setDescription('Nama template kustom baru yang ingin disimpan')
+            .setRequired(true)
+        )
+        .addRoleOption((option) =>
+          option
+            .setName('role')
+            .setDescription('Role yang permission-nya ingin dijadikan referensi template kustom')
+            .setRequired(true)
         )
     ),
 
@@ -98,6 +241,7 @@ export default {
     const subcommand = interaction.options.getSubcommand();
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
+    // SUBCOMMAND ID
     if (subcommand === 'id') {
       try {
         const targetRole = interaction.options.getRole('role');
@@ -136,14 +280,152 @@ export default {
       return;
     }
 
+    // SUBCOMMAND SAVETEMPLATE
+    if (subcommand === 'savetemplate') {
+      try {
+        const templateName = interaction.options.getString('name').toLowerCase().trim();
+        const role = interaction.options.getRole('role');
+
+        if (['owner', 'admin', 'mods', 'member'].includes(templateName)) {
+          const embedError = new V2Embed()
+            .setTitle('Gagal Menyimpan Template ❌')
+            .setDescription('Nama template tidak boleh menggunakan nama preset bawaan (`owner`, `admin`, `mods`, `member`).')
+            .setColor(0xff0000)
+            .build();
+
+          return await interaction.editReply({
+            components: [embedError],
+            flags: MessageFlags.IsComponentsV2
+          });
+        }
+
+        // Dapatkan bitmask permissions role saat ini & jadikan array string permission yang aktif
+        const bitfield = role.permissions.bitfield;
+        const customTemplates = getCustomTemplates();
+        
+        customTemplates[templateName] = bitfield.toString(); // Simpan bitfield sebagai string karena JSON tidak mendukung BigInt secara langsung
+        saveCustomTemplates(customTemplates);
+
+        const embedSuccess = new V2Embed()
+          .setTitle('Template Kustom Disimpan! 💾')
+          .setDescription(
+            `Template kustom \`${templateName}\` berhasil dibuat.\n` +
+            `*   **Role Referensi:** ${role}\n` +
+            `*   **Nilai Bitfield:** \`${bitfield}\`\n\n` +
+            `Sekarang Anda dapat menggunakan template ini di `/role create` atau `/role settemplate`!`
+          )
+          .build();
+
+        await interaction.editReply({
+          components: [embedSuccess],
+          flags: MessageFlags.IsComponentsV2
+        });
+
+        logger.info(`[Role Template Saved] ${interaction.user.tag} menyimpan template baru "${templateName}" dari role ${role.name}`);
+      } catch (error) {
+        logger.error('[Role Template Save Error] Gagal menyimpan template kustom:', error);
+
+        const embedError = new V2Embed()
+          .setTitle('Gagal Menyimpan Template ❌')
+          .setDescription(`Terjadi kesalahan saat menyimpan template kustom: \`${error.message}\``)
+          .setColor(0xff0000)
+          .build();
+
+        await interaction.editReply({
+          components: [embedError],
+          flags: MessageFlags.IsComponentsV2
+        });
+      }
+      return;
+    }
+
+    // SUBCOMMAND SETTEMPLATE
+    if (subcommand === 'settemplate') {
+      try {
+        const role = interaction.options.getRole('role');
+        const templateInput = interaction.options.getString('template').toLowerCase().trim();
+
+        // Validasi hierarki role bot
+        const botMember = await interaction.guild.members.fetch(interaction.client.user.id);
+        if (role.position >= botMember.roles.highest.position) {
+          const embedError = new V2Embed()
+            .setTitle('Gagal Mengubah Role ❌')
+            .setDescription(`Tidak dapat mengubah permission untuk role ${role} karena posisi role tersebut sama atau lebih tinggi dari role tertinggi bot ini.`)
+            .setColor(0xff0000)
+            .build();
+
+          return await interaction.editReply({
+            components: [embedError],
+            flags: MessageFlags.IsComponentsV2
+          });
+        }
+
+        // Tentukan set permissions
+        let targetPermissions = null;
+
+        if (PRESETS[templateInput]) {
+          targetPermissions = PRESETS[templateInput];
+        } else {
+          // Cari di database template kustom lokal
+          const customTemplates = getCustomTemplates();
+          if (customTemplates[templateInput]) {
+            targetPermissions = BigInt(customTemplates[templateInput]);
+          }
+        }
+
+        if (targetPermissions === null) {
+          const embedError = new V2Embed()
+            .setTitle('Template Tidak Ditemukan ❌')
+            .setDescription(`Template \`${templateInput}\` tidak ditemukan di preset bawaan maupun template kustom lokal.`)
+            .setColor(0xff0000)
+            .build();
+
+          return await interaction.editReply({
+            components: [embedError],
+            flags: MessageFlags.IsComponentsV2
+          });
+        }
+
+        // Ubah permission role
+        await role.setPermissions(targetPermissions, `Diubah berdasarkan template ${templateInput} oleh ${interaction.user.tag}`);
+
+        const embedSuccess = new V2Embed()
+          .setTitle('Permission Role Diperbarui! 🛡️')
+          .setDescription(`Berhasil menetapkan ulang permission untuk role ${role} berdasarkan template \`${templateInput.toUpperCase()}\`.`)
+          .build();
+
+        await interaction.editReply({
+          components: [embedSuccess],
+          flags: MessageFlags.IsComponentsV2
+        });
+
+        logger.info(`[Role Template Set] Permission untuk role "${role.name}" diubah ke template ${templateInput} oleh ${interaction.user.tag}`);
+      } catch (error) {
+        logger.error('[Role Template Set Error] Gagal mengubah permission role:', error);
+
+        const embedError = new V2Embed()
+          .setTitle('Gagal Mengubah Permission Role ❌')
+          .setDescription(`Terjadi kesalahan saat memperbarui permission role: \`${error.message}\``)
+          .setColor(0xff0000)
+          .build();
+
+        await interaction.editReply({
+          components: [embedError],
+          flags: MessageFlags.IsComponentsV2
+        });
+      }
+      return;
+    }
+
+    // SUBCOMMAND CREATE
     if (subcommand === 'create') {
       try {
         const name = interaction.options.getString('name');
-        const template = interaction.options.getString('template');
+        const templateInput = interaction.options.getString('template').toLowerCase().trim();
         const hexColorInput = interaction.options.getString('color') || null;
 
         // Validasi input warna HEX jika disediakan
-        let roleColor = 0; // Default: tanpa warna kustom (Abu-abu Discord)
+        let roleColor = 0; // Default: tanpa warna kustom
         if (hexColorInput) {
           const hexRegex = /^#?[0-9A-F]{6}$/i;
           if (!hexRegex.test(hexColorInput)) {
@@ -158,74 +440,42 @@ export default {
               flags: MessageFlags.IsComponentsV2
             });
           }
-          // Konversi HEX string ke angka desimal yang diterima discord.js
           const cleanHex = hexColorInput.replace('#', '');
           roleColor = parseInt(cleanHex, 16);
         }
 
-        // Definisi set permissions berdasarkan template
-        let permissions = [];
+        // Dapatkan permission dari template preset atau kustom database
+        let permissions = null;
         let defaultColor = roleColor;
 
-        switch (template) {
-          case 'owner':
-            permissions = [PermissionFlagsBits.Administrator];
-            if (!hexColorInput) defaultColor = 0xe91e63; // Pink kemerahan untuk Owner jika warna kosong
-            break;
-          case 'admin':
-            permissions = [
-              PermissionFlagsBits.ManageGuild,
-              PermissionFlagsBits.ManageRoles,
-              PermissionFlagsBits.ManageChannels,
-              PermissionFlagsBits.KickMembers,
-              PermissionFlagsBits.BanMembers,
-              PermissionFlagsBits.ViewAuditLog,
-              PermissionFlagsBits.ManageMessages,
-              PermissionFlagsBits.MuteMembers,
-              PermissionFlagsBits.DeafenMembers,
-              PermissionFlagsBits.MoveMembers,
-              PermissionFlagsBits.ViewChannel,
-              PermissionFlagsBits.SendMessages,
-              PermissionFlagsBits.EmbedLinks,
-              PermissionFlagsBits.AttachFiles,
-              PermissionFlagsBits.ReadMessageHistory,
-              PermissionFlagsBits.Connect,
-              PermissionFlagsBits.Speak
-            ];
-            if (!hexColorInput) defaultColor = 0x3498db; // Biru untuk Admin jika warna kosong
-            break;
-          case 'mods':
-            permissions = [
-              PermissionFlagsBits.KickMembers,
-              PermissionFlagsBits.BanMembers,
-              PermissionFlagsBits.ViewAuditLog,
-              PermissionFlagsBits.ManageMessages,
-              PermissionFlagsBits.MuteMembers,
-              PermissionFlagsBits.DeafenMembers,
-              PermissionFlagsBits.MoveMembers,
-              PermissionFlagsBits.ViewChannel,
-              PermissionFlagsBits.SendMessages,
-              PermissionFlagsBits.EmbedLinks,
-              PermissionFlagsBits.AttachFiles,
-              PermissionFlagsBits.ReadMessageHistory,
-              PermissionFlagsBits.Connect,
-              PermissionFlagsBits.Speak
-            ];
-            if (!hexColorInput) defaultColor = 0x2ecc71; // Hijau untuk Mods jika warna kosong
-            break;
-          case 'member':
-            permissions = [
-              PermissionFlagsBits.ViewChannel,
-              PermissionFlagsBits.SendMessages,
-              PermissionFlagsBits.EmbedLinks,
-              PermissionFlagsBits.AttachFiles,
-              PermissionFlagsBits.ReadMessageHistory,
-              PermissionFlagsBits.Connect,
-              PermissionFlagsBits.Speak,
-              PermissionFlagsBits.UseApplicationCommands
-            ];
-            if (!hexColorInput) defaultColor = 0x979c9f; // Abu-abu terang untuk Member jika warna kosong
-            break;
+        if (PRESETS[templateInput]) {
+          permissions = PRESETS[templateInput];
+          // Set warna default jika user tidak menentukan
+          if (!hexColorInput) {
+            if (templateInput === 'owner') defaultColor = 0xe91e63;
+            else if (templateInput === 'admin') defaultColor = 0x3498db;
+            else if (templateInput === 'mods') defaultColor = 0x2ecc71;
+            else if (templateInput === 'member') defaultColor = 0x979c9f;
+          }
+        } else {
+          // Cari di database template kustom lokal
+          const customTemplates = getCustomTemplates();
+          if (customTemplates[templateInput]) {
+            permissions = BigInt(customTemplates[templateInput]);
+          }
+        }
+
+        if (permissions === null) {
+          const embedError = new V2Embed()
+            .setTitle('Template Tidak Ditemukan ❌')
+            .setDescription(`Template \`${templateInput}\` tidak ditemukan di preset bawaan maupun template kustom lokal.`)
+            .setColor(0xff0000)
+            .build();
+
+          return await interaction.editReply({
+            components: [embedError],
+            flags: MessageFlags.IsComponentsV2
+          });
         }
 
         // Membuat role baru di server
@@ -233,7 +483,7 @@ export default {
           name: name,
           permissions: permissions,
           color: defaultColor,
-          reason: `Dibuat oleh ${interaction.user.tag} menggunakan subcommand /role create dengan template ${template}.`
+          reason: `Dibuat oleh ${interaction.user.tag} menggunakan subcommand /role create dengan template ${templateInput}.`
         });
 
         const embedSuccess = new V2Embed()
@@ -242,7 +492,7 @@ export default {
             `*   **Nama Role:** ${newRole}\n` +
             `*   **Nama Teks:** \`${newRole.name}\`\n` +
             `*   **ID Role:** \`${newRole.id}\`\n` +
-            `*   **Template Permission:** \`${template.toUpperCase()}\`\n` +
+            `*   **Template Permission:** \`${templateInput.toUpperCase()}\`\n` +
             `*   **Warna Hex:** \`${newRole.hexColor}\``
           )
           .build();
@@ -252,7 +502,7 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Created] Role "${newRole.name}" berhasil dibuat oleh ${interaction.user.tag} dengan template ${template}`);
+        logger.info(`[Role Created] Role "${newRole.name}" berhasil dibuat oleh ${interaction.user.tag} dengan template ${templateInput}`);
       } catch (error) {
         logger.error('[Role Create Error] Gagal membuat role baru:', error);
 
