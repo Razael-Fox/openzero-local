@@ -13,31 +13,31 @@ import logger from '../../utils/logger.js';
 export default {
   data: new SlashCommandBuilder()
     .setName('webhook')
-    .setDescription('Mengelola webhook di server.')
+    .setDescription('Manage webhooks on the server.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageWebhooks)
     .setDMPermission(false)
     // SUBCOMMAND: CREATE
     .addSubcommand((subcommand) =>
       subcommand
         .setName('create')
-        .setDescription('Membuat webhook baru di channel tertentu.')
+        .setDescription('Create a new webhook on a specific channel.')
         .addStringOption((option) =>
           option
             .setName('title')
-            .setDescription('Nama atau title webhook yang ingin dibuat')
+            .setDescription('Name or title of the webhook to create')
             .setRequired(true)
         )
         .addChannelOption((option) =>
           option
             .setName('channel')
-            .setDescription('Channel tempat webhook akan dibuat')
+            .setDescription('Channel where the webhook will be created')
             .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement, ChannelType.GuildVoice)
             .setRequired(true)
         )
         .addStringOption((option) =>
           option
             .setName('pfp')
-            .setDescription('URL gambar profil/avatar untuk webhook (opsional)')
+            .setDescription('Profile picture/Avatar URL for the webhook (optional)')
             .setRequired(false)
         )
     )
@@ -45,11 +45,11 @@ export default {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('info')
-        .setDescription('Melihat informasi atau detail dari webhook berdasarkan ID atau URL.')
+        .setDescription('Inspect details of a webhook by ID or URL.')
         .addStringOption((option) =>
           option
             .setName('id_or_url')
-            .setDescription('Masukkan Webhook ID atau Webhook URL lengkap')
+            .setDescription('Enter Webhook ID or full Webhook URL')
             .setRequired(true)
         )
     ),
@@ -67,11 +67,11 @@ export default {
       const pfp = interaction.options.getString('pfp') || null;
 
       try {
-        // Validasi format URL jika pfp diberikan
+        // Validate avatar URL if provided
         if (pfp && !pfp.startsWith('http://') && !pfp.startsWith('https://')) {
           const embedError = new V2Embed()
-            .setTitle('Gagal Membuat Webhook ❌')
-            .setDescription('URL avatar/pfp yang Anda masukkan tidak valid. Harus dimulai dengan `http://` atau `https://`.')
+            .setTitle('Failed to Create Webhook ❌')
+            .setDescription('The avatar/pfp URL you entered is invalid. It must start with `http://` or `https://`.')
             .setColor(0xff0000)
             .build();
 
@@ -81,28 +81,28 @@ export default {
           });
         }
 
-        // Membuat webhook di channel yang ditentukan
+        // Create the webhook on specified channel
         const webhook = await channel.createWebhook({
           name: title,
           avatar: pfp,
-          reason: `Dibuat oleh ${interaction.user.tag} via slash command.`
+          reason: `Created by ${interaction.user.tag} via slash command.`
         });
 
-        // Tombol aksi interaktif V2 untuk menyalin URL Webhook (menggunakan tombol link)
+        // V2 interactive action button to copy Webhook URL (Link Button)
         const actionRow = new ActionRowBuilder().addComponents(
           new ButtonBuilder()
-            .setLabel('Salin URL Webhook')
+            .setLabel('Copy Webhook URL')
             .setStyle(ButtonStyle.Link)
             .setURL(webhook.url)
             .setEmoji('📋')
         );
 
         const embedSuccess = new V2Embed()
-          .setTitle('Webhook Berhasil Dibuat! 🎉')
+          .setTitle('Webhook Created Successfully! 🎉')
           .setDescription(
-            `*   **Nama Webhook:** \`${webhook.name}\`\n` +
+            `*   **Webhook Name:** \`${webhook.name}\`\n` +
             `*   **Channel:** ${channel}\n` +
-            `*   **ID Webhook:** \`${webhook.id}\`\n` +
+            `*   **Webhook ID:** \`${webhook.id}\`\n` +
             `*   **Token:** \`||${webhook.token}||\``
           )
           .addActionRow(actionRow)
@@ -113,13 +113,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Webhook Created] Webhook "${title}" berhasil dibuat di #${channel.name} oleh ${interaction.user.tag}`);
+        logger.info(`[Webhook Created] Webhook "${title}" successfully created in #${channel.name} by ${interaction.user.tag}`);
       } catch (error) {
-        logger.error('[Webhook Error] Gagal membuat webhook:', error);
+        logger.error('[Webhook Error] Failed to create webhook:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Membuat Webhook ❌')
-          .setDescription(`Terjadi kesalahan saat mencoba membuat webhook: \`${error.message}\``)
+          .setTitle('Failed to Create Webhook ❌')
+          .setDescription(`An error occurred while trying to create the webhook: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -137,7 +137,7 @@ export default {
         let webhookId = idOrUrl;
         let webhookToken = null;
 
-        // Mencoba mengekstrak ID dan Token jika input berupa URL Webhook Discord
+        // Try extracting ID and Token if input is a Discord Webhook URL
         const webhookUrlRegex = /discord\.com\/api\/webhooks\/(\d+)\/([\w-]+)/;
         const match = idOrUrl.match(webhookUrlRegex);
         if (match) {
@@ -145,21 +145,19 @@ export default {
           webhookToken = match[2];
         }
 
-        // Mengambil data Webhook dari server
+        // Fetch Webhook data
         let webhook = null;
         if (webhookToken) {
-          // Mengambil via client menggunakan id & token
           webhook = await interaction.client.fetchWebhook(webhookId, webhookToken);
         } else {
-          // Mencari di guild saat ini berdasarkan Webhook ID
           const webhooks = await interaction.guild.fetchWebhooks();
           webhook = webhooks.get(webhookId);
         }
 
         if (!webhook) {
           const embedNotFound = new V2Embed()
-            .setTitle('Webhook Tidak Ditemukan ❌')
-            .setDescription('Tidak dapat menemukan webhook dengan ID atau URL yang diberikan di server ini.')
+            .setTitle('Webhook Not Found ❌')
+            .setDescription('Could not find a webhook with the provided ID or URL in this server.')
             .setColor(0xff0000)
             .build();
 
@@ -169,25 +167,24 @@ export default {
           });
         }
 
-        // Tombol aksi interaktif V2 untuk menyalin URL Webhook
+        // V2 interactive action button to copy Webhook URL
         const actionRow = new ActionRowBuilder().addComponents(
           new ButtonBuilder()
-            .setLabel('Salin URL Webhook')
+            .setLabel('Copy Webhook URL')
             .setStyle(ButtonStyle.Link)
             .setURL(webhook.url)
             .setEmoji('📋')
         );
 
-        // Mengambil informasi channel target webhook
         const channel = interaction.guild.channels.cache.get(webhook.channelId) || `<#${webhook.channelId}>`;
 
         const embedInfo = new V2Embed()
-          .setTitle('Detail Webhook 🔍')
+          .setTitle('Webhook Details 🔍')
           .setDescription(
-            `*   **Nama Webhook:** \`${webhook.name}\`\n` +
+            `*   **Webhook Name:** \`${webhook.name}\`\n` +
             `*   **Channel:** ${channel}\n` +
-            `*   **ID Webhook:** \`${webhook.id}\`\n` +
-            `*   **Dibuat Oleh:** ${webhook.owner ? `${webhook.owner} (\`${webhook.owner.id}\`)` : 'Tidak diketahui'}`
+            `*   **Webhook ID:** \`${webhook.id}\`\n` +
+            `*   **Created By:** ${webhook.owner ? `${webhook.owner} (\`${webhook.owner.id}\`)` : 'Unknown'}`
           )
           .addActionRow(actionRow)
           .build();
@@ -197,13 +194,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Webhook Info] Detail webhook ${webhook.id} berhasil ditampilkan untuk ${interaction.user.tag}`);
+        logger.info(`[Webhook Info] Webhook ${webhook.id} details successfully displayed for ${interaction.user.tag}`);
       } catch (error) {
-        logger.error('[Webhook Info Error] Gagal mengambil informasi webhook:', error);
+        logger.error('[Webhook Info Error] Failed to fetch webhook details:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Mengambil Detail Webhook ❌')
-          .setDescription(`Terjadi kesalahan saat memproses permintaan: \`${error.message}\``)
+          .setTitle('Failed to Fetch Webhook Details ❌')
+          .setDescription(`An error occurred while processing your request: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 

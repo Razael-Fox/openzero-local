@@ -8,7 +8,7 @@ import logger from '../../utils/logger.js';
 import fs from 'fs';
 import path from 'path';
 
-// Pastikan direktori data ada dan siapkan path database JSON lokal
+// Ensure data directory exists and set local JSON database path
 const DATA_DIR = path.resolve('./data');
 const DB_PATH = path.join(DATA_DIR, 'custom_role_templates.json');
 
@@ -16,7 +16,7 @@ if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
 
-// Fungsi helper untuk membaca/menulis database kustom template
+// Helper functions to read/write custom templates database
 function getCustomTemplates() {
   if (!fs.existsSync(DB_PATH)) {
     return {};
@@ -24,7 +24,7 @@ function getCustomTemplates() {
   try {
     return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
   } catch (error) {
-    logger.error('[DB Error] Gagal membaca berkas database kustom template:', error);
+    logger.error('[DB Error] Failed to read custom templates database:', error);
     return {};
   }
 }
@@ -33,11 +33,11 @@ function saveCustomTemplates(templates) {
   try {
     fs.writeFileSync(DB_PATH, JSON.stringify(templates, null, 2), 'utf8');
   } catch (error) {
-    logger.error('[DB Error] Gagal menulis berkas database kustom template:', error);
+    logger.error('[DB Error] Failed to write custom templates database:', error);
   }
 }
 
-// Map permission bitmask yang dapat digunakan dalam pembuatan template custom
+// Permission map bitmask for custom templates creation
 const PERMISSION_MAP = {
   // General Server Permissions
   'administrator': PermissionFlagsBits.Administrator,
@@ -69,27 +69,27 @@ const PERMISSION_MAP = {
   'use_slash': PermissionFlagsBits.UseApplicationCommands
 };
 
-// Deskripsi untuk masing-masing string permission
+// Descriptions for each permission string
 const PERMISSION_DESCRIPTIONS = {
-  'administrator': 'Hak akses penuh admin (bypass semua permission/channel proteksi).',
-  'manage_server': 'Mengedit setelan server, nama, region, integrasi, dan widget.',
-  'manage_roles': 'Membuat, mengedit, dan menghapus role di bawah role tertinggi bot.',
-  'manage_channels': 'Membuat, mengedit, dan menghapus channel di server.',
-  'view_audit_log': 'Melihat riwayat log audit tindakan admin/mod server.',
-  'kick': 'Mengeluarkan member dari server.',
-  'ban': 'Memblokir member secara permanen dari server.',
-  'view_channel': 'Melihat channel teks dan suara (akses dasar channel).',
-  'send_messages': 'Mengirim pesan di channel teks.',
-  'embed_links': 'Mengirim tautan berformat embed/preview.',
-  'attach_files': 'Mengunggah berkas/media di channel.',
-  'read_history': 'Membaca riwayat pesan chat masa lalu.',
-  'manage_messages': 'Menghapus pesan pengguna lain atau menyematkan pesan.',
-  'connect': 'Menghubungkan/masuk ke dalam channel suara.',
-  'speak': 'Berbicara/berkomunikasi suara di channel suara.',
-  'mute_members': 'Membungkam mikrofon member lain di channel suara.',
-  'deafen_members': 'Mematikan pendengaran (deafen) member lain di channel suara.',
-  'move_members': 'Memindahkan member antar channel suara atau mengeluarkan mereka.',
-  'use_slash': 'Menggunakan bot interaksi aplikasi dan slash command.'
+  'administrator': 'Full administrative control (bypasses all channel protections and permissions).',
+  'manage_server': 'Allows editing server settings, name, region, integrations, and widgets.',
+  'manage_roles': 'Allows creating, editing, and deleting roles below the bot\'s highest role.',
+  'manage_channels': 'Allows creating, editing, and deleting channels on the server.',
+  'view_audit_log': 'Allows viewing audit logs of admin and moderator actions.',
+  'kick': 'Allows kicking members from the server.',
+  'ban': 'Allows banning members permanently from the server.',
+  'view_channel': 'Allows viewing text and voice channels (basic channel access).',
+  'send_messages': 'Allows sending messages in text channels.',
+  'embed_links': 'Allows sending formatted links with rich embeds/previews.',
+  'attach_files': 'Allows uploading files and media in channels.',
+  'read_history': 'Allows reading past message history in channels.',
+  'manage_messages': 'Allows deleting other users\' messages or pinning messages.',
+  'connect': 'Allows joining voice channels.',
+  'speak': 'Allows speaking/communicating in voice channels.',
+  'mute_members': 'Allows muting other members in voice channels.',
+  'deafen_members': 'Allows deafening other members in voice channels.',
+  'move_members': 'Allows moving members between voice channels or disconnecting them.',
+  'use_slash': 'Allows using application commands and slash commands.'
 };
 
 // Preset standard permissions
@@ -145,24 +145,24 @@ const PRESETS = {
 export default {
   data: new SlashCommandBuilder()
     .setName('role')
-    .setDescription('Mengelola role atau peran untuk pengguna di server.')
+    .setDescription('Manage user roles and permissions on the server.')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
     .setDMPermission(false)
     // SUBCOMMAND: ADD
     .addSubcommand((subcommand) =>
       subcommand
         .setName('add')
-        .setDescription('Menambahkan role ke pengguna tertentu.')
+        .setDescription('Assign a role to a specific user.')
         .addUserOption((option) =>
           option
             .setName('user')
-            .setDescription('Pengguna yang ingin diberikan role')
+            .setDescription('User to receive the role')
             .setRequired(true)
         )
         .addRoleOption((option) =>
           option
             .setName('role')
-            .setDescription('Role yang ingin ditambahkan')
+            .setDescription('Role to assign')
             .setRequired(true)
         )
     )
@@ -170,17 +170,17 @@ export default {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('remove')
-        .setDescription('Menghapus role dari pengguna tertentu.')
+        .setDescription('Remove a role from a specific user.')
         .addUserOption((option) =>
           option
             .setName('user')
-            .setDescription('Pengguna yang rolenya ingin dihapus')
+            .setDescription('User to remove the role from')
             .setRequired(true)
         )
         .addRoleOption((option) =>
           option
             .setName('role')
-            .setDescription('Role yang ingin dihapus')
+            .setDescription('Role to remove')
             .setRequired(true)
         )
     )
@@ -188,11 +188,11 @@ export default {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('id')
-        .setDescription('Mengecek informasi ID dari role spesifik.')
+        .setDescription('Get detailed ID information for a specific role.')
         .addRoleOption((option) =>
           option
             .setName('role')
-            .setDescription('Role yang ingin dicek ID-nya')
+            .setDescription('Role to inspect')
             .setRequired(true)
         )
     )
@@ -200,23 +200,23 @@ export default {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('create')
-        .setDescription('Membuat role baru dengan template permission tertentu.')
+        .setDescription('Create a new role with a preset or custom permission template.')
         .addStringOption((option) =>
           option
             .setName('name')
-            .setDescription('Nama role yang ingin dibuat')
+            .setDescription('Name of the new role')
             .setRequired(true)
         )
         .addStringOption((option) =>
           option
             .setName('template')
-            .setDescription('Pilih template preset bawaan atau masukkan nama template custom Anda')
+            .setDescription('Preset template name or your custom template name')
             .setRequired(true)
         )
         .addStringOption((option) =>
           option
             .setName('color')
-            .setDescription('Kode warna HEX untuk role (contoh: #FFD700) (opsional)')
+            .setDescription('HEX color code for the role (e.g. #FFD700) (optional)')
             .setRequired(false)
         )
     )
@@ -224,53 +224,53 @@ export default {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('settemplate')
-        .setDescription('Menetapkan ulang permission role yang ada berdasarkan template.')
+        .setDescription('Reset existing role permissions based on a template.')
         .addRoleOption((option) =>
           option
             .setName('role')
-            .setDescription('Role target yang ingin diubah permission-nya')
+            .setDescription('Target role to modify permissions')
             .setRequired(true)
         )
         .addStringOption((option) =>
           option
             .setName('template')
-            .setDescription('Pilih nama template preset (owner/admin/mods/member) atau template kustom')
+            .setDescription('Preset name (owner/admin/mods/member) or custom template name')
             .setRequired(true)
         )
     )
-    // SUBCOMMAND: SAVETEMPLATE (custom dari role yang ada)
+    // SUBCOMMAND: SAVETEMPLATE
     .addSubcommand((subcommand) =>
       subcommand
         .setName('savetemplate')
-        .setDescription('Menyimpan konfigurasi permission role yang ada saat ini sebagai template kustom baru.')
+        .setDescription('Save an existing role\'s permissions as a new custom template.')
         .addStringOption((option) =>
           option
             .setName('name')
-            .setDescription('Nama template kustom baru yang ingin disimpan')
+            .setDescription('Name of the new custom template')
             .setRequired(true)
         )
         .addRoleOption((option) =>
           option
             .setName('role')
-            .setDescription('Role yang permission-nya ingin dijadikan referensi template kustom')
+            .setDescription('Role to use as a template reference')
             .setRequired(true)
         )
     )
-    // SUBCOMMAND: CREATETEMPLATE (custom baru langsung)
+    // SUBCOMMAND: CREATETEMPLATE
     .addSubcommand((subcommand) =>
       subcommand
         .setName('createtemplate')
-        .setDescription('Membuat template permission baru dari nol dan menyimpannya ke database lokal.')
+        .setDescription('Create a custom permission template from scratch and save to database.')
         .addStringOption((option) =>
           option
             .setName('name')
-            .setDescription('Nama template kustom baru yang ingin dibuat')
+            .setDescription('Name of the new custom template')
             .setRequired(true)
         )
         .addStringOption((option) =>
           option
             .setName('permissions')
-            .setDescription('Daftar tipe permission dipisah koma (contoh: view_channel,send_messages,kick)')
+            .setDescription('Comma-separated list of permissions (e.g. view_channel,send_messages,kick)')
             .setRequired(true)
         )
     )
@@ -278,7 +278,7 @@ export default {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('listperms')
-        .setDescription('Menampilkan semua daftar string permission yang didukung beserta penjelasannya.')
+        .setDescription('Show all valid permission strings and descriptions for createtemplate.')
     ),
 
   /**
@@ -291,14 +291,14 @@ export default {
     // SUBCOMMAND LISTPERMS
     if (subcommand === 'listperms') {
       try {
-        let desc = 'Berikut daftar string permission yang dapat Anda gunakan di perintah `/role createtemplate`:\n\n';
+        let desc = 'Here are all the valid permission strings you can use in `/role createtemplate`:\n\n';
         
         for (const [key, value] of Object.entries(PERMISSION_DESCRIPTIONS)) {
           desc += `*   **\`${key}\`**: ${value}\n`;
         }
 
         const embedPerms = new V2Embed()
-          .setTitle('Daftar String Permission Valid 📑')
+          .setTitle('Valid Permission Strings 📑')
           .setDescription(desc)
           .build();
 
@@ -307,13 +307,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Perms Listed] Daftar permission ditampilkan untuk ${interaction.user.tag}`);
+        logger.info(`[Role Perms Listed] Permissions list displayed for ${interaction.user.tag}`);
       } catch (error) {
-        logger.error('[Role Perms List Error] Gagal menampilkan daftar permission:', error);
+        logger.error('[Role Perms List Error] Failed to display permissions list:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Menampilkan Daftar ❌')
-          .setDescription(`Terjadi kesalahan saat memproses data: \`${error.message}\``)
+          .setTitle('Failed to Display List ❌')
+          .setDescription(`An error occurred while processing data: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -331,13 +331,13 @@ export default {
         const targetRole = interaction.options.getRole('role');
 
         const embedInfo = new V2Embed()
-          .setTitle('Informasi ID Role 🔍')
+          .setTitle('Role ID Information 🔍')
           .setDescription(
-            `*   **Nama Role:** ${targetRole}\n` +
-            `*   **Nama Teks:** \`${targetRole.name}\`\n` +
-            `*   **ID Role:** \`${targetRole.id}\`\n` +
-            `*   **Warna Hex:** \`${targetRole.hexColor}\`\n` +
-            `*   **Posisi:** \`${targetRole.position}\``
+            `*   **Role:** ${targetRole}\n` +
+            `*   **Name:** \`${targetRole.name}\`\n` +
+            `*   **ID:** \`${targetRole.id}\`\n` +
+            `*   **Hex Color:** \`${targetRole.hexColor}\`\n` +
+            `*   **Position:** \`${targetRole.position}\``
           )
           .build();
 
@@ -346,13 +346,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role ID Checked] ${interaction.user.tag} mengecek ID untuk role "${targetRole.name}"`);
+        logger.info(`[Role ID Checked] ${interaction.user.tag} checked ID for role "${targetRole.name}"`);
       } catch (error) {
-        logger.error('[Role ID Error] Gagal mengambil informasi ID role:', error);
+        logger.error('[Role ID Error] Failed to fetch role ID info:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Mengecek ID Role ❌')
-          .setDescription(`Terjadi kesalahan saat memproses permintaan: \`${error.message}\``)
+          .setTitle('Failed to Check Role ID ❌')
+          .setDescription(`An error occurred while processing your request: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -372,8 +372,8 @@ export default {
 
         if (['owner', 'admin', 'mods', 'member'].includes(templateName)) {
           const embedError = new V2Embed()
-            .setTitle('Gagal Menyimpan Template ❌')
-            .setDescription('Nama template tidak boleh menggunakan nama preset bawaan (`owner`, `admin`, `mods`, `member`).')
+            .setTitle('Failed to Save Template ❌')
+            .setDescription('Template name cannot use preset names (`owner`, `admin`, `mods`, `member`).')
             .setColor(0xff0000)
             .build();
 
@@ -390,12 +390,12 @@ export default {
         saveCustomTemplates(customTemplates);
 
         const embedSuccess = new V2Embed()
-          .setTitle('Template Kustom Disimpan! 💾')
+          .setTitle('Custom Template Saved! 💾')
           .setDescription(
-            `Template kustom \`${templateName}\` berhasil dibuat.\n` +
-            `*   **Role Referensi:** ${role}\n` +
-            `*   **Nilai Bitfield:** \`${bitfield}\`\n\n` +
-            `Sekarang Anda dapat menggunakan template ini di \`/role create\` atau \`/role settemplate\`!`
+            `Custom template \`${templateName}\` successfully created.\n` +
+            `*   **Reference Role:** ${role}\n` +
+            `*   **Bitfield Value:** \`${bitfield}\`\n\n` +
+            `You can now use this template in \`/role create\` or \`/role settemplate\`!`
           )
           .build();
 
@@ -404,13 +404,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Template Saved] ${interaction.user.tag} menyimpan template baru "${templateName}" dari role ${role.name}`);
+        logger.info(`[Role Template Saved] ${interaction.user.tag} saved template "${templateName}" from role ${role.name}`);
       } catch (error) {
-        logger.error('[Role Template Save Error] Gagal menyimpan template kustom:', error);
+        logger.error('[Role Template Save Error] Failed to save custom template:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Menyimpan Template ❌')
-          .setDescription(`Terjadi kesalahan saat menyimpan template kustom: \`${error.message}\``)
+          .setTitle('Failed to Save Template ❌')
+          .setDescription(`An error occurred while saving custom template: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -430,8 +430,8 @@ export default {
 
         if (['owner', 'admin', 'mods', 'member'].includes(templateName)) {
           const embedError = new V2Embed()
-            .setTitle('Gagal Membuat Template ❌')
-            .setDescription('Nama template tidak boleh menggunakan nama preset bawaan (`owner`, `admin`, `mods`, `member`).')
+            .setTitle('Failed to Create Template ❌')
+            .setDescription('Template name cannot use preset names (`owner`, `admin`, `mods`, `member`).')
             .setColor(0xff0000)
             .build();
 
@@ -457,10 +457,10 @@ export default {
 
         if (validList.length === 0) {
           const embedError = new V2Embed()
-            .setTitle('Gagal Membuat Template ❌')
+            .setTitle('Failed to Create Template ❌')
             .setDescription(
-              'Tidak ada permission valid yang dikenali.\n' +
-              'Gunakan `/role listperms` untuk melihat daftar permission yang valid.'
+              'No valid permissions were recognized.\n' +
+              'Use `/role listperms` to view a list of valid permission strings.'
             )
             .setColor(0xff0000)
             .build();
@@ -475,16 +475,16 @@ export default {
         customTemplates[templateName] = finalBitfield.toString();
         saveCustomTemplates(customTemplates);
 
-        let details = `Template kustom \`${templateName}\` berhasil disimpan ke database.\n\n` +
-          `*   **Permission Aktif:** ${validList.join(', ')}\n` +
-          `*   **Nilai Bitfield:** \`${finalBitfield}\``;
+        let details = `Custom template \`${templateName}\` successfully saved to database.\n\n` +
+          `*   **Active Permissions:** ${validList.join(', ')}\n` +
+          `*   **Bitfield Value:** \`${finalBitfield}\``;
 
         if (invalidList.length > 0) {
-          details += `\n*   **Tidak Dikenali (Diabaikan):** ${invalidList.join(', ')}`;
+          details += `\n*   **Unrecognized (Ignored):** ${invalidList.join(', ')}`;
         }
 
         const embedSuccess = new V2Embed()
-          .setTitle('Template Baru Berhasil Dibuat! 💾')
+          .setTitle('Template Created Successfully! 💾')
           .setDescription(details)
           .build();
 
@@ -493,13 +493,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Template Created] ${interaction.user.tag} membuat template kustom baru "${templateName}" langsung dari input`);
+        logger.info(`[Role Template Created] ${interaction.user.tag} created custom template "${templateName}" directly from input`);
       } catch (error) {
-        logger.error('[Role Template Create Error] Gagal membuat template kustom:', error);
+        logger.error('[Role Template Create Error] Failed to create custom template:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Membuat Template ❌')
-          .setDescription(`Terjadi kesalahan saat membuat template kustom: \`${error.message}\``)
+          .setTitle('Failed to Create Template ❌')
+          .setDescription(`An error occurred while creating custom template: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -517,12 +517,12 @@ export default {
         const role = interaction.options.getRole('role');
         const templateInput = interaction.options.getString('template').toLowerCase().trim();
 
-        // Validasi hierarki role bot
+        // Validate bot role hierarchy
         const botMember = await interaction.guild.members.fetch(interaction.client.user.id);
         if (role.position >= botMember.roles.highest.position) {
           const embedError = new V2Embed()
-            .setTitle('Gagal Mengubah Role ❌')
-            .setDescription(`Tidak dapat mengubah permission untuk role ${role} karena posisi role tersebut sama atau lebih tinggi dari role tertinggi bot ini.`)
+            .setTitle('Failed to Modify Role ❌')
+            .setDescription(`Cannot modify permissions for role ${role} because it is equal to or higher than the bot's highest role.`)
             .setColor(0xff0000)
             .build();
 
@@ -532,13 +532,12 @@ export default {
           });
         }
 
-        // Tentukan set permissions
         let targetPermissions = null;
 
         if (PRESETS[templateInput]) {
           targetPermissions = PRESETS[templateInput];
         } else {
-          // Cari di database template kustom lokal
+          // Check local custom template database
           const customTemplates = getCustomTemplates();
           if (customTemplates[templateInput]) {
             targetPermissions = BigInt(customTemplates[templateInput]);
@@ -547,8 +546,8 @@ export default {
 
         if (targetPermissions === null) {
           const embedError = new V2Embed()
-            .setTitle('Template Tidak Ditemukan ❌')
-            .setDescription(`Template \`${templateInput}\` tidak ditemukan di preset bawaan maupun template kustom lokal.`)
+            .setTitle('Template Not Found ❌')
+            .setDescription(`Template \`${templateInput}\` was not found in presets or custom templates.`)
             .setColor(0xff0000)
             .build();
 
@@ -558,12 +557,11 @@ export default {
           });
         }
 
-        // Ubah permission role
-        await role.setPermissions(targetPermissions, `Diubah berdasarkan template ${templateInput} oleh ${interaction.user.tag}`);
+        await role.setPermissions(targetPermissions, `Modified based on template ${templateInput} by ${interaction.user.tag}`);
 
         const embedSuccess = new V2Embed()
-          .setTitle('Permission Role Diperbarui! 🛡️')
-          .setDescription(`Berhasil menetapkan ulang permission untuk role ${role} berdasarkan template \`${templateInput.toUpperCase()}\`.`)
+          .setTitle('Role Permissions Updated! 🛡️')
+          .setDescription(`Successfully reset permissions for role ${role} based on template \`${templateInput.toUpperCase()}\`.`)
           .build();
 
         await interaction.editReply({
@@ -571,13 +569,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Template Set] Permission untuk role "${role.name}" diubah ke template ${templateInput} oleh ${interaction.user.tag}`);
+        logger.info(`[Role Template Set] Permissions for role "${role.name}" updated to template ${templateInput} by ${interaction.user.tag}`);
       } catch (error) {
-        logger.error('[Role Template Set Error] Gagal mengubah permission role:', error);
+        logger.error('[Role Template Set Error] Failed to update role permissions:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Mengubah Permission Role ❌')
-          .setDescription(`Terjadi kesalahan saat memperbarui permission role: \`${error.message}\``)
+          .setTitle('Failed to Modify Role Permissions ❌')
+          .setDescription(`An error occurred while updating role permissions: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -596,14 +594,14 @@ export default {
         const templateInput = interaction.options.getString('template').toLowerCase().trim();
         const hexColorInput = interaction.options.getString('color') || null;
 
-        // Validasi input warna HEX jika disediakan
+        // Validate HEX color
         let roleColor = 0;
         if (hexColorInput) {
           const hexRegex = /^#?[0-9A-F]{6}$/i;
           if (!hexRegex.test(hexColorInput)) {
             const embedError = new V2Embed()
-              .setTitle('Warna Tidak Valid ❌')
-              .setDescription('Format warna HEX salah. Harap gunakan format seperti `#FFD700` or `FFD700`.')
+              .setTitle('Invalid Color ❌')
+              .setDescription('Incorrect HEX color format. Please use format like `#FFD700` or `FFD700`.')
               .setColor(0xff0000)
               .build();
 
@@ -616,7 +614,6 @@ export default {
           roleColor = parseInt(cleanHex, 16);
         }
 
-        // Dapatkan permission dari template preset atau kustom database
         let permissions = null;
         let defaultColor = roleColor;
 
@@ -629,7 +626,7 @@ export default {
             else if (templateInput === 'member') defaultColor = 0x979c9f;
           }
         } else {
-          // Cari di database template kustom lokal
+          // Check local custom template database
           const customTemplates = getCustomTemplates();
           if (customTemplates[templateInput]) {
             permissions = BigInt(customTemplates[templateInput]);
@@ -638,8 +635,8 @@ export default {
 
         if (permissions === null) {
           const embedError = new V2Embed()
-            .setTitle('Template Tidak Ditemukan ❌')
-            .setDescription(`Template \`${templateInput}\` tidak ditemukan di preset bawaan maupun template kustom lokal.`)
+            .setTitle('Template Not Found ❌')
+            .setDescription(`Template \`${templateInput}\` was not found in presets or custom templates.`)
             .setColor(0xff0000)
             .build();
 
@@ -649,22 +646,21 @@ export default {
           });
         }
 
-        // Membuat role baru di server
         const newRole = await interaction.guild.roles.create({
           name: name,
           permissions: permissions,
           color: defaultColor,
-          reason: `Dibuat oleh ${interaction.user.tag} menggunakan subcommand /role create dengan template ${templateInput}.`
+          reason: `Created by ${interaction.user.tag} using /role create subcommand with template ${templateInput}.`
         });
 
         const embedSuccess = new V2Embed()
-          .setTitle('Role Berhasil Dibuat! 🎉')
+          .setTitle('Role Created Successfully! 🎉')
           .setDescription(
-            `*   **Nama Role:** ${newRole}\n` +
-            `*   **Nama Teks:** \`${newRole.name}\`\n` +
-            `*   **ID Role:** \`${newRole.id}\`\n` +
-            `*   **Template Permission:** \`${templateInput.toUpperCase()}\`\n` +
-            `*   **Warna Hex:** \`${newRole.hexColor}\``
+            `*   **Role:** ${newRole}\n` +
+            `*   **Name:** \`${newRole.name}\`\n` +
+            `*   **ID:** \`${newRole.id}\`\n` +
+            `*   **Permission Template:** \`${templateInput.toUpperCase()}\`\n` +
+            `*   **Hex Color:** \`${newRole.hexColor}\``
           )
           .build();
 
@@ -673,13 +669,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Created] Role "${newRole.name}" berhasil dibuat oleh ${interaction.user.tag} dengan template ${templateInput}`);
+        logger.info(`[Role Created] Role "${newRole.name}" created by ${interaction.user.tag} with template ${templateInput}`);
       } catch (error) {
-        logger.error('[Role Create Error] Gagal membuat role baru:', error);
+        logger.error('[Role Create Error] Failed to create new role:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Membuat Role ❌')
-          .setDescription(`Terjadi kesalahan saat memproses pembuatan role: \`${error.message}\``)
+          .setTitle('Failed to Create Role ❌')
+          .setDescription(`An error occurred while creating role: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -694,12 +690,12 @@ export default {
     const targetUser = interaction.options.getUser('user');
     const targetRole = interaction.options.getRole('role');
 
-    // Mendapatkan GuildMember target
+    // Fetch GuildMember target
     const member = await interaction.guild.members.fetch(targetUser.id).catch(() => null);
     if (!member) {
       const embedError = new V2Embed()
-        .setTitle('Pengguna Tidak Ditemukan ❌')
-        .setDescription('Tidak dapat menemukan pengguna tersebut di dalam server ini.')
+        .setTitle('User Not Found ❌')
+        .setDescription('Could not find the specified user in this server.')
         .setColor(0xff0000)
         .build();
 
@@ -709,12 +705,12 @@ export default {
       });
     }
 
-    // Mendapatkan posisi tertinggi bot di server untuk validasi hierarki role
+    // Validate bot role hierarchy
     const botMember = await interaction.guild.members.fetch(interaction.client.user.id);
     if (targetRole.position >= botMember.roles.highest.position) {
       const embedError = new V2Embed()
-        .setTitle('Gagal Mengelola Role ❌')
-        .setDescription(`Tidak dapat mengelola role ${targetRole} karena posisinya sama atau lebih tinggi dari posisi role tertinggi bot ini.`)
+        .setTitle('Failed to Modify Role ❌')
+        .setDescription(`Cannot manage role ${targetRole} because it is equal to or higher than the bot's highest role.`)
         .setColor(0xff0000)
         .build();
 
@@ -728,8 +724,8 @@ export default {
       try {
         if (member.roles.cache.has(targetRole.id)) {
           const embedInfo = new V2Embed()
-            .setTitle('Informasi Role ℹ️')
-            .setDescription(`${targetUser} sudah memiliki role ${targetRole}.`)
+            .setTitle('Role Information ℹ️')
+            .setDescription(`${targetUser} already has the role ${targetRole}.`)
             .setColor(0xffd700)
             .build();
 
@@ -739,11 +735,11 @@ export default {
           });
         }
 
-        await member.roles.add(targetRole, `Diberikan oleh ${interaction.user.tag} via slash command.`);
+        await member.roles.add(targetRole, `Assigned by ${interaction.user.tag} via slash command.`);
 
         const embedSuccess = new V2Embed()
-          .setTitle('Role Berhasil Ditambahkan! 🎉')
-          .setDescription(`Berhasil menambahkan role ${targetRole} ke pengguna ${targetUser}.`)
+          .setTitle('Role Successfully Assigned! 🎉')
+          .setDescription(`Successfully assigned role ${targetRole} to user ${targetUser}.`)
           .build();
 
         await interaction.editReply({
@@ -751,13 +747,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Added] Role "${targetRole.name}" ditambahkan ke ${targetUser.tag} oleh ${interaction.user.tag}`);
+        logger.info(`[Role Added] Role "${targetRole.name}" assigned to ${targetUser.tag} by ${interaction.user.tag}`);
       } catch (error) {
-        logger.error('[Role Add Error] Gagal menambahkan role:', error);
+        logger.error('[Role Add Error] Failed to assign role:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Menambahkan Role ❌')
-          .setDescription(`Terjadi kesalahan saat menambahkan role: \`${error.message}\``)
+          .setTitle('Failed to Assign Role ❌')
+          .setDescription(`An error occurred while assigning role: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -772,8 +768,8 @@ export default {
       try {
         if (!member.roles.cache.has(targetRole.id)) {
           const embedInfo = new V2Embed()
-            .setTitle('Informasi Role ℹ️')
-            .setDescription(`${targetUser} tidak memiliki role ${targetRole}.`)
+            .setTitle('Role Information ℹ️')
+            .setDescription(`${targetUser} does not have the role ${targetRole}.`)
             .setColor(0xffd700)
             .build();
 
@@ -783,11 +779,11 @@ export default {
           });
         }
 
-        await member.roles.remove(targetRole, `Dihapus oleh ${interaction.user.tag} via slash command.`);
+        await member.roles.remove(targetRole, `Removed by ${interaction.user.tag} via slash command.`);
 
         const embedSuccess = new V2Embed()
-          .setTitle('Role Berhasil Dihapus! 🛡️')
-          .setDescription(`Berhasil menghapus role ${targetRole} dari pengguna ${targetUser}.`)
+          .setTitle('Role Successfully Removed! 🛡️')
+          .setDescription(`Successfully removed role ${targetRole} from user ${targetUser}.`)
           .build();
 
         await interaction.editReply({
@@ -795,13 +791,13 @@ export default {
           flags: MessageFlags.IsComponentsV2
         });
 
-        logger.info(`[Role Removed] Role "${targetRole.name}" dihapus dari ${targetUser.tag} oleh ${interaction.user.tag}`);
+        logger.info(`[Role Removed] Role "${targetRole.name}" removed from ${targetUser.tag} by ${interaction.user.tag}`);
       } catch (error) {
-        logger.error('[Role Remove Error] Gagal menghapus role:', error);
+        logger.error('[Role Remove Error] Failed to remove role:', error);
 
         const embedError = new V2Embed()
-          .setTitle('Gagal Menghapus Role ❌')
-          .setDescription(`Terjadi kesalahan saat menghapus role: \`${error.message}\``)
+          .setTitle('Failed to Remove Role ❌')
+          .setDescription(`An error occurred while removing role: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
