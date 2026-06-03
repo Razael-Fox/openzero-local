@@ -59,6 +59,36 @@ export default {
             .setDescription('Role yang ingin dicek ID-nya')
             .setRequired(true)
         )
+    )
+    // SUBCOMMAND: CREATE
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('create')
+        .setDescription('Membuat role baru dengan template permission tertentu.')
+        .addStringOption((option) =>
+          option
+            .setName('name')
+            .setDescription('Nama role yang ingin dibuat')
+            .setRequired(true)
+        )
+        .addStringOption((option) =>
+          option
+            .setName('template')
+            .setDescription('Pilih template permission role')
+            .setRequired(true)
+            .addChoices(
+              { name: 'Owner (Administrator)', value: 'owner' },
+              { name: 'Admin (Manage Server/Roles/Channels)', value: 'admin' },
+              { name: 'Mods (Kick/Ban/Mute/Manage Messages)', value: 'mods' },
+              { name: 'Member (Read/Write/Connect)', value: 'member' }
+            )
+        )
+        .addStringOption((option) =>
+          option
+            .setName('color')
+            .setDescription('Kode warna HEX untuk role (contoh: #FFD700) (opsional)')
+            .setRequired(false)
+        )
     ),
 
   /**
@@ -95,6 +125,140 @@ export default {
         const embedError = new V2Embed()
           .setTitle('Gagal Mengecek ID Role ❌')
           .setDescription(`Terjadi kesalahan saat memproses permintaan: \`${error.message}\``)
+          .setColor(0xff0000)
+          .build();
+
+        await interaction.editReply({
+          components: [embedError],
+          flags: MessageFlags.IsComponentsV2
+        });
+      }
+      return;
+    }
+
+    if (subcommand === 'create') {
+      try {
+        const name = interaction.options.getString('name');
+        const template = interaction.options.getString('template');
+        const hexColorInput = interaction.options.getString('color') || null;
+
+        // Validasi input warna HEX jika disediakan
+        let roleColor = 0; // Default: tanpa warna kustom (Abu-abu Discord)
+        if (hexColorInput) {
+          const hexRegex = /^#?[0-9A-F]{6}$/i;
+          if (!hexRegex.test(hexColorInput)) {
+            const embedError = new V2Embed()
+              .setTitle('Warna Tidak Valid ❌')
+              .setDescription('Format warna HEX salah. Harap gunakan format seperti `#FFD700` atau `FFD700`.')
+              .setColor(0xff0000)
+              .build();
+
+            return await interaction.editReply({
+              components: [embedError],
+              flags: MessageFlags.IsComponentsV2
+            });
+          }
+          // Konversi HEX string ke angka desimal yang diterima discord.js
+          const cleanHex = hexColorInput.replace('#', '');
+          roleColor = parseInt(cleanHex, 16);
+        }
+
+        // Definisi set permissions berdasarkan template
+        let permissions = [];
+        let defaultColor = roleColor;
+
+        switch (template) {
+          case 'owner':
+            permissions = [PermissionFlagsBits.Administrator];
+            if (!hexColorInput) defaultColor = 0xe91e63; // Pink kemerahan untuk Owner jika warna kosong
+            break;
+          case 'admin':
+            permissions = [
+              PermissionFlagsBits.ManageGuild,
+              PermissionFlagsBits.ManageRoles,
+              PermissionFlagsBits.ManageChannels,
+              PermissionFlagsBits.KickMembers,
+              PermissionFlagsBits.BanMembers,
+              PermissionFlagsBits.ViewAuditLog,
+              PermissionFlagsBits.ManageMessages,
+              PermissionFlagsBits.MuteMembers,
+              PermissionFlagsBits.DeafenMembers,
+              PermissionFlagsBits.MoveMembers,
+              PermissionFlagsBits.ViewChannel,
+              PermissionFlagsBits.SendMessages,
+              PermissionFlagsBits.EmbedLinks,
+              PermissionFlagsBits.AttachFiles,
+              PermissionFlagsBits.ReadMessageHistory,
+              PermissionFlagsBits.Connect,
+              PermissionFlagsBits.Speak
+            ];
+            if (!hexColorInput) defaultColor = 0x3498db; // Biru untuk Admin jika warna kosong
+            break;
+          case 'mods':
+            permissions = [
+              PermissionFlagsBits.KickMembers,
+              PermissionFlagsBits.BanMembers,
+              PermissionFlagsBits.ViewAuditLog,
+              PermissionFlagsBits.ManageMessages,
+              PermissionFlagsBits.MuteMembers,
+              PermissionFlagsBits.DeafenMembers,
+              PermissionFlagsBits.MoveMembers,
+              PermissionFlagsBits.ViewChannel,
+              PermissionFlagsBits.SendMessages,
+              PermissionFlagsBits.EmbedLinks,
+              PermissionFlagsBits.AttachFiles,
+              PermissionFlagsBits.ReadMessageHistory,
+              PermissionFlagsBits.Connect,
+              PermissionFlagsBits.Speak
+            ];
+            if (!hexColorInput) defaultColor = 0x2ecc71; // Hijau untuk Mods jika warna kosong
+            break;
+          case 'member':
+            permissions = [
+              PermissionFlagsBits.ViewChannel,
+              PermissionFlagsBits.SendMessages,
+              PermissionFlagsBits.EmbedLinks,
+              PermissionFlagsBits.AttachFiles,
+              PermissionFlagsBits.ReadMessageHistory,
+              PermissionFlagsBits.Connect,
+              PermissionFlagsBits.Speak,
+              PermissionFlagsBits.UseApplicationCommands
+            ];
+            if (!hexColorInput) defaultColor = 0x979c9f; // Abu-abu terang untuk Member jika warna kosong
+            break;
+        }
+
+        // Membuat role baru di server
+        const newRole = await interaction.guild.roles.create({
+          name: name,
+          permissions: permissions,
+          color: defaultColor,
+          reason: `Dibuat oleh ${interaction.user.tag} menggunakan subcommand /role create dengan template ${template}.`
+        });
+
+        const embedSuccess = new V2Embed()
+          .setTitle('Role Berhasil Dibuat! 🎉')
+          .setDescription(
+            `*   **Nama Role:** ${newRole}\n` +
+            `*   **Nama Teks:** \`${newRole.name}\`\n` +
+            `*   **ID Role:** \`${newRole.id}\`\n` +
+            `*   **Template Permission:** \`${template.toUpperCase()}\`\n` +
+            `*   **Warna Hex:** \`${newRole.hexColor}\``
+          )
+          .build();
+
+        await interaction.editReply({
+          components: [embedSuccess],
+          flags: MessageFlags.IsComponentsV2
+        });
+
+        logger.info(`[Role Created] Role "${newRole.name}" berhasil dibuat oleh ${interaction.user.tag} dengan template ${template}`);
+      } catch (error) {
+        logger.error('[Role Create Error] Gagal membuat role baru:', error);
+
+        const embedError = new V2Embed()
+          .setTitle('Gagal Membuat Role ❌')
+          .setDescription(`Terjadi kesalahan saat memproses pembuatan role: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
