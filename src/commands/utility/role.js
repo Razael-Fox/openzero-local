@@ -215,7 +215,7 @@ export default {
             .setRequired(true)
         )
     )
-    // SUBCOMMAND: SAVETEMPLATE (custom)
+    // SUBCOMMAND: SAVETEMPLATE (custom dari role yang ada)
     .addSubcommand((subcommand) =>
       subcommand
         .setName('savetemplate')
@@ -230,6 +230,24 @@ export default {
           option
             .setName('role')
             .setDescription('Role yang permission-nya ingin dijadikan referensi template kustom')
+            .setRequired(true)
+        )
+    )
+    // SUBCOMMAND: CREATETEMPLATE (custom baru langsung)
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('createtemplate')
+        .setDescription('Membuat template permission baru dari nol dan menyimpannya ke database lokal.')
+        .addStringOption((option) =>
+          option
+            .setName('name')
+            .setDescription('Nama template kustom baru yang ingin dibuat')
+            .setRequired(true)
+        )
+        .addStringOption((option) =>
+          option
+            .setName('permissions')
+            .setDescription('Daftar tipe permission dipisah koma (contoh: view_channel,send_messages,kick)')
             .setRequired(true)
         )
     ),
@@ -299,11 +317,10 @@ export default {
           });
         }
 
-        // Dapatkan bitmask permissions role saat ini & jadikan array string permission yang aktif
         const bitfield = role.permissions.bitfield;
         const customTemplates = getCustomTemplates();
         
-        customTemplates[templateName] = bitfield.toString(); // Simpan bitfield sebagai string karena JSON tidak mendukung BigInt secara langsung
+        customTemplates[templateName] = bitfield.toString();
         saveCustomTemplates(customTemplates);
 
         const embedSuccess = new V2Embed()
@@ -328,6 +345,98 @@ export default {
         const embedError = new V2Embed()
           .setTitle('Gagal Menyimpan Template ❌')
           .setDescription(`Terjadi kesalahan saat menyimpan template kustom: \`${error.message}\``)
+          .setColor(0xff0000)
+          .build();
+
+        await interaction.editReply({
+          components: [embedError],
+          flags: MessageFlags.IsComponentsV2
+        });
+      }
+      return;
+    }
+
+    // SUBCOMMAND CREATETEMPLATE (Baru)
+    if (subcommand === 'createtemplate') {
+      try {
+        const templateName = interaction.options.getString('name').toLowerCase().trim();
+        const permissionsInput = interaction.options.getString('permissions').toLowerCase().trim();
+
+        if (['owner', 'admin', 'mods', 'member'].includes(templateName)) {
+          const embedError = new V2Embed()
+            .setTitle('Gagal Membuat Template ❌')
+            .setDescription('Nama template tidak boleh menggunakan nama preset bawaan (`owner`, `admin`, `mods`, `member`).')
+            .setColor(0xff0000)
+            .build();
+
+          return await interaction.editReply({
+            components: [embedError],
+            flags: MessageFlags.IsComponentsV2
+          });
+        }
+
+        // Parse list permission yang dipisahkan koma
+        const requestedPermissions = permissionsInput.split(',').map(p => p.trim());
+        let finalBitfield = 0n;
+        const validList = [];
+        const invalidList = [];
+
+        for (const permKey of requestedPermissions) {
+          if (PERMISSION_MAP[permKey] !== undefined) {
+            finalBitfield |= PERMISSION_MAP[permKey];
+            validList.push(`\`${permKey}\``);
+          } else {
+            invalidList.push(`\`${permKey}\``);
+          }
+        }
+
+        // Validasi jika tidak ada permission valid sama sekali
+        if (validList.length === 0) {
+          const embedError = new V2Embed()
+            .setTitle('Gagal Membuat Template ❌')
+            .setDescription(
+              'Tidak ada permission valid yang dikenali.\n' +
+              'Contoh permission valid: `administrator`, `manage_server`, `manage_roles`, `manage_channels`, `kick`, `ban`, `view_channel`, `send_messages`, `connect`, `speak`.'
+            )
+            .setColor(0xff0000)
+            .build();
+
+          return await interaction.editReply({
+            components: [embedError],
+            flags: MessageFlags.IsComponentsV2
+          });
+        }
+
+        // Simpan ke database
+        const customTemplates = getCustomTemplates();
+        customTemplates[templateName] = finalBitfield.toString();
+        saveCustomTemplates(customTemplates);
+
+        let details = `Template kustom \`${templateName}\` berhasil disimpan ke database.\n\n` +
+          `*   **Permission Aktif:** ${validList.join(', ')}\n` +
+          `*   **Nilai Bitfield:** \`${finalBitfield}\``;
+
+        if (invalidList.length > 0) {
+          details += `\n*   **Tidak Dikenali (Diabaikan):** ${invalidList.join(', ')}`;
+        }
+
+        const embedSuccess = new V2Embed()
+          .setTitle('Template Baru Berhasil Dibuat! 💾')
+          .setDescription(details)
+          .build();
+
+        await interaction.editReply({
+          components: [embedSuccess],
+          flags: MessageFlags.IsComponentsV2
+        });
+
+        logger.info(`[Role Template Created] ${interaction.user.tag} membuat template kustom baru "${templateName}" langsung dari input`);
+      } catch (error) {
+        logger.error('[Role Template Create Error] Gagal membuat template kustom:', error);
+
+        const embedError = new V2Embed()
+          .setTitle('Gagal Membuat Template ❌')
+          .setDescription(`Terjadi kesalahan saat membuat template kustom: \`${error.message}\``)
           .setColor(0xff0000)
           .build();
 
@@ -425,7 +534,7 @@ export default {
         const hexColorInput = interaction.options.getString('color') || null;
 
         // Validasi input warna HEX jika disediakan
-        let roleColor = 0; // Default: tanpa warna kustom
+        let roleColor = 0;
         if (hexColorInput) {
           const hexRegex = /^#?[0-9A-F]{6}$/i;
           if (!hexRegex.test(hexColorInput)) {
@@ -450,7 +559,6 @@ export default {
 
         if (PRESETS[templateInput]) {
           permissions = PRESETS[templateInput];
-          // Set warna default jika user tidak menentukan
           if (!hexColorInput) {
             if (templateInput === 'owner') defaultColor = 0xe91e63;
             else if (templateInput === 'admin') defaultColor = 0x3498db;
