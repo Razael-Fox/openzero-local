@@ -47,6 +47,18 @@ export default {
             .setDescription('Role yang ingin dihapus')
             .setRequired(true)
         )
+    )
+    // SUBCOMMAND: ID
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('id')
+        .setDescription('Mengecek informasi ID dari role spesifik.')
+        .addRoleOption((option) =>
+          option
+            .setName('role')
+            .setDescription('Role yang ingin dicek ID-nya')
+            .setRequired(true)
+        )
     ),
 
   /**
@@ -54,10 +66,48 @@ export default {
    */
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+    if (subcommand === 'id') {
+      try {
+        const targetRole = interaction.options.getRole('role');
+
+        const embedInfo = new V2Embed()
+          .setTitle('Informasi ID Role 🔍')
+          .setDescription(
+            `*   **Nama Role:** ${targetRole}\n` +
+            `*   **Nama Teks:** \`${targetRole.name}\`\n` +
+            `*   **ID Role:** \`${targetRole.id}\`\n` +
+            `*   **Warna Hex:** \`${targetRole.hexColor}\`\n` +
+            `*   **Posisi:** \`${targetRole.position}\``
+          )
+          .build();
+
+        await interaction.editReply({
+          components: [embedInfo],
+          flags: MessageFlags.IsComponentsV2
+        });
+
+        logger.info(`[Role ID Checked] ${interaction.user.tag} mengecek ID untuk role "${targetRole.name}"`);
+      } catch (error) {
+        logger.error('[Role ID Error] Gagal mengambil informasi ID role:', error);
+
+        const embedError = new V2Embed()
+          .setTitle('Gagal Mengecek ID Role ❌')
+          .setDescription(`Terjadi kesalahan saat memproses permintaan: \`${error.message}\``)
+          .setColor(0xff0000)
+          .build();
+
+        await interaction.editReply({
+          components: [embedError],
+          flags: MessageFlags.IsComponentsV2
+        });
+      }
+      return;
+    }
+
     const targetUser = interaction.options.getUser('user');
     const targetRole = interaction.options.getRole('role');
-
-    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
     // Mendapatkan GuildMember target
     const member = await interaction.guild.members.fetch(targetUser.id).catch(() => null);
