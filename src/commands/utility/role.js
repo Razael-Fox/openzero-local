@@ -69,6 +69,29 @@ const PERMISSION_MAP = {
   'use_slash': PermissionFlagsBits.UseApplicationCommands
 };
 
+// Deskripsi untuk masing-masing string permission
+const PERMISSION_DESCRIPTIONS = {
+  'administrator': 'Hak akses penuh admin (bypass semua permission/channel proteksi).',
+  'manage_server': 'Mengedit setelan server, nama, region, integrasi, dan widget.',
+  'manage_roles': 'Membuat, mengedit, dan menghapus role di bawah role tertinggi bot.',
+  'manage_channels': 'Membuat, mengedit, dan menghapus channel di server.',
+  'view_audit_log': 'Melihat riwayat log audit tindakan admin/mod server.',
+  'kick': 'Mengeluarkan member dari server.',
+  'ban': 'Memblokir member secara permanen dari server.',
+  'view_channel': 'Melihat channel teks dan suara (akses dasar channel).',
+  'send_messages': 'Mengirim pesan di channel teks.',
+  'embed_links': 'Mengirim tautan berformat embed/preview.',
+  'attach_files': 'Mengunggah berkas/media di channel.',
+  'read_history': 'Membaca riwayat pesan chat masa lalu.',
+  'manage_messages': 'Menghapus pesan pengguna lain atau menyematkan pesan.',
+  'connect': 'Menghubungkan/masuk ke dalam channel suara.',
+  'speak': 'Berbicara/berkomunikasi suara di channel suara.',
+  'mute_members': 'Membungkam mikrofon member lain di channel suara.',
+  'deafen_members': 'Mematikan pendengaran (deafen) member lain di channel suara.',
+  'move_members': 'Memindahkan member antar channel suara atau mengeluarkan mereka.',
+  'use_slash': 'Menggunakan bot interaksi aplikasi dan slash command.'
+};
+
 // Preset standard permissions
 const PRESETS = {
   owner: [PermissionFlagsBits.Administrator],
@@ -250,6 +273,12 @@ export default {
             .setDescription('Daftar tipe permission dipisah koma (contoh: view_channel,send_messages,kick)')
             .setRequired(true)
         )
+    )
+    // SUBCOMMAND: LISTPERMS
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('listperms')
+        .setDescription('Menampilkan semua daftar string permission yang didukung beserta penjelasannya.')
     ),
 
   /**
@@ -258,6 +287,43 @@ export default {
   async execute(interaction) {
     const subcommand = interaction.options.getSubcommand();
     await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+    // SUBCOMMAND LISTPERMS
+    if (subcommand === 'listperms') {
+      try {
+        let desc = 'Berikut daftar string permission yang dapat Anda gunakan di perintah `/role createtemplate`:\n\n';
+        
+        for (const [key, value] of Object.entries(PERMISSION_DESCRIPTIONS)) {
+          desc += `*   **\`${key}\`**: ${value}\n`;
+        }
+
+        const embedPerms = new V2Embed()
+          .setTitle('Daftar String Permission Valid 📑')
+          .setDescription(desc)
+          .build();
+
+        await interaction.editReply({
+          components: [embedPerms],
+          flags: MessageFlags.IsComponentsV2
+        });
+
+        logger.info(`[Role Perms Listed] Daftar permission ditampilkan untuk ${interaction.user.tag}`);
+      } catch (error) {
+        logger.error('[Role Perms List Error] Gagal menampilkan daftar permission:', error);
+
+        const embedError = new V2Embed()
+          .setTitle('Gagal Menampilkan Daftar ❌')
+          .setDescription(`Terjadi kesalahan saat memproses data: \`${error.message}\``)
+          .setColor(0xff0000)
+          .build();
+
+        await interaction.editReply({
+          components: [embedError],
+          flags: MessageFlags.IsComponentsV2
+        });
+      }
+      return;
+    }
 
     // SUBCOMMAND ID
     if (subcommand === 'id') {
@@ -356,7 +422,7 @@ export default {
       return;
     }
 
-    // SUBCOMMAND CREATETEMPLATE (Baru)
+    // SUBCOMMAND CREATETEMPLATE
     if (subcommand === 'createtemplate') {
       try {
         const templateName = interaction.options.getString('name').toLowerCase().trim();
@@ -375,7 +441,6 @@ export default {
           });
         }
 
-        // Parse list permission yang dipisahkan koma
         const requestedPermissions = permissionsInput.split(',').map(p => p.trim());
         let finalBitfield = 0n;
         const validList = [];
@@ -390,13 +455,12 @@ export default {
           }
         }
 
-        // Validasi jika tidak ada permission valid sama sekali
         if (validList.length === 0) {
           const embedError = new V2Embed()
             .setTitle('Gagal Membuat Template ❌')
             .setDescription(
               'Tidak ada permission valid yang dikenali.\n' +
-              'Contoh permission valid: `administrator`, `manage_server`, `manage_roles`, `manage_channels`, `kick`, `ban`, `view_channel`, `send_messages`, `connect`, `speak`.'
+              'Gunakan `/role listperms` untuk melihat daftar permission yang valid.'
             )
             .setColor(0xff0000)
             .build();
@@ -407,7 +471,6 @@ export default {
           });
         }
 
-        // Simpan ke database
         const customTemplates = getCustomTemplates();
         customTemplates[templateName] = finalBitfield.toString();
         saveCustomTemplates(customTemplates);
@@ -540,7 +603,7 @@ export default {
           if (!hexRegex.test(hexColorInput)) {
             const embedError = new V2Embed()
               .setTitle('Warna Tidak Valid ❌')
-              .setDescription('Format warna HEX salah. Harap gunakan format seperti `#FFD700` atau `FFD700`.')
+              .setDescription('Format warna HEX salah. Harap gunakan format seperti `#FFD700` or `FFD700`.')
               .setColor(0xff0000)
               .build();
 
