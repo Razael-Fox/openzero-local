@@ -80,6 +80,11 @@ async function processFile(filePath, client) {
 export async function initObtainiumWatcher(client) {
   logger.info('[Obtainium Watcher] Starting Obtainium data watcher...');
 
+  // Ensure Obtainium message is initialized on startup
+  if (client) {
+    await updateObtainiumMessage(client);
+  }
+
   // 1. Initial conversion on startup (process the latest export file if present)
   const latestFile = await findLatestExportFile();
   if (latestFile) {

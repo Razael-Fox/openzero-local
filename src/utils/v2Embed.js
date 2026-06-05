@@ -1,5 +1,6 @@
 import { ContainerBuilder, TextDisplayBuilder } from 'discord.js';
 import { config } from '../config.js';
+import { Symbols } from './symbols.js';
 
 /**
  * Kelas pembantu untuk membuat container Discord Components V2 layaknya EmbedBuilder tradisional.
@@ -13,12 +14,33 @@ export class V2Embed {
   }
 
   /**
+   * Helper internal untuk memetakan simbol emoji standar ke simbol terpusat
+   * @param {string} text
+   * @returns {string}
+   */
+  _applySymbols(text) {
+    return text
+      .replace(/❌/g, Symbols.FAILURE)
+      .replace(/✅/g, Symbols.SUCCESS)
+      .replace(/⚠️/g, Symbols.WARNING)
+      .replace(/🏓/g, Symbols.PING)
+      .replace(/⏱️/g, Symbols.COOLDOWN)
+      .replace(/🎵/g, Symbols.MUSIC)
+      .replace(/🎤/g, Symbols.MICROPHONE)
+      .replace(/👋/g, Symbols.HELLO)
+      .replace(/↳/g, Symbols.ENTER)
+      .replace(/⬅️/g, Symbols.ARROW_LEFT)
+      .replace(/➡️/g, Symbols.ARROW_RIGHT)
+      .replace(/🔄/g, Symbols.REFRESH);
+  }
+
+  /**
    * Mengatur judul untuk V2 Embed
    * @param {string} title
    * @returns {this}
    */
   setTitle(title) {
-    this.title = title;
+    this.title = typeof title === 'string' ? this._applySymbols(title) : title;
     return this;
   }
 
@@ -28,7 +50,7 @@ export class V2Embed {
    * @returns {this}
    */
   setDescription(description) {
-    this.description = description;
+    this.description = typeof description === 'string' ? this._applySymbols(description) : description;
     return this;
   }
 

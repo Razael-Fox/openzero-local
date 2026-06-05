@@ -4,7 +4,10 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const dbPath = path.join(__dirname, '../../data/database.json');
+const isTest = process.env.NODE_ENV === 'test';
+const dbPath = isTest
+  ? path.join(__dirname, '../../data/database-test.json')
+  : path.join(__dirname, '../../data/database.json');
 
 // Ensure data directory exists
 const dbDir = path.dirname(dbPath);
@@ -31,7 +34,6 @@ function loadDb() {
 loadDb();
 
 let saveTimeout = null;
-const isTest = process.env.NODE_ENV === 'test';
 
 /**
  * Save database to disk.
@@ -166,3 +168,21 @@ export function clearDb() {
   db = { guilds: {}, messages: [] };
   saveDbSync();
 }
+
+/**
+ * Get the stored Obtainium message ID.
+ * @returns {string|null}
+ */
+export function getObtainiumMessageId() {
+  return db.obtainiumMessageId || null;
+}
+
+/**
+ * Set the stored Obtainium message ID.
+ * @param {string} messageId
+ */
+export function setObtainiumMessageId(messageId) {
+  db.obtainiumMessageId = messageId;
+  saveDb();
+}
+

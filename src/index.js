@@ -1,3 +1,4 @@
+import './instrument.js';
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import dotenv from 'dotenv';
 import logger from './utils/logger.js';

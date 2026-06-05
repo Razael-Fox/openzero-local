@@ -36,7 +36,7 @@ client.once('ready', async () => {
       flags: MessageFlags.IsComponentsV2
     });
 
-    logger.info(`[Script] Sukses! Pesan terkirim dengan ID: ${sentMessage.id}`);
+    logger.info(`[Script] Sukses! Pesan terkirim dengan tautan: ${sentMessage.url}`);
     process.exit(0);
   } catch (error) {
     logger.error('[Script] Terjadi kesalahan saat mengirim pesan Obtainium:', error);

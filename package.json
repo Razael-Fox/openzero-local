@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "start": "npm run fetch-repos && node src/index.js",
-    "dev": "node --watch src/index.js",
+    "start": "npm run fetch-repos && node --import ./src/instrument.js src/index.js",
+    "dev": "node --watch --import ./src/instrument.js src/index.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "send-rules": "node src/scripts/sendRules.js",
     "send-obtainium": "node src/scripts/sendObtainium.js",
@@ -18,6 +18,7 @@
     "version:update": "node src/scripts/updateVersion.js"
   },
   "dependencies": {
+    "@sentry/node": "^10.56.0",
     "@supabase/supabase-js": "^2.107.0",
     "@vitalets/google-translate-api": "^9.2.1",
     "chalk": "^5.6.2",
