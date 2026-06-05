@@ -79,6 +79,35 @@ export default {
             error
           );
         }
+      } else if (
+        interaction.customId.startsWith('music_search_prev_') ||
+        interaction.customId.startsWith('music_search_next_')
+      ) {
+        try {
+          await interaction.deferUpdate();
+          const parts = interaction.customId.split('_');
+          const pageIndex = parseInt(parts[3], 10) || 0;
+          const sessionId = parts.slice(4).join('_');
+
+          const { generateMusicSearchEmbed } = await import(
+            '../commands/utility/musicSearch.js'
+          );
+          const { embed } = generateMusicSearchEmbed(sessionId, pageIndex);
+
+          await interaction.editReply({
+            components: [embed],
+            flags: MessageFlags.IsComponentsV2
+          });
+
+          logger.info(
+            `[Button Clicked] ${interaction.customId} diproses (Page: ${pageIndex}) untuk ${interaction.user.tag}`
+          );
+        } catch (error) {
+          logger.error(
+            `[Button Error] Gagal memproses interaksi tombol music search:`,
+            error
+          );
+        }
       }
       return;
     }
