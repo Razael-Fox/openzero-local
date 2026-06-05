@@ -1,14 +1,11 @@
 import './instrument.js';
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
-import dotenv from 'dotenv';
+import { config } from './config.js';
 import logger from './utils/logger.js';
 import loadEvents from './handlers/eventHandler.js';
 import { loadCommands } from './handlers/commandHandler.js';
 
 import { VERSION } from './version.js';
-
-// Memuat variabel lingkungan dari file .env
-dotenv.config();
 
 // Inisialisasi Discord Client dengan Intents yang diperlukan
 const client = new Client({
@@ -40,10 +37,10 @@ async function init() {
   await loadCommands(client);
   await loadEvents(client);
 
-  const token = process.env.DISCORD_TOKEN;
+  const token = config.token;
   if (!token) {
     logger.error(
-      '[Bot] Token Discord (DISCORD_TOKEN) tidak ditemukan di file .env! Bot tidak dapat login.'
+      '[Bot] Token Discord (DISCORD_TOKEN) tidak ditemukan di konfigurasi/file .env! Bot tidak dapat login.'
     );
     process.exit(1);
   }

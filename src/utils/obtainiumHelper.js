@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'url';
+
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } from 'discord.js';
 import { V2Embed } from './v2Embed.js';
 import logger from './logger.js';
@@ -8,9 +8,7 @@ import { config } from '../config.js';
 import { getObtainiumMessageId, setObtainiumMessageId } from './database.js';
 import { Symbols } from './symbols.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const JSON_PATH = path.join(__dirname, '../../data/obtainium_repos_data.json');
+const JSON_PATH = path.join(config.database.dir, 'obtainium_repos_data.json');
 
 /**
  * Membaca data aplikasi dari file JSON Obtainium

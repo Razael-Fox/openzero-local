@@ -1,14 +1,11 @@
 import * as Sentry from '@sentry/node';
-import dotenv from 'dotenv';
+import { config } from './config.js';
 
-// Load environmental variables since this module is loaded before index.js
-dotenv.config();
-
-if (process.env.SENTRY_DSN) {
+if (config.sentryDsn) {
   Sentry.init({
-    dsn: process.env.SENTRY_DSN,
+    dsn: config.sentryDsn,
     // Tracing performance
     tracesSampleRate: 1.0,
-    environment: process.env.NODE_ENV || 'development'
+    environment: config.nodeEnv
   });
 }

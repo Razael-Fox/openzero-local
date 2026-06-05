@@ -2,6 +2,7 @@ import winston from 'winston';
 import chalk from 'chalk';
 import * as Sentry from '@sentry/node';
 import { Symbols } from './symbols.js';
+import { config } from '../config.js';
 
 const { combine, timestamp, printf } = winston.format;
 
@@ -114,7 +115,7 @@ class SentryTransport extends winston.Transport {
       this.emit('logged', info);
     });
 
-    if (process.env.SENTRY_DSN) {
+    if (config.sentryDsn) {
       const { level, message, stack, error, ...meta } = info;
       const { type, loggerType, loggerMessage } = resolveLogDetails(level, message, meta);
       const cleanMeta = pruneMetadata({ ...meta, type, loggerType });

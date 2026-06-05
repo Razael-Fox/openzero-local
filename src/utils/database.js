@@ -1,16 +1,11 @@
 import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { config } from '../config.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const isTest = process.env.NODE_ENV === 'test';
-const dbPath = isTest
-  ? path.join(__dirname, '../../data/database-test.json')
-  : path.join(__dirname, '../../data/database.json');
+const isTest = config.nodeEnv === 'test';
+const dbPath = config.database.path;
 
 // Ensure data directory exists
-const dbDir = path.dirname(dbPath);
+const dbDir = config.database.dir;
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }

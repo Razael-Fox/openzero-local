@@ -6,12 +6,9 @@ import {
   ButtonStyle,
   MessageFlags
 } from 'discord.js';
-import dotenv from 'dotenv';
 import logger from '../utils/logger.js';
 import { V2Embed } from '../utils/v2Embed.js';
-
-// Memuat env variables
-dotenv.config();
+import { config } from '../config.js';
 
 const CHANNEL_ID = '1498000052839383191';
 const MESSAGE_ID = '1511157565868871870';
@@ -94,9 +91,9 @@ client.once('ready', async () => {
 });
 
 // Login ke Discord
-const token = process.env.DISCORD_TOKEN;
+const token = config.token;
 if (!token) {
-  logger.error('[Script] DISCORD_TOKEN tidak diatur di berkas .env!');
+  logger.error('[Script] Token tidak diatur di konfigurasi/file .env!');
   process.exit(1);
 }
 client.login(token);
