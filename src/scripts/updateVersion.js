@@ -17,6 +17,8 @@ if (fs.existsSync(versionFilePath)) {
 // Get the bump type: major, minor, patch (default is patch)
 const args = process.argv.slice(2);
 const bumpType = args[0] ? args[0].toLowerCase() : 'patch';
+const amountArg = args[1] ? parseInt(args[1], 10) : 1;
+const incrementAmount = isNaN(amountArg) || amountArg < 1 ? 1 : amountArg;
 
 const versionParts = currentVersion.split('.');
 if (versionParts.length !== 3) {
@@ -29,14 +31,14 @@ let minor = parseInt(versionParts[1], 10);
 let patch = parseInt(versionParts[2], 10);
 
 if (bumpType === 'major') {
-  major += 1;
+  major += incrementAmount;
   minor = 0;
   patch = 0;
 } else if (bumpType === 'minor') {
-  minor += 1;
+  minor += incrementAmount;
   patch = 0;
 } else if (bumpType === 'patch') {
-  patch += 1;
+  patch += incrementAmount;
 } else {
   console.log(`[Version] Type '${bumpType}' unknown, keeping current version.`);
 }

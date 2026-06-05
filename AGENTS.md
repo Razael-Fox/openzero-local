@@ -116,9 +116,9 @@ When extending or editing this codebase, you **must** strictly follow these rule
 ### 8. Automated Version Bumping (SemVer)
 - To update the version across all files, do not manually edit files. Run the automated script:
   ```bash
-  npm run version:bump [major|minor|patch]
+  npm run version:bump [major|minor|patch] [amount]
   ```
-  This will dynamically update the root [VERSION](file:///data/data/com.termux/files/home/openzero-local/VERSION) file, [package.json](file:///data/data/com.termux/files/home/openzero-local/package.json), and [src/version.js](file:///data/data/com.termux/files/home/openzero-local/src/version.js).
+  This will dynamically update the root [VERSION](file:///data/data/com.termux/files/home/openzero-local/VERSION) file, [package.json](file:///data/data/com.termux/files/home/openzero-local/package.json), and [src/version.js](file:///data/data/com.termux/files/home/openzero-local/src/version.js). For example, `npm run version:bump patch 20` increments the patch version by 20.
 
 ---
 
