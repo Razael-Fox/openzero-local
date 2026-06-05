@@ -1,3 +1,4 @@
+// Managed by Razael-Fox Bot
 let currentColorIndex = 0;
 
 export const config = {
