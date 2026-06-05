@@ -37,7 +37,8 @@ const mockTracks = [
 
 // Import command dynamically after mocking
 const musicSearchCmd = (await import('../src/commands/utility/musicSearch.js')).default;
-const { musicSearchCache, generateMusicSearchEmbed } = await import('../src/commands/utility/musicSearch.js');
+const { musicSearchCache, generateMusicSearchEmbed, getLyricsForTrack } = await import('../src/commands/utility/musicSearch.js');
+
 
 describe('Music Search Slash Command', () => {
   let mockInteraction;
@@ -124,5 +125,27 @@ describe('Music Search Slash Command', () => {
     expect(mockInteraction.editReply).toHaveBeenCalled();
     const replyArg = mockInteraction.editReply.mock.calls[0][0];
     expect(replyArg.components).toBeDefined();
+  });
+
+  test('should fetch lyrics successfully from LRCLIB API', async () => {
+    const sessionId = 'test_session_456';
+    musicSearchCache.set(sessionId, {
+      query: 'Linkin Park',
+      results: mockTracks,
+      timestamp: Date.now()
+    });
+
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue([{
+        plainLyrics: 'Some plain lyrics',
+        syncedLyrics: '[00:10.00] Some synced lyrics'
+      }])
+    });
+
+    const embed = await getLyricsForTrack(sessionId, 0, 'id');
+    expect(embed).toBeDefined();
+
+    musicSearchCache.delete(sessionId);
   });
 });

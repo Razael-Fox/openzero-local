@@ -13,10 +13,12 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
 const isSupabaseConfigured =
+  process.env.NODE_ENV !== 'test' &&
   supabaseUrl &&
   supabaseUrl !== 'YOUR_SUPABASE_URL_HERE' &&
   supabaseKey &&
   supabaseKey !== 'YOUR_SUPABASE_ANON_KEY_HERE';
+
 
 export const supabaseClient = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseKey)

@@ -6,6 +6,7 @@ import {
   MessageFlags
 } from 'discord.js';
 import { V2Embed } from '../../utils/v2Embed.js';
+import { t } from '../../utils/i18n.js';
 import logger from '../../utils/logger.js';
 
 // Memory cache for active search sessions (tracks pagination)
@@ -45,17 +46,96 @@ async function searchMusic(query) {
 }
 
 /**
+ * Helper to fetch lyrics from LRCLIB API
+ */
+export async function getLyricsForTrack(sessionId, trackIndex, locale) {
+  const session = musicSearchCache.get(sessionId);
+  if (!session) {
+    return new V2Embed()
+      .setTitle(t('sessionExpiredTitle', locale))
+      .setDescription(t('searchExpired', locale))
+      .setColor(0xff3333)
+      .build();
+  }
+
+  const track = session.results[trackIndex];
+  if (!track) {
+    return new V2Embed()
+      .setTitle(t('errorTitle', locale))
+      .setDescription(t('lyricsSearchError', locale))
+      .setColor(0xff3333)
+      .build();
+  }
+
+  const artistName = track.artistName;
+  const trackName = track.trackName;
+
+  try {
+    const searchUrl = `https://lrclib.net/api/search?artist_name=${encodeURIComponent(artistName)}&track_name=${encodeURIComponent(trackName)}`;
+    const response = await fetch(searchUrl, {
+      headers: {
+        'User-Agent': 'OpenZero-Bot-Lyrics-Lookup'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`LRCLIB HTTP Error ${response.status}`);
+    }
+
+    const data = await response.json();
+    if (!data || data.length === 0) {
+      return new V2Embed()
+        .setTitle(t('lyricsTitle', locale, { track: trackName }))
+        .setDescription(t('lyricsNotFound', locale, { track: trackName, artist: artistName }))
+        .setColor(0xff8800)
+        .build();
+    }
+
+    // Prefer synced lyrics, fall back to plain lyrics
+    const match = data[0];
+    let lyricsText = match.syncedLyrics || match.plainLyrics;
+
+    if (!lyricsText) {
+      return new V2Embed()
+        .setTitle(t('lyricsTitle', locale, { track: trackName }))
+        .setDescription(t('lyricsNotFound', locale, { track: trackName, artist: artistName }))
+        .setColor(0xff8800)
+        .build();
+    }
+
+    // Clean up timestamps if synced lyrics are too cluttered, or show them as is
+    // Limit to fits in Discord character limits (4096)
+    if (lyricsText.length > 3000) {
+      lyricsText = lyricsText.substring(0, 2997) + '...';
+    }
+
+    return new V2Embed()
+      .setTitle(t('lyricsTitle', locale, { track: trackName }))
+      .setDescription(`**Artist:** \`${artistName}\`\n\n${lyricsText}`)
+      .build();
+  } catch (error) {
+    logger.error('[Lyrics API] Error fetching lyrics:', error);
+    return new V2Embed()
+      .setTitle(t('errorTitle', locale))
+      .setDescription(t('lyricsSearchError', locale))
+      .setColor(0xff3333)
+      .build();
+  }
+}
+
+/**
  * Generates the music search embed and buttons
  * @param {string} sessionId
  * @param {number} pageIndex
+ * @param {string} locale
  */
-export function generateMusicSearchEmbed(sessionId, pageIndex) {
+export function generateMusicSearchEmbed(sessionId, pageIndex, locale = 'id') {
   const session = musicSearchCache.get(sessionId);
   if (!session) {
     return {
       embed: new V2Embed()
-        .setTitle('Search Session Expired 🛑')
-        .setDescription('Sesi pencarian ini telah kedaluwarsa. Silakan lakukan pencarian baru dengan perintah `/music-search`.')
+        .setTitle(t('sessionExpiredTitle', locale))
+        .setDescription(t('searchExpired', locale))
         .setColor(0xff3333)
         .build(),
       components: []
@@ -71,10 +151,10 @@ export function generateMusicSearchEmbed(sessionId, pageIndex) {
   const end = start + itemsPerPage;
   const pageItems = results.slice(start, end);
 
-  let description = `Hasil pencarian untuk: **"${query}"**\n\n`;
+  let description = t('musicResultsFor', locale, { query });
 
   if (pageItems.length === 0) {
-    description += '*Tidak ditemukan lagu yang cocok.*';
+    description += `*${t('none', locale)}*`;
   } else {
     pageItems.forEach((track, index) => {
       const globalIndex = start + index + 1;
@@ -86,12 +166,10 @@ export function generateMusicSearchEmbed(sessionId, pageIndex) {
     });
   }
 
-  description += `*Halaman ${currentPage + 1} dari ${totalPages}*`;
+  description += `*${t('pageText', locale, { current: currentPage + 1, total: totalPages })}*`;
 
-  // Create pagination and action buttons
-  const buttonRow = new ActionRowBuilder();
-
-  buttonRow.addComponents(
+  // Create paginator row
+  const navRow = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId(`music_search_prev_${currentPage - 1}_${sessionId}`)
       .setStyle(ButtonStyle.Primary)
@@ -104,36 +182,82 @@ export function generateMusicSearchEmbed(sessionId, pageIndex) {
       .setDisabled(currentPage >= totalPages - 1)
   );
 
-  // If there are tracks on this page, let the user preview the first one
-  if (pageItems.length > 0 && pageItems[0].previewUrl) {
-    buttonRow.addComponents(
-      new ButtonBuilder()
-        .setLabel('Preview Teratas')
-        .setStyle(ButtonStyle.Link)
-        .setURL(pageItems[0].previewUrl)
-        .setEmoji('🎵')
-    );
+  const actionRows = [navRow];
+
+  // Create lyrics buttons row
+  if (pageItems.length > 0) {
+    const lyricsRow = new ActionRowBuilder();
+    pageItems.forEach((track, index) => {
+      const globalIndex = start + index + 1;
+      lyricsRow.addComponents(
+        new ButtonBuilder()
+          .setCustomId(`music_search_lyrics_${start + index}_${sessionId}`)
+          .setLabel(t('lyricsButtonLabel', locale, { index: globalIndex }))
+          .setStyle(ButtonStyle.Secondary)
+          .setEmoji('🎤')
+      );
+    });
+    actionRows.push(lyricsRow);
+
+    // Create preview buttons row (only for tracks that have a preview URL)
+    const previewRow = new ActionRowBuilder();
+    let hasPreviews = false;
+    pageItems.forEach((track, index) => {
+      const globalIndex = start + index + 1;
+      if (track.previewUrl) {
+        hasPreviews = true;
+        previewRow.addComponents(
+          new ButtonBuilder()
+            .setLabel(t('previewButtonLabel', locale, { index: globalIndex }))
+            .setStyle(ButtonStyle.Link)
+            .setURL(track.previewUrl)
+            .setEmoji('🎵')
+        );
+      }
+    });
+    if (hasPreviews) {
+      actionRows.push(previewRow);
+    }
   }
 
   const embed = new V2Embed()
-    .setTitle('Hasil Pencarian Musik 🎵')
-    .setDescription(description)
-    .addActionRow(buttonRow);
+    .setTitle(t('musicSearchTitle', locale))
+    .setDescription(description);
+
+  for (const row of actionRows) {
+    embed.addActionRow(row);
+  }
 
   return {
     embed: embed.build(),
-    components: [embed.build()]
+    components: [embed.build()] // In V2Embed, build() returns container.
   };
 }
 
 export default {
   data: new SlashCommandBuilder()
     .setName('music-search')
+    .setNameLocalizations({
+      id: 'cari-musik',
+      'en-US': 'music-search'
+    })
     .setDescription('Mencari lagu atau musik secara online.')
+    .setDescriptionLocalizations({
+      id: 'Mencari lagu atau musik secara online.',
+      'en-US': 'Search songs or music online.'
+    })
     .addStringOption(option =>
       option
         .setName('query')
+        .setNameLocalizations({
+          id: 'kata-kunci',
+          'en-US': 'query'
+        })
         .setDescription('Nama lagu atau penyanyi yang ingin dicari')
+        .setDescriptionLocalizations({
+          id: 'Nama lagu atau penyanyi yang ingin dicari',
+          'en-US': 'Name of the song or artist to search'
+        })
         .setRequired(true)
     )
     .setDMPermission(false),
@@ -143,6 +267,7 @@ export default {
    */
   async execute(interaction) {
     const query = interaction.options.getString('query');
+    const locale = interaction.locale;
     await interaction.deferReply();
 
     logger.info(`[Music Search] Menjalankan pencarian untuk: "${query}"`);
@@ -150,8 +275,8 @@ export default {
 
     if (results.length === 0) {
       const noResultsEmbed = new V2Embed()
-        .setTitle('Musik Tidak Ditemukan 🔍')
-        .setDescription(`Tidak ditemukan hasil untuk pencarian lagu **"${query}"**.`)
+        .setTitle(t('musicSearchTitle', locale))
+        .setDescription(t('noMusicResults', locale, { query }))
         .build();
 
       return interaction.editReply({
@@ -173,7 +298,7 @@ export default {
       musicSearchCache.delete(sessionId);
     }, 10 * 60 * 1000);
 
-    const { embed } = generateMusicSearchEmbed(sessionId, 0);
+    const { embed } = generateMusicSearchEmbed(sessionId, 0, locale);
 
     await interaction.editReply({
       components: [embed],

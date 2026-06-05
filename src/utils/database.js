@@ -12,7 +12,7 @@ if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
 
-let db = { guilds: {} };
+let db = { guilds: {}, messages: [] };
 
 function loadDb() {
   try {
@@ -20,21 +20,67 @@ function loadDb() {
       const data = fs.readFileSync(dbPath, 'utf8');
       db = JSON.parse(data);
     } else {
-      db = { guilds: {} };
+      db = { guilds: {}, messages: [] };
     }
   } catch {
-    db = { guilds: {} };
+    db = { guilds: {}, messages: [] };
   }
 }
 
+// Initial load on startup
 loadDb();
 
+let saveTimeout = null;
+const isTest = process.env.NODE_ENV === 'test';
+
+/**
+ * Save database to disk.
+ * Uses synchronous writing in tests, and debounced asynchronous writing in production.
+ */
 function saveDb() {
+  if (isTest) {
+    saveDbSync();
+    return;
+  }
+
+  if (saveTimeout) return;
+
+  saveTimeout = setTimeout(() => {
+    saveTimeout = null;
+    fs.writeFile(dbPath, JSON.stringify(db, null, 2), 'utf8', (err) => {
+      if (err) {
+        // Fallback sync write in case of issue
+        saveDbSync();
+      }
+    });
+  }, 1000); // Debounce writes by 1 second to optimize CPU/disk I/O
+}
+
+/**
+ * Synchronously writes memory cache to disk.
+ */
+export function saveDbSync() {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+    saveTimeout = null;
+  }
   try {
     fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), 'utf8');
   } catch {
-    // Ignore/log write failures
+    // Ignore write failures
   }
+}
+
+// Register flush on process exit/interruption to avoid data loss
+if (!isTest) {
+  process.on('SIGINT', () => {
+    saveDbSync();
+    process.exit(0);
+  });
+  process.on('SIGTERM', () => {
+    saveDbSync();
+    process.exit(0);
+  });
 }
 
 /**
@@ -44,7 +90,6 @@ function saveDb() {
  * @returns {number}
  */
 export function incrementMessageCount(guildId, userId) {
-  loadDb();
   if (!db.guilds) db.guilds = {};
   if (!db.guilds[guildId]) db.guilds[guildId] = {};
   if (!db.guilds[guildId][userId]) db.guilds[guildId][userId] = 0;
@@ -61,19 +106,16 @@ export function incrementMessageCount(guildId, userId) {
  * @returns {number}
  */
 export function getMessageCount(guildId, userId) {
-  loadDb();
   if (!db.guilds || !db.guilds[guildId] || !db.guilds[guildId][userId]) {
     return 0;
   }
   return db.guilds[guildId][userId];
 }
 
-
 /**
  * Record a message locally
  */
 export function recordMessageLocally(guildId, channelId, channelName, userId, username, content, messageId, createdAt) {
-  loadDb();
   if (!db.messages) db.messages = [];
   db.messages.push({
     guild_id: guildId,
@@ -92,7 +134,6 @@ export function recordMessageLocally(guildId, channelId, channelName, userId, us
  * Get recorded messages for a user in a guild locally (within 7 days)
  */
 export function getUserMessagesLocally(guildId, userId) {
-  loadDb();
   if (!db.messages) return [];
   const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   return db.messages.filter(
@@ -107,7 +148,6 @@ export function getUserMessagesLocally(guildId, userId) {
  * Delete messages older than 7 days locally
  */
 export function cleanupOldMessagesLocally() {
-  loadDb();
   if (!db.messages) return;
   const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
   const initialCount = db.messages.length;
@@ -124,6 +164,5 @@ export function cleanupOldMessagesLocally() {
  */
 export function clearDb() {
   db = { guilds: {}, messages: [] };
-  saveDb();
+  saveDbSync();
 }
-

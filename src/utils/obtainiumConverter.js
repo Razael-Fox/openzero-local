@@ -155,7 +155,7 @@ export async function convertObtainiumFile(inputPath, outputPathJson, outputPath
       logger.info(`[Obtainium Converter] Loaded ${existingAppsMap.size} existing apps from ${outputPathJson} to reuse descriptions/READMEs`);
     }
   } catch (error) {
-    logger.info(`[Obtainium Converter] No existing enriched JSON found (or failed to read). Fetching all details from scratch.`);
+    logger.info('[Obtainium Converter] No existing enriched JSON found (or failed to read). Fetching all details from scratch.');
   }
 
   const result = [];

@@ -42,5 +42,16 @@
   "moreMessagesText": "\n*And there are **{count}** other messages stored.*",
   "chatAt": "in",
   "errorTitle": "Error ⚠️",
-  "messagesRecordError": "System failure occurred while fetching this user's message records."
+  "messagesRecordError": "System failure occurred while fetching this user's message records.",
+  "musicSearchTitle": "Music Search Results 🎵",
+  "noMusicResults": "No results found for music search **\"{query}\"**.",
+  "musicResultsFor": "Search results for: **\"{query}\"**\n\n",
+  "searchExpired": "This search session has expired. Please perform a new search using `/music-search`.",
+  "sessionExpiredTitle": "Session Expired 🛑",
+  "lyricsNotFound": "Lyrics not found for track **\"{track}\"** by `{artist}`.",
+  "lyricsTitle": "Lyrics: {track} 🎤",
+  "lyricsSearchError": "An error occurred while fetching lyrics from database.",
+  "pageText": "Page {current} of {total}",
+  "lyricsButtonLabel": "Lyrics {index}",
+  "previewButtonLabel": "Preview {index}"
 }

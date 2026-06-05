@@ -92,7 +92,7 @@ export default {
           const { generateMusicSearchEmbed } = await import(
             '../commands/utility/musicSearch.js'
           );
-          const { embed } = generateMusicSearchEmbed(sessionId, pageIndex);
+          const { embed } = generateMusicSearchEmbed(sessionId, pageIndex, interaction.locale);
 
           await interaction.editReply({
             components: [embed],
@@ -104,7 +104,35 @@ export default {
           );
         } catch (error) {
           logger.error(
-            `[Button Error] Gagal memproses interaksi tombol music search:`,
+            '[Button Error] Gagal memproses interaksi tombol music search:',
+            error
+          );
+        }
+      } else if (interaction.customId.startsWith('music_search_lyrics_')) {
+        try {
+          // Defer reply as ephemeral since lyrics can be long and are personalized to the clicker
+          await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+          const parts = interaction.customId.split('_');
+          const trackIndex = parseInt(parts[3], 10) || 0;
+          const sessionId = parts.slice(4).join('_');
+
+          const { getLyricsForTrack } = await import(
+            '../commands/utility/musicSearch.js'
+          );
+          const embed = await getLyricsForTrack(sessionId, trackIndex, interaction.locale);
+
+          await interaction.editReply({
+            components: [embed],
+            flags: MessageFlags.IsComponentsV2
+          });
+
+          logger.info(
+            `[Button Clicked] ${interaction.customId} diproses (Track Index: ${trackIndex}) untuk ${interaction.user.tag}`
+          );
+        } catch (error) {
+          logger.error(
+            `[Button Error] Gagal memproses lirik untuk tombol ${interaction.customId}:`,
             error
           );
         }

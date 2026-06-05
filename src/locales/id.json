@@ -42,5 +42,16 @@
   "moreMessagesText": "\n*Dan masih ada **{count}** pesan lainnya yang tersimpan.*",
   "chatAt": "di",
   "errorTitle": "Error ⚠️",
-  "messagesRecordError": "Terjadi kegagalan sistem saat mengambil rekaman pesan pengguna ini."
+  "messagesRecordError": "Terjadi kegagalan sistem saat mengambil rekaman pesan pengguna ini.",
+  "musicSearchTitle": "Hasil Pencarian Musik 🎵",
+  "noMusicResults": "Tidak ditemukan hasil untuk pencarian lagu **\"{query}\"**.",
+  "musicResultsFor": "Hasil pencarian untuk: **\"{query}\"**\n\n",
+  "searchExpired": "Sesi pencarian ini telah kedaluwarsa. Silakan lakukan pencarian baru dengan perintah `/music-search`.",
+  "sessionExpiredTitle": "Sesi Kedaluwarsa 🛑",
+  "lyricsNotFound": "Lirik tidak ditemukan untuk lagu **\"{track}\"** oleh `{artist}`.",
+  "lyricsTitle": "Lirik: {track} 🎤",
+  "lyricsSearchError": "Terjadi kegagalan saat mengambil lirik dari basis data.",
+  "pageText": "Halaman {current} dari {total}",
+  "lyricsButtonLabel": "Lirik {index}",
+  "previewButtonLabel": "Preview {index}"
 }
