@@ -61,33 +61,27 @@ export default {
     // Daftarkan slash commands secara otomatis saat bot aktif
     await deployCommands(client);
 
-    // Update daftar Obtainium secara otomatis dengan data terbaru dari JSON saat startup
+    // Jalankan pembersihan pesan lama (> 7 hari) pada startup dan ulangi setiap 24 jam
     try {
-      const channelId = config.obtainium?.channelId;
-      const messageId = config.obtainium?.messageId;
-
-      if (channelId && messageId) {
-        logger.info(`[Obtainium] Mencoba mengupdate pesan list Obtainium (ID: ${messageId})...`);
-        const channel = await client.channels.fetch(channelId);
-        if (channel && channel.isTextBased()) {
-          const message = await channel.messages.fetch(messageId);
-          if (message) {
-            const { getObtainiumEmbed } = await import('../utils/obtainiumHelper.js');
-            const { MessageFlags } = await import('discord.js');
-            const embed = await getObtainiumEmbed(0); // Selalu perbarui ke halaman pertama
-
-            await message.edit({
-              components: [embed],
-              flags: MessageFlags.IsComponentsV2
-            });
-            logger.info(
-              '[Obtainium] Sukses mengupdate pesan list Obtainium ke data terbaru pada startup!'
-            );
-          }
+      const { cleanupOldMessages } = await import('../utils/supabase.js');
+      await cleanupOldMessages();
+      setInterval(async () => {
+        try {
+          await cleanupOldMessages();
+        } catch (err) {
+          logger.error('[Cleanup Interval] Gagal membersihkan pesan lama:', err);
         }
-      }
+      }, 24 * 60 * 60 * 1000); // 24 jam sekali
     } catch (error) {
-      logger.error('[Obtainium] Gagal mengupdate otomatis list Obtainium pada startup:', error);
+      logger.error('[Client Startup] Gagal menjalankan pembersihan pesan lama:', error);
+    }
+
+    // Inisialisasi auto watcher Obtainium data & update list otomatis
+    try {
+      const { initObtainiumWatcher } = await import('../utils/obtainiumWatcher.js');
+      await initObtainiumWatcher(client);
+    } catch (error) {
+      logger.error('[Obtainium Startup] Gagal menginisialisasi Obtainium Watcher:', error);
     }
   }
 };

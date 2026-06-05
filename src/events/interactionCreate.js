@@ -1,4 +1,11 @@
-import { Events, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags, Collection } from 'discord.js';
+import {
+  Events,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  MessageFlags,
+  Collection
+} from 'discord.js';
 import logger from '../utils/logger.js';
 import { V2Embed } from '../utils/v2Embed.js';
 import { getObtainiumEmbed } from '../utils/obtainiumHelper.js';
@@ -72,6 +79,63 @@ export default {
             error
           );
         }
+      } else if (
+        interaction.customId.startsWith('music_search_prev_') ||
+        interaction.customId.startsWith('music_search_next_')
+      ) {
+        try {
+          await interaction.deferUpdate();
+          const parts = interaction.customId.split('_');
+          const pageIndex = parseInt(parts[3], 10) || 0;
+          const sessionId = parts.slice(4).join('_');
+
+          const { generateMusicSearchEmbed } = await import(
+            '../commands/utility/musicSearch.js'
+          );
+          const { embed } = generateMusicSearchEmbed(sessionId, pageIndex, interaction.locale);
+
+          await interaction.editReply({
+            components: [embed],
+            flags: MessageFlags.IsComponentsV2
+          });
+
+          logger.info(
+            `[Button Clicked] ${interaction.customId} diproses (Page: ${pageIndex}) untuk ${interaction.user.tag}`
+          );
+        } catch (error) {
+          logger.error(
+            '[Button Error] Gagal memproses interaksi tombol music search:',
+            error
+          );
+        }
+      } else if (interaction.customId.startsWith('music_search_lyrics_')) {
+        try {
+          // Defer reply as ephemeral since lyrics can be long and are personalized to the clicker
+          await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
+          const parts = interaction.customId.split('_');
+          const trackIndex = parseInt(parts[3], 10) || 0;
+          const sessionId = parts.slice(4).join('_');
+
+          const { getLyricsForTrack } = await import(
+            '../commands/utility/musicSearch.js'
+          );
+          const embed = await getLyricsForTrack(sessionId, trackIndex, interaction.locale);
+
+          await interaction.editReply({
+            components: [embed],
+            flags: MessageFlags.IsComponentsV2
+          });
+
+          logger.info(
+            `[Button Clicked] ${interaction.customId} diproses (Track Index: ${trackIndex}) untuk ${interaction.user.tag}`
+          );
+        } catch (error) {
+          logger.error(
+            `[Button Error] Gagal memproses lirik untuk tombol ${interaction.customId}:`,
+            error
+          );
+        }
       }
       return;
     }
@@ -104,7 +168,9 @@ export default {
         const timeLeft = ((expirationTime - now) / 1000).toFixed(1);
         const cooldownEmbed = new V2Embed()
           .setTitle('Slow down! ⏱️')
-          .setDescription(`Harap tunggu \`${timeLeft}\` detik lagi sebelum menggunakan kembali perintah \`/${interaction.commandName}\`.`)
+          .setDescription(
+            `Harap tunggu \`${timeLeft}\` detik lagi sebelum menggunakan kembali perintah \`/${interaction.commandName}\`.`
+          )
           .setColor(0xff3333)
           .build();
 

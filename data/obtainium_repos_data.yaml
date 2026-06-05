@@ -2,6 +2,8 @@
   url: "https://github.com/Mahmud0808/ColorBlendr"
   id: "com.drdisagree.colorblendr"
   author: "Mahmud0808"
+  latestVersion: "v2.1.1"
+  installedVersion: "v2.1.1"
   description: |
     An Android app for customizing Material You colors on devices with Android 12+. It lets you tweak accent colors, background saturation, and more for a personalized look.
   readme: |
@@ -123,6 +125,8 @@
   url: "https://github.com/ImranR98/Obtainium"
   id: "dev.imranr.obtainium"
   author: "ImranR98"
+  latestVersion: "v1.4.3"
+  installedVersion: "v1.4.3"
   description: |
     Get Android app updates straight from the source.
   readme: |
@@ -213,6 +217,8 @@
   url: "https://github.com/JunkFood02/Seal"
   id: "com.junkfood.seal"
   author: "JunkFood02"
+  latestVersion: "v1.13.1"
+  installedVersion: "v1.13.1"
   description: |
     🦭 Video/Audio Downloader for Android, based on yt-dlp
   readme: |
@@ -391,6 +397,8 @@
   url: "https://github.com/Julow/Unexpected-Keyboard"
   id: "juloo.keyboard2"
   author: "Julow"
+  latestVersion: "2.0.4"
+  installedVersion: "2.0.4"
   description: |
     A lightweight keyboard for Android
   readme: |
@@ -448,6 +456,8 @@
   url: "https://github.com/namidaco/namida"
   id: "com.msob7y.namida"
   author: "namidaco"
+  latestVersion: "v6.0.1"
+  installedVersion: "v6.0.1"
   description: |
     A Beautiful and Feature-rich Music & Video Player with Youtube Support, Built in Flutter
   readme: |
@@ -928,6 +938,8 @@
   url: "https://github.com/NuvioMedia/NuvioMobile"
   id: "com.nuvio.app"
   author: "NuvioMedia"
+  latestVersion: "0.2.1"
+  installedVersion: ""
   description: |
     Official Nuvio Mobile Repository
   readme: |
@@ -1037,6 +1049,8 @@
   url: "https://github.com/proninyaroslav/libretorrent"
   id: "org.proninyaroslav.libretorrent"
   author: "proninyaroslav"
+  latestVersion: "4.0.1"
+  installedVersion: ""
   description: |
     Free and Open Source, full-featured torrent client for Android. Mirrored from https://gitlab.com/proninyaroslav/libretorrent
   readme: |
@@ -1158,6 +1172,8 @@
   url: "https://github.com/TrianguloY/URLCheck"
   id: "com.trianguloy.urlchecker"
   author: "TrianguloY"
+  latestVersion: "v3.5"
+  installedVersion: "v3.5"
   description: |
     Android app by TrianguloY: URLCheck
   readme: |
@@ -1299,6 +1315,8 @@
   url: "https://codeberg.org/s1m/savertuner"
   id: "s1m.savertuner"
   author: "s1m"
+  latestVersion: "1.1.6"
+  installedVersion: "1.1.6"
   description: |
     Extension to the built-in Android Battery Saver
   readme: |
@@ -1360,6 +1378,8 @@
   url: "https://github.com/deltazefiro/Amarok-Hider"
   id: "deltazero.amarok.foss"
   author: "deltazefiro"
+  latestVersion: "v0.10.1"
+  installedVersion: ""
   description: |
     Hide your private files and apps with a single click.
   readme: |
@@ -1458,6 +1478,8 @@
   url: "https://github.com/AbdurazaaqMohammed/AntiSplit-M"
   id: "com.abdurazaaqmohammed.AntiSplit"
   author: "AbdurazaaqMohammed"
+  latestVersion: "2.3.1"
+  installedVersion: "2.3.1"
   description: |
     App to AntiSplit (merge) split APKs (APKS/XAPK/APKM) to regular .APK file on Android
   readme: |
@@ -1517,6 +1539,8 @@
   url: "https://github.com/Senzme/NFile"
   id: "com.rubex.nfile"
   author: "Senzme"
+  latestVersion: "v1.0.41"
+  installedVersion: "v1.0.41"
   description: |
     A Beautiful File Manager
   readme: |
@@ -1576,6 +1600,8 @@
   url: "https://github.com/Musheer360/SwiftSlate"
   id: "com.musheer360.swiftslate"
   author: "Musheer360"
+  latestVersion: "v1.0.48"
+  installedVersion: "v1.0.48"
   description: |
     Android accessibility service for AI-powered text transformation
   readme: |
@@ -2257,6 +2283,8 @@
   url: "https://github.com/theovilardo/PixelPlayer"
   id: "com.theveloper.pixelplay"
   author: "theovilardo"
+  latestVersion: "0.7.0-beta"
+  installedVersion: "0.7.0-beta"
   description: |
     privacy-first Android music player built with Material 3 Expressive. Play offline, sync lyrics, fine-tune with equalizer presets, and cast to your devices.
   readme: |

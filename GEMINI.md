@@ -27,6 +27,14 @@ Membaca subfolder di dalam `src/commands/` secara dinamis. Mendukung **Slash Com
 ### 4. Cooldown & Anti-Spam (`src/events/interactionCreate.js`)
 Sistem pertahanan bot yang membatasi eksekusi command sebesar **3 detik** per perintah per pengguna. Menampilkan hitungan mundur secara privat (*ephemeral*) menggunakan `V2Embed` jika pengguna melakukan spamming.
 
+### 5. Mesin Internasionalisasi & Lokalisasi / i18n (`src/utils/i18n.js`)
+Menyediakan utilitas `t(key, locale, replaceData)` untuk menerjemahkan teks respon bot secara dinamis berdasarkan bahasa klien (Discord client locale) pengguna yang melakukan interaksi. Mendukung Bahasa Indonesia (`id`) dan Inggris (`en`). File kamus bahasa disimpan di folder `src/locales/`.
+
+### 6. Integrasi Supabase & Fallback Database Lokal (`src/utils/supabase.js` & `src/utils/database.js`)
+*   **Supabase Log:** Mencatat seluruh pesan guild yang masuk ke tabel Supabase `message_records` untuk keperluan pemantauan perilaku buruk (*bad behavior monitoring*).
+*   **7-Day Auto Cleanup:** Bot secara rutin menghapus pesan berumur lebih dari 7 hari dari database pada startup dan setiap interval 24 jam sekali.
+*   **Local Fallback:** Jika berkas `.env` belum dikonfigurasi dengan URL & Key Supabase, sistem secara otomatis mengalihkan penyimpanan data pesan secara lokal ke dalam `data/database.json`. Hal ini membuat bot aman dari crash dan mudah ditest secara offline.
+
 ---
 
 ## Integrasi Discord Components V2 & `V2Embed`
@@ -56,13 +64,32 @@ Mengelola role pengguna di server dengan hak akses `ManageRoles`.
 *   **`/role id [role]`**: Mengecek ID dan informasi detail sebuah role.
 
 ### 3. Perintah `/purge` (Moderation)
-Menghapus pesan secara massal di saluran teks dengan hak akses `ManageMessages`.
+Mengaktifkan penghapusan pesan secara massal di saluran teks dengan hak akses `ManageMessages`.
 *   **`/purge [amount]`**: Menghapus pesan (1-100, default: 100). Otomatis menyaring pesan yang berumur lebih dari 14 hari agar tidak menimbulkan error API.
 
-### 4. Context Menu Command: `Translate to English` (Apps Selection)
+### 4. Perintah `/music-search` (Utility)
+Mencari trek lagu di Apple iTunes Search API dan menampilkan hasilnya dengan visual premium menggunakan layout Discord Message Components V2.
+*   **`/music-search [query]`**: Mencari lagu berdasarkan judul atau artis. Hasil pencarian menampilkan gambar sampul album (cover art) resolusi tinggi dan memiliki navigasi halaman.
+*   **Tombol 🎤 Lirik #X**: Mengambil lirik lagu secara instan langsung dari API LRCLIB.
+*   **Tombol 🎵 Preview #X**: Tautan eksternal pratinjau audio lagu jika tersedia.
+*   Mendukung lokalisasi i18n penuh (Bahasa Indonesia / Inggris).
+
+### 5. Context Menu: `Translate to English` (Apps Selection)
 Penerjemah pesan otomatis yang diintegrasikan ke menu konteks Discord.
-*   **Cara kerja**: Pengguna menekan lama/klik kanan pesan -> **Apps** -> **Translate to English**. 
-*   Pesan akan diterjemahkan secara otomatis menggunakan `@vitalets/google-translate-api` secara gratis, murni secara lokal/HTTP di Termux tanpa memerlukan kartu kredit atau Docker.
+*   Pesan diterjemahkan menggunakan `@vitalets/google-translate-api` secara gratis dan murni lokal.
+
+### 6. Context Menu Terkonsolidasi: `User Info` (Apps Selection)
+Perintah klik kanan pengguna satu pintu yang menggabungkan seluruh informasi profil:
+*   Informasi global (Username, ID, Akun Bot/Sistem, Lencana/Badges, Banner Color).
+*   Informasi khusus Server (Nickname server, Role, Key permissions, Status Booster).
+*   Tanggal bergabung Discord & Server.
+*   Informasi status presence (Online, idle, dnd, playing game, Spotify, dll).
+*   Statistik Pesan Terkirim (`Messages Sent`) di server.
+*   Tombol download Avatar Global, Server Avatar, dan Banner Image.
+*   Respon output mendukung lokalisasi bahasa (Indonesia/Inggris) berdasarkan bahasa klien pengguna.
+
+### 7. Context Menu: `Messages Record` (Apps Selection)
+Mengambil riwayat pesan yang dikirim oleh target pengguna di berbagai channel server ini selama 7 hari terakhir. Digunakan oleh moderator untuk memonitor perilaku pengguna. Respon output mendukung lokalisasi bahasa.
 
 ---
 
