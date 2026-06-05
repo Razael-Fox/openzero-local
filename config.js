@@ -59,7 +59,7 @@ export const config = {
     details: 'Exploring Leonida & Vice City',
     state: 'Campaign: 68% Completed',
     assets: {
-      largeImage: 'https://i.imgur.com/ByUhao8.png', // GTA VI Artwork
+      largeImage: 'https://discord.c99.nl/widget/theme-1/1511151761660838049.png', // Discord C99 Status Widget
       largeText: 'Grand Theft Auto VI',
       smallImage: 'https://i.imgur.com/pYVjN18.png', // Rockstar Games Logo
       smallText: 'Leonida County'
