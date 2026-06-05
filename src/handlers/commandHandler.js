@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 import { REST, Routes, Collection } from 'discord.js';
 import logger from '../utils/logger.js';
+import { config } from '../config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,13 +58,13 @@ export async function loadCommands(client) {
  * @param {import('discord.js').Client} client
  */
 export async function deployCommands(client) {
-  const token = process.env.DISCORD_TOKEN;
-  const clientId = process.env.CLIENT_ID;
-  const guildId = process.env.GUILD_ID;
+  const token = config.token;
+  const clientId = config.clientId;
+  const guildId = config.guildId;
 
   if (!token || !clientId) {
     logger.warn(
-      '[Command Handler] DISCORD_TOKEN atau CLIENT_ID tidak diatur di file .env. Melewati registrasi Slash Commands.'
+      '[Command Handler] Token atau Client ID tidak diatur. Melewati registrasi Slash Commands.'
     );
     return;
   }

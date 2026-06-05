@@ -9,6 +9,7 @@ import {
 import logger from '../utils/logger.js';
 import { V2Embed } from '../utils/v2Embed.js';
 import { getObtainiumEmbed } from '../utils/obtainiumHelper.js';
+import { Symbols } from '../utils/symbols.js';
 
 const cooldowns = new Collection();
 
@@ -37,7 +38,7 @@ export default {
           );
 
           const embed = new V2Embed()
-            .setTitle('Pong! 🏓')
+            .setTitle(`Pong! ${Symbols.PING}`)
             .setDescription(
               `*   **Latency Interaksi:** \`${latency}ms\`\n` +
                 `*   **Heartbeat API:** \`${interaction.client.ws.ping}ms\``
@@ -167,7 +168,7 @@ export default {
       if (now < expirationTime) {
         const timeLeft = ((expirationTime - now) / 1000).toFixed(1);
         const cooldownEmbed = new V2Embed()
-          .setTitle('Slow down! ⏱️')
+          .setTitle(`Slow down! ${Symbols.COOLDOWN}`)
           .setDescription(
             `Harap tunggu \`${timeLeft}\` detik lagi sebelum menggunakan kembali perintah \`/${interaction.commandName}\`.`
           )

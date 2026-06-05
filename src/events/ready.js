@@ -46,12 +46,17 @@ export default {
           };
         }
 
+        // Jika dalam mode development/test (lokal), otomatis atur status menjadi 'invisible' (offline)
+        const botStatus = config.nodeEnv === 'production'
+          ? (config.activity?.status || 'online')
+          : 'invisible';
+
         client.user.setPresence({
           activities: [activityPayload],
-          status: 'online'
+          status: botStatus
         });
         logger.info(
-          `[Client] Aktivitas bot diatur menjadi: ${actTypeString} ${actName} (${config.activity.details || ''})`
+          `[Client] Aktivitas bot diatur menjadi: ${actTypeString} ${actName} (Status: ${botStatus})`
         );
       }
     } catch (error) {

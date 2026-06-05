@@ -1,14 +1,12 @@
 import fs from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import logger from './logger.js';
 import { convertObtainiumFile } from './obtainiumConverter.js';
 import { updateObtainiumMessage } from './obtainiumHelper.js';
+import { config } from '../config.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DATA_DIR = path.join(__dirname, '../../data');
+const DATA_DIR = config.database.dir;
 const OUTPUT_JSON = path.join(DATA_DIR, 'obtainium_repos_data.json');
 const OUTPUT_YAML = path.join(DATA_DIR, 'obtainium_repos_data.yaml');
 
@@ -87,6 +85,10 @@ export async function initObtainiumWatcher(client) {
     await processFile(latestFile, client);
   } else {
     logger.warn('[Obtainium Watcher] No obtainium-export-*.json files found in data directory.');
+    // Ensure Obtainium message is initialized/created on startup if no file is processed
+    if (client) {
+      await updateObtainiumMessage(client);
+    }
   }
 
   // 2. Watch directory for changes

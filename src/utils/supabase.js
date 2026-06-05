@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
+import { config } from '../config.js';
 import logger from './logger.js';
 import {
   recordMessageLocally,
@@ -7,18 +7,15 @@ import {
   cleanupOldMessagesLocally
 } from './database.js';
 
-dotenv.config();
-
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
+const supabaseUrl = config.supabase.url;
+const supabaseKey = config.supabase.key;
 
 const isSupabaseConfigured =
-  process.env.NODE_ENV !== 'test' &&
+  config.nodeEnv !== 'test' &&
   supabaseUrl &&
   supabaseUrl !== 'YOUR_SUPABASE_URL_HERE' &&
   supabaseKey &&
   supabaseKey !== 'YOUR_SUPABASE_ANON_KEY_HERE';
-
 
 export const supabaseClient = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseKey)
