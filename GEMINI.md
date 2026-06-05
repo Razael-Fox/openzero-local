@@ -17,9 +17,9 @@ Bot ini terbagi menjadi beberapa komponen utama:
 ### 1. Log Handler (`src/utils/logger.js`)
 Menggunakan winston dan chalk untuk menghasilkan pencatatan log berwarna yang rapi, sekaligus menyimpan salinan log ke file `logs/combined.log` dan `logs/error.log`.
 
-### 2. Auto Versioning (CalVer) (`src/version.js` & `src/scripts/updateVersion.js`)
-*   **CalVer Format:** Menggunakan penomoran versi berbasis kalender `YY.MM.DD` secara global.
-*   **Auto Deployment Update:** Setiap kali bot dideploy/dirilis ke GitHub, pipeline CI/CD otomatis memperbarui versi ini berdasarkan tanggal rilis. Versi dimuat dan ditampilkan pada log startup bot (`src/index.js`).
+### 2. Auto Versioning (SemVer) (`VERSION`, `src/version.js` & `src/scripts/updateVersion.js`)
+*   **SemVer Format:** Menggunakan penomoran versi berbasis SemVer (misalnya `1.6.0`) secara terpusat di file root `VERSION`.
+*   **Auto Deployment Update:** Script update versi secara otomatis menyinkronkan nilai dari `VERSION` ke `package.json` dan `src/version.js` secara konsisten.
 
 ### 3. Event Handler (`src/handlers/eventHandler.js`)
 Membaca seluruh file di dalam direktori `src/events/` secara otomatis pada startup dan mendaftarkannya ke client Discord listener.
@@ -45,12 +45,11 @@ Menyediakan utilitas `t(key, locale, replaceData)` untuk menerjemahkan teks resp
 
 Discord memperkenalkan **Message Components V2** (`ContainerBuilder`, `TextDisplayBuilder`, dll.) untuk menggantikan legacy embeds. Utilitas **`src/utils/v2Embed.js`** dibuat sebagai kelas pembantu dengan antarmuka fluida (*fluent API*).
 
-### Aksen Warna Berurutan (Sequential Shuffle)
-Warna aksen dasar embed diatur secara berurutan (tidak acak) setiap kali sebuah `V2Embed` dibuat. Berputar secara sekuensial di antara warna berikut (didefinisikan di `src/config.js`):
-1. `#6e4cc1` (Ungu)
-2. `#242221` (Hitam Gelap)
-3. `#f58e25` (Oranye)
-4. `#fdfdfd` (Putih)
+### Aksen Warna Embed (`colorStrategy`)
+Warna aksen dasar embed diatur melalui strategi pewarnaan fleksibel (`colorStrategy`) di root `config.js`. Mendukung kelas pewarnaan:
+*   `SpecificColor`: Menggunakan satu warna spesifik yang tetap.
+*   `SequentialColor`: Memutar daftar warna secara berurutan pada setiap pembuatan embed.
+*   `RandomColor`: Memilih warna secara acak dari daftar pilihan warna.
 
 ---
 
@@ -115,5 +114,5 @@ Mengambil riwayat pesan yang dikirim oleh target pengguna di berbagai channel se
 
 ## Aturan Branching & Workflow Rilis
 
-* **`release`**: Merupakan branch utama/produksi yang stabil. Semua update di branch ini dikelola dan digabungkan oleh **Razael-Fox Bot**. Push ke branch ini otomatis memicu GitHub Actions untuk membuat paket `.tar.gz` proyek dan mempublikasikannya ke halaman rilis GitHub.
+* **`release`**: Merupakan branch utama/produksi yang stabil. Semua update di branch ini dikelola dan digabungkan oleh **Razael-Fox Bot**.
 * **`dev`**: Merupakan branch aktif untuk pengerjaan kode/perbaikan oleh pengembang menggunakan profil pengguna personal (`razaeldotexe`).

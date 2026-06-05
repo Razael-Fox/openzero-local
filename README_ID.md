@@ -27,39 +27,23 @@ Ini adalah **OpenZero Local Version**—sebuah bot Discord mandiri yang dirancan
    * `/webhook`: Membuat, melihat informasi detail, dan mengelola webhook server.
    * `/music-search`: Mencari trek musik menggunakan iTunes API. Menampilkan gambar cover resolusi tinggi, hasil paginasi (3 trek per halaman), pencarian lirik instan melalui integrasi LRCLIB API, dan tombol pratinjau audio langsung menggunakan Discord Message Components V2.
 9. **Sistem Cooldown Anti-Spam**: Batasan waktu tunggu (cooldown) selama 3 detik per perintah per pengguna untuk mencegah spam dan rate limit.
-10. **Perputaran Warna Embed Berurutan**: Secara otomatis mengganti warna aksen garis samping embed secara berurutan untuk setiap pesan baru dari daftar warna premium berikut:
-    * `#6e4cc1` (Ungu)
-    * `#242221` (Hitam Gelap)
-    * `#f58e25` (Oranye)
-    * `#fdfdfd` (Putih)
+10. **Strategi Warna Embed Fleksibel**: Secara otomatis mengatur warna aksen garis samping embed menggunakan strategi pewarnaan yang dapat dikonfigurasi (`SpecificColor`, `SequentialColor`, atau `RandomColor` di dalam root `config.js`).
 11. **Layout Embed Premium (Components V2)**: Tampilan informasi bot menggunakan layout modern baru dari Discord (bukan embed lama yang monoton) lengkap dengan tombol interaktif yang tertanam langsung di dalam kotak informasi.
 12. **Logger Konsol & File**: Mencatat setiap aktivitas chat dan eksekusi perintah bot di konsol dengan indikator status Unicode berwarna, serta menyimpannya otomatis ke file log lokal (`logs/`).
-13. **Auto Status Kehadiran**: Bot secara otomatis menampilkan status bermain game (default: *Playing GTA 6*) saat aktif.
+13. **Auto Status Kehadiran**: Bot secara otomatis menampilkan status bermain game (default: *Playing GTA 6*) saat aktif. Bot otomatis diatur menjadi `invisible` (offline) jika dijalankan di lingkungan pengujian lokal (development).
 14. **Script Admin Peraturan (Rules)**: Perintah cepat bagi pemilik bot untuk mengirim atau mengedit pesan peraturan komunitas yang rapi dan minim emoji di channel server tertentu.
-15. **Calendar Versioning (CalVer)** *(Baru)*: Pelacakan versi bot secara global berbasis tanggal kalender dengan format `YY.MM.DD` (seperti `26.06.05`). Diperbarui secara otomatis saat startup dan menghasilkan tag versi unik saat melakukan deploy/release rilis lewat CI/CD.
+15. **Semantic Versioning (SemVer)** *(Baru)*: Pelacakan versi bot secara global menggunakan format SemVer (seperti `1.6.0`). Dikelola melalui file root `VERSION` dan disinkronkan secara dinamis ke seluruh konfigurasi bot.
 
 ---
 
 ## Pilihan Instalasi
 
-Anda dapat menginstal proyek ini menggunakan salah satu dari metode berikut:
+Anda dapat menginstal proyek ini dengan mengkloning repositori:
 
-### Pilihan A: Kloning Repositori (Clone Git)
-Metode terbaik jika Anda ingin terus memperbarui bot menggunakan perintah git:
 ```bash
 git clone https://github.com/Razael-Fox/openzero-local.git
 cd openzero-local
 ```
-
-### Pilihan B: Unduh Paket Rilis (Release Package)
-Metode terbaik jika Anda menginginkan paket mandiri yang bersih tanpa riwayat git (paket ini hanya di-generate dari branch `release`):
-1. Pergi ke halaman [Releases](https://github.com/Razael-Fox/openzero-local/releases).
-2. Unduh paket `.tar.gz` terbaru (misalnya `openzero-local-latest.tar.gz`).
-3. Ekstrak file tersebut di direktori yang Anda inginkan:
-   ```bash
-   tar -xzf openzero-local-latest.tar.gz
-   cd openzero-local
-   ```
 
 ---
 
@@ -129,5 +113,5 @@ npm test
 ## Alur Kerja Git Branching & Rilis
 
 Proyek ini dikelola menggunakan dua branch utama:
-* **`release` (Default Branch)**: Merepresentasikan versi produksi yang stabil. Seluruh pembaruan di branch ini digabungkan dan dikomit oleh **Razael-Fox Bot**. Pushing ke branch ini atau pembuatan tag versi (`v*`) akan memicu GitHub Actions untuk mengompresi proyek menjadi file `.tar.gz` dan otomatis mengunggahnya ke halaman [Releases](https://github.com/Razael-Fox/openzero-local/releases).
-* **`dev` (Development Branch)**: Digunakan oleh pengembang untuk pengerjaan fitur baru, perbaikan, dan pengujian secara aktif menggunakan profil personal Anda (`razaeldotexe`). Push ke branch ini **tidak** akan menghasilkan paket rilis otomatis.
+* **`release` (Default Branch)**: Merepresentasikan versi produksi yang stabil. Seluruh pembaruan di branch ini digabungkan dan dikomit oleh **Razael-Fox Bot**.
+* **`dev` (Development Branch)**: Digunakan oleh pengembang untuk pengerjaan fitur baru, perbaikan, dan pengujian secara aktif menggunakan profil personal Anda (`razaeldotexe`).

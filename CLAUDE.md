@@ -9,11 +9,12 @@ Welcome, Claude! This file outlines the **OpenZero Discord Bot** codebase for An
 The codebase is built on **Node.js** using **discord.js v14.26+** (supporting Discord Message Components V2) with ES modules syntax.
 
 ### Key Components:
-- **`src/index.js`**: Bootstraps the bot. Configures essential intents (`Guilds`, `GuildMessages`, `MessageContent`, `DirectMessages`, `GuildPresences`), imports the global CalVer version, and uncaught error handlers.
-- **`src/version.js`**: Stores the global version code in CalVer (`YY.MM.DD`) format. Updated automatically upon release deployment.
-- **`src/config.js`**: Holds global configurations, including sequential color selection for embeds and activity details.
+- **`src/index.js`**: Bootstraps the bot. Configures essential intents (`Guilds`, `GuildMessages`, `MessageContent`, `DirectMessages`, `GuildPresences`), imports the global SemVer version, and uncaught error handlers.
+- **`src/version.js`**: Stores the global version code in SemVer (`1.6.0`) format, synchronized from the root `VERSION` file.
+- **`src/config.js`**: Wrapper re-exporting the root global configuration `config.js`.
 - **`src/utils/logger.js`**: Custom Winston logging wrapper with Chalk formatting.
 - **`src/utils/v2Embed.js`**: Fluid wrapper class translating basic metadata (Title, Description, Color, ActionRows) into Discord's new Components V2 layout.
+- **`src/utils/color.js`**: Color strategy classes (SpecificColor, SequentialColor, RandomColor).
 - **`src/utils/i18n.js`**: i18n helper utility providing the `t(key, locale, replaceData)` translation helper. Dict locales are situated under `src/locales/` (`id.json` and `en.json`).
 - **`src/utils/supabase.js`**: Connects to Supabase to insert and retrieve message records. Safely falls back to `src/utils/database.js` local JSON methods if credentials are not specified.
 - **`src/utils/database.js`**: Local JSON storage utility for handling local message counts and logging fallbacks.
@@ -22,23 +23,36 @@ The codebase is built on **Node.js** using **discord.js v14.26+** (supporting Di
 
 ---
 
-## Global Configuration (`src/config.js`)
+## Global Configuration (`config.js`)
 
-Centralized parameters are defined in `src/config.js`. It features a stateful getter to sequentially cycle embed accent colors for every message:
+Centralized parameters are defined in the root `config.js`. It features a coloring strategy pattern (`colorStrategy`) to customize how embed accent colors are resolved:
 ```javascript
-let currentColorIndex = 0;
+import { SequentialColor } from './src/utils/color.js';
 
 export const config = {
-  embedColors: [
+  // Global Bot Credentials & Environment config
+  token: process.env.DISCORD_TOKEN,
+  clientId: process.env.CLIENT_ID,
+  guildId: process.env.GUILD_ID,
+  nodeEnv: process.env.NODE_ENV || 'development',
+  sentryDsn: process.env.SENTRY_DSN,
+
+  // Local JSON Database Configuration
+  database: {
+    dir: dbDir,
+    name: dbName,
+    path: dbPath
+  },
+
+  // Color Strategy: SpecificColor, SequentialColor, or RandomColor
+  colorStrategy: new SequentialColor([
     0x6e4cc1, // Purple (#6e4cc1)
     0x242221, // Dark Black (#242221)
     0xf58e25, // Orange (#f58e25)
     0xfdfdfd  // White (#fdfdfd)
-  ],
+  ]),
   get embedColor() {
-    const color = this.embedColors[currentColorIndex];
-    currentColorIndex = (currentColorIndex + 1) % this.embedColors.length;
-    return color;
+    return this.colorStrategy.getColor();
   }
 };
 ```
@@ -102,5 +116,5 @@ npm run send-rules
 
 ## Git Branching & Release Pipeline
 
-- **`release` (Default)**: Represents the stable codebase. Changes here are merged/committed by **Razael-Fox Bot**. Pushes here trigger GitHub Actions (`.github/workflows/package.yml`) to generate a `.tar.gz` archive and upload it to GitHub Releases.
-- **`dev`**: Active development branch for developers using personal credentials (`razaeldotexe`). Push events here do not trigger package builds.
+- **`release` (Default)**: Represents the stable codebase. Changes here are merged/committed by **Razael-Fox Bot**.
+- **`dev`**: Active development branch for developers using personal credentials (`razaeldotexe`).

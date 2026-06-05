@@ -27,39 +27,23 @@ This is the **OpenZero Local Version**—a self-contained, standalone Discord bo
    * `/webhook`: Create, view details of, and manage webhooks.
    * `/music-search`: Search for music tracks using iTunes API. Renders high-resolution cover art, paginated results (3 tracks per page), instant lyrics lookup via LRCLIB API integration, and direct audio preview links using Discord Message Components V2.
 9. **Anti-Spam Cooldown System**: Global 3-second cooldown per command per user to prevent spam and rate limits.
-10. **Sequential Color Shuffling**: Automatically alternates the embed accent colors in order for every message from a predefined list of colors:
-    * `#6e4cc1` (Purple)
-    * `#242221` (Dark Black)
-    * `#f58e25` (Orange)
-    * `#fdfdfd` (White)
+10. **Flexible Color Strategies**: Automatically alternates the embed accent colors using a configurable coloring strategy (`SpecificColor`, `SequentialColor`, or `RandomColor` defined in root `config.js`).
 11. **Premium V2 Layouts**: Renders response boxes using Discord's new Message Components V2 system (`ContainerBuilder`, `TextDisplayBuilder`, etc.) with interactive buttons embedded directly inside the container frame.
 12. **Local Logging**: Tracks chat activities and command executions locally in the console using Chalk colors and Winston log files (`logs/`).
-13. **Bot Status/Activity**: Automatically sets rich presence status (e.g., *Playing GTA 6*) on startup.
+13. **Bot Status/Activity**: Automatically sets rich presence status (e.g., *Playing GTA 6*) on startup. Sets to `invisible` when running in a local development environment.
 14. **Rules Deployment**: Easily post or edit clean, formatted server rules using a simple command line utility.
-15. **Calendar Versioning (CalVer)** *(New)*: Globally tracks bot releases using the `YY.MM.DD` format (e.g. `26.06.05`). Automatically updates on startup and generates unique tag versions during CI/CD release deployments.
+15. **Semantic Versioning (SemVer)** *(New)*: Globally tracks bot releases using the SemVer format (e.g. `1.6.0`). Managed via a root `VERSION` file and synchronized dynamically to configurations.
 
 ---
 
 ## Installation Options
 
-You can install this project using either of the following methods:
+You can install this project by cloning the repository:
 
-### Option A: Clone the Repository
-Best if you want to keep the bot updated using git commands:
 ```bash
 git clone https://github.com/Razael-Fox/openzero-local.git
 cd openzero-local
 ```
-
-### Option B: Download Release Package
-Best if you want a clean, compiled standalone package without git history (only generated from the `release` branch):
-1. Go to the [Releases](https://github.com/Razael-Fox/openzero-local/releases) page.
-2. Download the latest `.tar.gz` package (e.g., `openzero-local-latest.tar.gz`).
-3. Extract it in your desired directory:
-   ```bash
-   tar -xzf openzero-local-latest.tar.gz
-   cd openzero-local
-   ```
 
 ---
 
@@ -129,5 +113,5 @@ npm test
 ## Git Branching & Release Pipeline
 
 This project operates with two primary branches:
-* **`release` (Default Branch)**: Represents the stable production state. All code is managed by the automated **Razael-Fox Bot** on this branch. Pushing to this branch or tagging version releases (`v*`) triggers GitHub Actions to compile and compress the project into `openzero-local-latest.tar.gz` and upload it to the [Releases](https://github.com/Razael-Fox/openzero-local/releases) page.
-* **`dev` (Development Branch)**: Used by developers for minor changes, active coding, and testing. It uses personal developer credentials (`razaeldotexe`). Pushing to this branch **does not** generate release packages.
+* **`release` (Default Branch)**: Represents the stable production state. All code is managed by the automated **Razael-Fox Bot** on this branch.
+* **`dev` (Development Branch)**: Used by developers for minor changes, active coding, and testing. It uses personal developer credentials (`razaeldotexe`).
