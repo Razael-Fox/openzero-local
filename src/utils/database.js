@@ -178,6 +178,6 @@ export function getObtainiumMessageId() {
  */
 export function setObtainiumMessageId(messageId) {
   db.obtainiumMessageId = messageId;
-  saveDb();
+  saveDbSync();
 }
 
