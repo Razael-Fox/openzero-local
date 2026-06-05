@@ -51,11 +51,12 @@ export const config = {
     return this.colorStrategy.getColor();
   },
 
-  // Konfigurasi Status Kehadiran (Presence Activity) Bot
   activity: {
     name: 'Grand Theft Auto VI',
     // Pilihan tipe: PLAYING, STREAMING, LISTENING, WATCHING, COMPETING
     type: 'PLAYING',
+    // Pilihan status: online, idle, dnd, invisible (Hanya berlaku di mode production)
+    status: 'online',
     details: 'Exploring Leonida & Vice City',
     state: 'Campaign: 68% Completed',
     assets: {
