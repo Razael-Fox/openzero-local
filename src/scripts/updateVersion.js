@@ -2,8 +2,23 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { execSync } from 'child_process';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '../..');
+
+// Function to get git commit count since last VERSION modification
+function getGitCommitsSinceLastVersion() {
+  try {
+    const lastCommit = execSync('git log -n 1 --pretty=format:"%H" -- VERSION', { encoding: 'utf8' }).trim();
+    if (!lastCommit) return 1;
+    const countStr = execSync(`git rev-list --count ${lastCommit}..HEAD`, { encoding: 'utf8' }).trim();
+    const count = parseInt(countStr, 10);
+    return isNaN(count) || count <= 0 ? 1 : count;
+  } catch (err) {
+    return 1;
+  }
+}
 
 // Read VERSION from root
 const versionFilePath = path.join(rootDir, 'VERSION');
@@ -17,8 +32,16 @@ if (fs.existsSync(versionFilePath)) {
 // Get the bump type: major, minor, patch (default is patch)
 const args = process.argv.slice(2);
 const bumpType = args[0] ? args[0].toLowerCase() : 'patch';
-const amountArg = args[1] ? parseInt(args[1], 10) : 1;
-const incrementAmount = isNaN(amountArg) || amountArg < 1 ? 1 : amountArg;
+
+let incrementAmount = 1;
+const amountArg = args[1];
+if (!amountArg || amountArg.toLowerCase() === 'auto') {
+  incrementAmount = getGitCommitsSinceLastVersion();
+  console.log(`[Version] Auto-detected ${incrementAmount} commit(s) since last version change.`);
+} else {
+  const parsedAmount = parseInt(amountArg, 10);
+  incrementAmount = isNaN(parsedAmount) || parsedAmount < 1 ? 1 : parsedAmount;
+}
 
 const versionParts = currentVersion.split('.');
 if (versionParts.length !== 3) {
