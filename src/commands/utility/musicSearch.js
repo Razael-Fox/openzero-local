@@ -151,7 +151,16 @@ export function generateMusicSearchEmbed(sessionId, pageIndex, locale = 'id') {
   const end = start + itemsPerPage;
   const pageItems = results.slice(start, end);
 
-  let description = t('musicResultsFor', locale, { query });
+  let description = `${t('musicResultsFor', locale, { query })}\n`;
+
+  const topTrack = pageItems[0];
+  const artworkUrl = topTrack && topTrack.artworkUrl100
+    ? topTrack.artworkUrl100.replace('100x100bb', '400x400bb')
+    : null;
+
+  if (artworkUrl) {
+    description += `![Cover Art](${artworkUrl})\n\n`;
+  }
 
   if (pageItems.length === 0) {
     description += `*${t('none', locale)}*`;
@@ -159,14 +168,16 @@ export function generateMusicSearchEmbed(sessionId, pageIndex, locale = 'id') {
     pageItems.forEach((track, index) => {
       const globalIndex = start + index + 1;
       const releaseYear = track.releaseDate ? new Date(track.releaseDate).getFullYear() : 'N/A';
-      description += `**${globalIndex}. ${track.trackName}** - \`${track.artistName}\`\n`;
-      description += `   ↳ 💿 Album: *${track.collectionName || 'Single'}* (${releaseYear})\n`;
-      description += `   ↳ ⏱️ Durasi: \`${formatDuration(track.trackTimeMillis)}\` | Genre: \`${track.primaryGenreName || 'N/A'}\`\n`;
-      description += `   ↳ 🔗 [Buka di Apple Music](${track.trackViewUrl})\n\n`;
+      description += `**━━━━━ [ #${globalIndex} ] ━━━━━**\n`;
+      description += `🎵 **${track.trackName}**\n`;
+      description += `👤 *Artist:* \`${track.artistName}\`\n`;
+      description += `💿 *Album:* *${track.collectionName || 'Single'}* (${releaseYear})\n`;
+      description += `⏱️ *Durasi:* \`${formatDuration(track.trackTimeMillis)}\` ┃ 🎼 *Genre:* \`${track.primaryGenreName || 'N/A'}\`\n`;
+      description += `🔗 [Buka di Apple Music](${track.trackViewUrl})\n\n`;
     });
   }
 
-  description += `*${t('pageText', locale, { current: currentPage + 1, total: totalPages })}*`;
+  description += `✨ *${t('pageText', locale, { current: currentPage + 1, total: totalPages })}*`;
 
   // Create paginator row
   const navRow = new ActionRowBuilder().addComponents(
