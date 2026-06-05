@@ -395,7 +395,7 @@ export default {
             `Custom template \`${templateName}\` successfully created.\n` +
             `*   **Reference Role:** ${role}\n` +
             `*   **Bitfield Value:** \`${bitfield}\`\n\n` +
-            `You can now use this template in \`/role create\` or \`/role settemplate\`!`
+            'You can now use this template in `/role create` or `/role settemplate`!'
           )
           .build();
 

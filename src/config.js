@@ -1,9 +1,20 @@
-/**
- * Konfigurasi Global Bot Discord
- */
+let currentColorIndex = 0;
+
 export const config = {
-  // Warna aksen utama untuk seluruh V2Embed (Hexadecimal)
-  embedColor: 0xffd700, // Warna Emas (Gold) Komunitas
+  // Daftar warna aksen untuk V2Embed (Hexadecimal)
+  embedColors: [
+    0x6e4cc1, // #6e4cc1
+    0x242221, // #242221
+    0xf58e25, // #f58e25
+    0xfdfdfd  // #fdfdfd
+  ],
+
+  // Warna aksen utama (dipilih secara berurutan)
+  get embedColor() {
+    const color = this.embedColors[currentColorIndex];
+    currentColorIndex = (currentColorIndex + 1) % this.embedColors.length;
+    return color;
+  },
 
   // Konfigurasi Status Kehadiran (Presence Activity) Bot
   activity: {

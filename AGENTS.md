@@ -28,13 +28,23 @@ openzero-local/
     ├── events/
     │   ├── ready.js          # On-ready: Sets presence activity, deploys slash commands
     │   ├── messageCreate.js  # Message log observer (no prefix parsing)
-    │   └── interactionCreate.js # Interaction router (splits into slash commands and buttons)
+    │   └── interactionCreate.js # Interaction router (splits into slash commands and buttons, handles cooldowns)
     ├── commands/
-    │   └── utility/
-    │       ├── ping.js       # Slash command /ping (demonstrates button inside V2Embed container)
-    │       ├── hello.js      # Slash command /hello (demonstrates optional user arguments)
-    │       ├── webhook.js    # Slash command /webhook (create / info webhooks with button link)
-    │       └── role.js       # Slash command /role (add / remove / id configurations)
+    │   ├── utility/
+    │   │   ├── ping.js       # Slash command /ping (demonstrates button inside V2Embed container)
+    │   │   ├── hello.js      # Slash command /hello (demonstrates optional user arguments)
+    │   │   ├── webhook.js    # Slash command /webhook (create / info webhooks with button link)
+    │   │   ├── role.js       # Slash command /role (add / remove / id configurations)
+    │   │   └── translate.js  # Context Menu Command 'Translate to English' via Apps selection
+    │   └── moderation/
+    │       ├── ban.js        # Slash command /ban
+    │       ├── deafen.js     # Slash command /deafen
+    │       ├── kick.js       # Slash command /kick
+    │       ├── mute.js       # Slash command /mute
+    │       ├── purge.js      # Slash command /purge (deletes 1-100 messages, default 100)
+    │       ├── timeout.js    # Slash command /timeout
+    │       ├── undeafen.js   # Slash command /undeafen
+    │       └── unmute.js     # Slash command /unmute
     └── scripts/
         └── sendRules.js  # Maintenance script to post/edit guild rules
 ```
@@ -49,22 +59,20 @@ When extending or editing this codebase, you **must** strictly follow these rule
 - **ES Modules**: We use `"type": "module"` in `package.json`. You must use `import / export` syntax, not CommonJS `require / module.exports`.
 - **Imports**: When importing local files, you **must** specify the file extension (e.g., `import { config } from '../config.js';` instead of `../config`).
 
-### 2. Slash Commands Extension
+### 2. Slash & Context Menu Commands Extension
 - All commands must be created under a category subfolder inside `src/commands/` (e.g. `src/commands/moderation/`).
 - Export a default object containing:
-  - `data`: a `SlashCommandBuilder` instance.
+  - `data`: a `SlashCommandBuilder` or `ContextMenuCommandBuilder` instance.
   - `execute(interaction)`: an async function executing the command.
 - Set commands as Guild-only by adding `.setDMPermission(false)` to the builder if they are not meant for direct messages.
 
-### 3. Events Extension
+### 3. Events & Cooldowns
 - All event listeners must be created in `src/events/`.
-- Export a default object containing:
-  - `name`: a value from `Events` (imported from `discord.js`).
-  - `once`: boolean (`true` or `false`).
-  - `execute(...args, client)`: the async callback.
+- The `interactionCreate` event listener contains a **3-second cooldown** system per command per user. If adding high-frequency features, verify they are compatible or exclude them from the global map if necessary.
 
 ### 4. Components V2 & Embedding
 - Do **not** use legacy `EmbedBuilder` for messages. Always use the kustom helper class **`V2Embed`** (located at `src/utils/v2Embed.js`).
+- Default colors in `V2Embed` are resolved sequentially from `config.embedColors` (defined in `src/config.js`) on every instantiation.
 - When sending a `V2Embed` in a reply or edit, you must pass the `MessageFlags.IsComponentsV2` flag:
   ```javascript
   import { MessageFlags } from 'discord.js';
@@ -73,11 +81,10 @@ When extending or editing this codebase, you **must** strictly follow these rule
   const embed = new V2Embed().setTitle('Title').setDescription('Content').build();
   await interaction.reply({ components: [embed], flags: MessageFlags.IsComponentsV2 });
   ```
-- To append buttons inside the embed box itself, call `.addActionRow(actionRow)` on `V2Embed` before calling `.build()`.
 
 ### 5. Interactive Routing (Buttons, Select Menus)
 - Any button click or select menu interaction will trigger the `interactionCreate` event.
-- If you add custom components with a `custom_id` (e.g., `ping_refresh`), you must add a check block inside `src/events/interactionCreate.js` to intercept the interaction, call `await interaction.deferUpdate()` to acknowledge it, run your logic, and call `interaction.editReply(...)` to update.
+- If you add custom components with a `custom_id`, you must add a check block inside `src/events/interactionCreate.js` to intercept the interaction, call `await interaction.deferUpdate()`, run your logic, and call `interaction.editReply(...)` to update.
 
 ---
 
@@ -85,4 +92,11 @@ When extending or editing this codebase, you **must** strictly follow these rule
 Always utilize the custom logger imported from `src/utils/logger.js`.
 - Use `logger.info('message')` for standard info.
 - Use `logger.warn('message')` for non-blocking warnings.
-- Use `logger.error('message', error)` for catches and exceptions. It prints stack traces and saves them to `logs/error.log`.
+- Use `logger.error('message', error)` for catches and exceptions.
+
+## Unit Testing
+Before committing or pushing any features, make sure all tests pass:
+```bash
+npm test
+```
+Test files are situated under the `tests/` directory (e.g. `tests/moderation.test.js`, `tests/translate.test.js`).
