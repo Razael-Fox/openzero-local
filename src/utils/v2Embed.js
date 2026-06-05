@@ -1,6 +1,7 @@
-import { ContainerBuilder, TextDisplayBuilder } from 'discord.js';
+import { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, AttachmentBuilder } from 'discord.js';
 import { config } from '../config.js';
 import { Symbols } from './symbols.js';
+import { downloadIcon } from './iconHelper.js';
 
 /**
  * Kelas pembantu untuk membuat container Discord Components V2 layaknya EmbedBuilder tradisional.
@@ -11,6 +12,8 @@ export class V2Embed {
     this.description = '';
     this.accentColor = config.embedColor; // Menggunakan warna default dari global config
     this.actionRows = [];
+    this.thumbnailUrl = null;
+    this.files = [];
   }
 
   /**
@@ -75,6 +78,33 @@ export class V2Embed {
   }
 
   /**
+   * Mengatur thumbnail URL secara langsung
+   * @param {string} url
+   * @returns {this}
+   */
+  setThumbnail(url) {
+    this.thumbnailUrl = url;
+    return this;
+  }
+
+  /**
+   * Mengunduh ikon dan menjadikannya thumbnail V2 Embed
+   * @param {string} iconName Nama ikon
+   * @param {string} [provider='fontawesome'] Provider ikon
+   * @returns {Promise<this>}
+   */
+  async setThumbnailIcon(iconName, provider = 'fontawesome') {
+    try {
+      const icon = await downloadIcon(iconName, provider);
+      this.thumbnailUrl = icon.localUrl;
+      this.files.push(new AttachmentBuilder(icon.filePath, { name: icon.fileName }));
+    } catch (err) {
+      console.error(`[V2Embed] Failed to set thumbnail icon: ${err.message}`);
+    }
+    return this;
+  }
+
+  /**
    * Merender builder menjadi objek ContainerBuilder yang siap dikirim
    * @returns {ContainerBuilder}
    */
@@ -94,7 +124,14 @@ export class V2Embed {
     }
 
     if (markdown.trim() !== '') {
-      container.addTextDisplayComponents(new TextDisplayBuilder().setContent(markdown));
+      if (this.thumbnailUrl) {
+        const section = new SectionBuilder()
+          .addTextDisplayComponents(new TextDisplayBuilder().setContent(markdown))
+          .setThumbnailAccessory(new ThumbnailBuilder({ media: { url: this.thumbnailUrl } }));
+        container.addSectionComponents(section);
+      } else {
+        container.addTextDisplayComponents(new TextDisplayBuilder().setContent(markdown));
+      }
     }
 
     // Masukkan semua baris tombol/komponen langsung di dalam container
