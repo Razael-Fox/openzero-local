@@ -105,7 +105,7 @@ export async function initObtainiumWatcher(client) {
           try {
             await fsPromises.access(fullPath);
             await processFile(fullPath, client);
-          } catch (e) {
+          } catch {
             // File doesn't exist or is not readable, skip
           }
         }, 1000);
