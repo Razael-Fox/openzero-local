@@ -5,21 +5,23 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '../..');
 
-// Generate CalVer: YY.MM.DD
-const now = new Date();
-const yy = String(now.getFullYear()).slice(-2);
-const mm = String(now.getMonth() + 1).padStart(2, '0');
-const dd = String(now.getDate()).padStart(2, '0');
-const calVer = `${yy}.${mm}.${dd}`;
+// Read VERSION from root
+const versionFilePath = path.join(rootDir, 'VERSION');
+let semVer = '1.5.0';
+if (fs.existsSync(versionFilePath)) {
+  semVer = fs.readFileSync(versionFilePath, 'utf8').trim();
+} else {
+  fs.writeFileSync(versionFilePath, semVer + '\n', 'utf8');
+}
 
 // Update package.json
 const packageJsonPath = path.join(rootDir, 'package.json');
 const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-pkg.version = calVer;
+pkg.version = semVer;
 fs.writeFileSync(packageJsonPath, JSON.stringify(pkg, null, 2) + '\n');
 
 // Update src/version.js
 const versionJsPath = path.join(rootDir, 'src/version.js');
-fs.writeFileSync(versionJsPath, `export const VERSION = '${calVer}';\n`);
+fs.writeFileSync(versionJsPath, `export const VERSION = '${semVer}';\n`);
 
-console.log(`[Version] Updated to CalVer: ${calVer}`);
+console.log(`[Version] Updated all files to version: ${semVer}`);
