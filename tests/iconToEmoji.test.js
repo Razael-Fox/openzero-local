@@ -20,25 +20,30 @@ jest.unstable_mockModule('../src/utils/iconHelper.js', () => ({
   })
 }));
 
-const iconToStickerCmd = (await import('../src/commands/utility/iconToSticker.js')).default;
+const iconToEmojiCmd = (await import('../src/commands/utility/iconToEmoji.js')).default;
 
-describe('Icon to Sticker Slash Command Test Suite', () => {
+describe('Icon to Emoji Slash Command Test Suite', () => {
   let mockInteraction;
-  let mockStickersCreate;
+  let mockEmojisCreate;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockStickersCreate = jest.fn().mockResolvedValue({ name: 'github' });
+    mockEmojisCreate = jest.fn().mockResolvedValue({
+      name: 'github',
+      toString: () => '<:github:123456789>'
+    });
 
     mockInteraction = {
       deferReply: jest.fn(),
       editReply: jest.fn(),
+      user: {
+        tag: 'User#1234'
+      },
       options: {
         getString: jest.fn((name) => {
           if (name === 'name') return 'github';
           if (name === 'provider') return 'fontawesome';
-          if (name === 'sticker_name') return 'github';
-          if (name === 'emoji_tag') return '💬';
+          if (name === 'emoji_name') return 'github';
           return null;
         })
       },
@@ -51,34 +56,50 @@ describe('Icon to Sticker Slash Command Test Suite', () => {
             }
           }
         },
-        stickers: {
-          create: mockStickersCreate
+        emojis: {
+          create: mockEmojisCreate
         }
       }
     };
   });
 
-  test('should successfully download icon and create guild sticker', async () => {
-    await iconToStickerCmd.execute(mockInteraction);
+  test('should successfully download icon and create guild emoji', async () => {
+    await iconToEmojiCmd.execute(mockInteraction);
 
     expect(mockInteraction.deferReply).toHaveBeenCalled();
-    expect(mockStickersCreate).toHaveBeenCalledWith(expect.objectContaining({
-      file: '/dummy/path/github.png',
-      name: 'github',
-      tags: '💬'
+    expect(mockEmojisCreate).toHaveBeenCalledWith(expect.objectContaining({
+      attachment: '/dummy/path/github.png',
+      name: 'github'
     }));
     expect(mockInteraction.editReply).toHaveBeenCalledWith(expect.objectContaining({
       components: expect.any(Array)
     }));
   });
 
+  test('should fail if emoji name is invalid/too short', async () => {
+    mockInteraction.options.getString.mockImplementation((name) => {
+      if (name === 'name') return 'a';
+      if (name === 'emoji_name') return 'a'; // Too short after sanitize or raw
+      return null;
+    });
+
+    await iconToEmojiCmd.execute(mockInteraction);
+
+    expect(mockEmojisCreate).not.toHaveBeenCalled();
+    expect(mockInteraction.editReply).toHaveBeenCalled();
+    const replyArg = mockInteraction.editReply.mock.calls[0][0];
+    const comp = replyArg.components[0];
+    const data = comp.toJSON ? comp.toJSON() : comp.data;
+    expect(data.accent_color).toBe(0xff3333);
+  });
+
   test('should fail if bot does not have ManageEmojisAndStickers permission', async () => {
     mockInteraction.guild.members.me.permissions.has.mockReturnValue(false);
 
-    await iconToStickerCmd.execute(mockInteraction);
+    await iconToEmojiCmd.execute(mockInteraction);
 
     expect(mockInteraction.deferReply).toHaveBeenCalled();
-    expect(mockStickersCreate).not.toHaveBeenCalled();
+    expect(mockEmojisCreate).not.toHaveBeenCalled();
     expect(mockInteraction.editReply).toHaveBeenCalled();
     const replyArg = mockInteraction.editReply.mock.calls[0][0];
     const comp = replyArg.components[0];

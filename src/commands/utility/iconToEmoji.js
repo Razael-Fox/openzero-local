@@ -5,8 +5,8 @@ import logger from '../../utils/logger.js';
 
 export default {
   data: new SlashCommandBuilder()
-    .setName('icon-to-sticker')
-    .setDescription('Download an icon and add it as a sticker in this server.')
+    .setName('icon-to-emoji')
+    .setDescription('Download an icon and add it as an emoji in this server.')
     .setDMPermission(false)
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageEmojisAndStickers)
     .addStringOption(option =>
@@ -25,13 +25,8 @@ export default {
         )
     )
     .addStringOption(option =>
-      option.setName('sticker_name')
-        .setDescription('The name of the sticker to create (defaults to icon name)')
-        .setRequired(false)
-    )
-    .addStringOption(option =>
-      option.setName('emoji_tag')
-        .setDescription('A single unicode emoji tag representing the sticker (default: 💬)')
+      option.setName('emoji_name')
+        .setDescription('The name of the emoji to create (defaults to icon name)')
         .setRequired(false)
     ),
 
@@ -43,8 +38,22 @@ export default {
 
     const name = interaction.options.getString('name');
     const provider = interaction.options.getString('provider') || 'fontawesome';
-    const stickerName = interaction.options.getString('sticker_name') || name;
-    const emojiTag = interaction.options.getString('emoji_tag') || '💬';
+    
+    // Sanitize emoji name: only alphanumeric characters and underscores are allowed
+    const rawEmojiName = interaction.options.getString('emoji_name') || name;
+    const emojiName = rawEmojiName.replace(/[^a-zA-Z0-9_]/g, '_');
+
+    if (emojiName.length < 2) {
+      const errorEmbed = new V2Embed()
+        .setTitle('Invalid Name ❌')
+        .setDescription('Emoji names must be at least 2 characters long and contain only alphanumeric characters or underscores.')
+        .setColor(0xff3333)
+        .build();
+      return await interaction.editReply({
+        components: [errorEmbed],
+        flags: MessageFlags.IsComponentsV2
+      });
+    }
 
     // Verify client has permission to manage emojis and stickers
     if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageEmojisAndStickers)) {
@@ -60,23 +69,21 @@ export default {
     }
 
     try {
-      // Download the icon as PNG, constrained to 320x320 size for Discord stickers
-      const icon = await downloadIcon(name, provider, { size: 320 });
+      // Download the icon as PNG, constrained to 128x128 size for Discord emojis
+      const icon = await downloadIcon(name, provider, { size: 128 });
 
-      // Create the sticker in the guild
-      const sticker = await interaction.guild.stickers.create({
-        file: icon.filePath,
-        name: stickerName,
-        tags: emojiTag,
-        description: `Icon: ${name} from provider ${provider}`
+      // Create the emoji in the guild
+      const emoji = await interaction.guild.emojis.create({
+        attachment: icon.filePath,
+        name: emojiName,
+        reason: `Icon: ${name} from provider ${provider} by ${interaction.user.tag}`
       });
 
       const successEmbed = new V2Embed()
-        .setTitle('Sticker Created ✅')
+        .setTitle('Emoji Created ✅')
         .setDescription(
-          `Successfully created a new sticker in this server!\n\n` +
-          `*   **Sticker Name:** \`${sticker.name}\`\n` +
-          `*   **Emoji Tag:** ${emojiTag}\n` +
+          `Successfully created a new emoji in this server!\n\n` +
+          `*   **Emoji:** ${emoji} (\`:${emoji.name}:\`)\n` +
           `*   **Original Icon:** \`${name}\` (${provider})`
         )
         .setColor(0x00ffd2);
@@ -86,11 +93,11 @@ export default {
         flags: MessageFlags.IsComponentsV2
       });
 
-      logger.info(`[Sticker] Created sticker "${sticker.name}" in guild "${interaction.guild.name}" using icon "${name}"`);
+      logger.info(`[Emoji] Created emoji "${emoji.name}" in guild "${interaction.guild.name}" using icon "${name}"`);
     } catch (error) {
-      logger.error('[Sticker Error] Failed to create sticker:', error);
+      logger.error('[Emoji Error] Failed to create emoji:', error);
       const errorEmbed = new V2Embed()
-        .setTitle('Sticker Creation Failed ❌')
+        .setTitle('Emoji Creation Failed ❌')
         .setDescription(error.message)
         .setColor(0xff3333)
         .build();
