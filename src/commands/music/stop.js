@@ -18,7 +18,7 @@ export default {
 
     if (!voiceChannel) {
       return interaction.reply({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle(t('errorTitle', locale))
             .setDescription(t('notInVoiceChannel', locale))
@@ -32,7 +32,7 @@ export default {
     const session = musicSessions.get(interaction.guildId);
     if (!session) {
       return interaction.reply({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle(t('errorTitle', locale))
             .setDescription(t('noMusicPlaying', locale))
@@ -45,7 +45,7 @@ export default {
 
     if (interaction.guild.members.me.voice.channelId !== voiceChannel.id) {
       return interaction.reply({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle(t('errorTitle', locale))
             .setDescription(t('differentVoiceChannel', locale))
@@ -59,7 +59,7 @@ export default {
     session.destroy();
 
     return interaction.reply({
-      embeds: [
+      components: [
         new V2Embed()
           .setTitle('Stopped ⏹️')
           .setDescription(t('stoppedMusic', locale))

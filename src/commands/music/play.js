@@ -28,7 +28,7 @@ export default {
     const voiceChannel = interaction.member.voice.channel;
     if (!voiceChannel) {
       return interaction.reply({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle(t('errorTitle', locale))
             .setDescription(t('notInVoiceChannel', locale))
@@ -42,7 +42,7 @@ export default {
     const botVoiceState = interaction.guild.members.me.voice;
     if (botVoiceState.channelId && botVoiceState.channelId !== voiceChannel.id) {
       return interaction.reply({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle(t('errorTitle', locale))
             .setDescription(t('differentVoiceChannel', locale))
@@ -67,7 +67,7 @@ export default {
         const searchResults = await play.search(query, { limit: 1 });
         if (searchResults.length === 0) {
           return interaction.editReply({
-            embeds: [
+            components: [
               new V2Embed()
                 .setTitle(t('errorTitle', locale))
                 .setDescription(t('noMusicResults', locale, { query }))
@@ -97,12 +97,12 @@ export default {
         .setThumbnail(track.thumbnail);
 
       await interaction.editReply({
-        embeds: [embed.build()],
+        components: [embed.build()],
         flags: MessageFlags.IsComponentsV2
       });
     } catch (error) {
       await interaction.editReply({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle(t('errorTitle', locale))
             .setDescription(`An error occurred while trying to process the track: \`${error.message}\``)

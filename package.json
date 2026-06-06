@@ -17,7 +17,8 @@
     "fetch-repos": "node src/scripts/fetchRepos.js",
     "setup-emojis": "node src/scripts/setupGuildEmojis.js",
     "version:update": "node src/scripts/updateVersion.js",
-    "version:bump": "node src/scripts/updateVersion.js"
+    "version:bump": "node src/scripts/updateVersion.js",
+    "postinstall": "node src/scripts/patchPlayDl.js"
   },
   "dependencies": {
     "@discordjs/voice": "^0.19.2",

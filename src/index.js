@@ -1,4 +1,5 @@
 import './instrument.js';
+import './scripts/patchPlayDl.js';
 import { Client, GatewayIntentBits, Partials } from 'discord.js';
 import { config } from './config.js';
 import logger from './utils/logger.js';

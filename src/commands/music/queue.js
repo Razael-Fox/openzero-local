@@ -18,7 +18,7 @@ export default {
 
     if (!session || (!session.currentTrack && session.queue.length === 0)) {
       return interaction.reply({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle(t('queueTitle', locale))
             .setDescription(t('queueEmpty', locale))
@@ -43,7 +43,7 @@ export default {
     }
 
     return interaction.reply({
-      embeds: [
+      components: [
         new V2Embed()
           .setTitle(t('queueTitle', locale))
           .setDescription(description)

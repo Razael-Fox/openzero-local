@@ -46,13 +46,14 @@ export class MusicSession {
     this.player.on('error', (error) => {
       logger.error(`[Music Manager] Audio Player Error in guild ${this.guildId}:`, error);
       this.textChannel.send({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle('Playback Error ⚠️')
             .setDescription(`An error occurred during playback: \`${error.message}\`. Skipping to next track.`)
             .setColor(0xff3333)
             .build()
-        ]
+        ],
+        flags: MessageFlags.IsComponentsV2
       }).catch(() => {});
       this.playNext();
     });
@@ -82,12 +83,13 @@ export class MusicSession {
       this.currentTrack = null;
       this.isPlaying = false;
       this.textChannel.send({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle('Queue Finished 🎵')
             .setDescription('No more tracks in the queue. Leaving the voice channel.')
             .build()
-        ]
+        ],
+        flags: MessageFlags.IsComponentsV2
       }).catch(() => {});
       this.destroy();
       return;
@@ -108,24 +110,26 @@ export class MusicSession {
 
       // Send playing announcement embed
       this.textChannel.send({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle('Now Playing 🎶')
             .setDescription(`**[${this.currentTrack.title}](${this.currentTrack.url})**\n\n⏱️ *Duration:* \`${this.currentTrack.duration}\` ┃ 👤 *Requested By:* ${this.currentTrack.requestedBy}`)
             .setThumbnail(this.currentTrack.thumbnail)
             .build()
-        ]
+        ],
+        flags: MessageFlags.IsComponentsV2
       }).catch(() => {});
     } catch (error) {
       logger.error(`[Music Manager] Failed to stream track ${this.currentTrack.title}:`, error);
       this.textChannel.send({
-        embeds: [
+        components: [
           new V2Embed()
             .setTitle('Streaming Error ⚠️')
             .setDescription(`Failed to fetch streaming resource for **${this.currentTrack.title}**: \`${error.message}\`. Skipping track.`)
             .setColor(0xff3333)
             .build()
-        ]
+        ],
+        flags: MessageFlags.IsComponentsV2
       }).catch(() => {});
       this.playNext();
     }

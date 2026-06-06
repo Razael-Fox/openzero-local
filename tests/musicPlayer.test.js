@@ -135,9 +135,8 @@ describe('Music Player Slash Commands', () => {
     test('should reject if user is not in a voice channel', async () => {
       mockInteraction.member.voice.channel = null;
       await playCmd.execute(mockInteraction);
-      expect(mockInteraction.reply).toHaveBeenCalled();
       const replyArgs = mockInteraction.reply.mock.calls[0][0];
-      const serialized = JSON.stringify(replyArgs.embeds[0].toJSON());
+      const serialized = JSON.stringify(replyArgs.components[0].toJSON());
       expect(serialized).toContain('must be in a voice channel');
     });
 
@@ -191,7 +190,7 @@ describe('Music Player Slash Commands', () => {
       await queueCmd.execute(mockInteraction);
       expect(mockInteraction.reply).toHaveBeenCalled();
       const replyArgs = mockInteraction.reply.mock.calls[0][0];
-      const serialized = JSON.stringify(replyArgs.embeds[0].toJSON());
+      const serialized = JSON.stringify(replyArgs.components[0].toJSON());
       expect(serialized).toContain('Track 1');
       expect(serialized).toContain('Track 2');
     });
