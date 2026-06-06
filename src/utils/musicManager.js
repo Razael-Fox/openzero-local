@@ -27,6 +27,7 @@ export class MusicSession {
     this.queue = [];
     this.currentTrack = null;
     this.isPlaying = false;
+    this.activeProcess = null;
     
     // Create connection to the voice channel
     this.connection = joinVoiceChannel({
@@ -125,6 +126,12 @@ export class MusicSession {
    */
   streamViaYtDlp(url) {
     return new Promise((resolve, reject) => {
+      if (this.activeProcess) {
+        try {
+          this.activeProcess.kill();
+        } catch (_) {}
+      }
+
       const ytdlp = spawn('yt-dlp', [
         '--js-runtimes', 'node',
         '--remote-components', 'ejs:github',
@@ -135,6 +142,7 @@ export class MusicSession {
         url
       ]);
 
+      this.activeProcess = ytdlp;
       let resolved = false;
       let stderr = '';
 
@@ -170,6 +178,9 @@ export class MusicSession {
       });
 
       ytdlp.on('close', code => {
+        if (this.activeProcess === ytdlp) {
+          this.activeProcess = null;
+        }
         if (!resolved) {
           reject(new Error(`yt-dlp exited ${code}: ${stderr.slice(-200)}`));
         }
@@ -218,6 +229,10 @@ export class MusicSession {
 
       // Handle stream-level errors (e.g. ETIMEDOUT mid-playback)
       stream.stream.on('error', (err) => {
+        if (err.message === 'Premature close' || err.code === 'ERR_STREAM_PREMATURE_CLOSE') {
+          // Ignore premature close errors as they are expected when a track is skipped
+          return;
+        }
         logger.error(`[Music Manager] Stream read error in guild ${this.guildId}: ${err.message}`);
       });
 
@@ -255,6 +270,12 @@ export class MusicSession {
    */
   skip() {
     if (this.isPlaying) {
+      if (this.activeProcess) {
+        try {
+          this.activeProcess.kill();
+        } catch (_) {}
+        this.activeProcess = null;
+      }
       this.player.stop();
       return true;
     }
@@ -289,6 +310,12 @@ export class MusicSession {
   destroy() {
     try {
       this.player.stop(true);
+      if (this.activeProcess) {
+        try {
+          this.activeProcess.kill();
+        } catch (_) {}
+        this.activeProcess = null;
+      }
       this.connection.destroy();
     } catch (_) {}
     musicSessions.delete(this.guildId);
