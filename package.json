@@ -1,7 +1,7 @@
 {
-  "name": "discord-basic-bot",
+  "name": "openzero-local",
   "version": "1.7.22",
-  "description": "A basic Discord bot with modular handlers",
+  "description": "OpenZero Discord Bot - Local Development Profile",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
