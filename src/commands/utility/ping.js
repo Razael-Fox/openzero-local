@@ -9,6 +9,10 @@ import { V2Embed } from '../../utils/v2Embed.js';
 import { resolveEmoji } from '../../utils/symbols.js';
 
 export default {
+  title: 'Ping Bot',
+  command: '/ping',
+  description: 'Mengukur latency bot dan API Discord.',
+  num: 1,
   data: new SlashCommandBuilder()
     .setName('ping')
     .setDescription('Mengukur latency bot dan API Discord.')

@@ -53,5 +53,10 @@
   "lyricsSearchError": "An error occurred while fetching lyrics from database.",
   "pageText": "Page {current} of {total}",
   "lyricsButtonLabel": "Lyrics {index}",
-  "previewButtonLabel": "Preview {index}"
+  "previewButtonLabel": "Preview {index}",
+  "helpTitle": "Bot Command List 🤖",
+  "helpDescription": "Here is the list of available commands on this bot:\n\n",
+  "helpCategory": "Category",
+  "helpCommandFormat": "Command",
+  "helpDescriptionFormat": "Description"
 }
