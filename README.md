@@ -26,14 +26,14 @@ This is the **OpenZero Local Version**—a self-contained, standalone Discord bo
    * `/role`: Quick assignment, removal, or retrieval of detailed role IDs.
    * `/webhook`: Create, view details of, and manage webhooks.
    * `/music-search`: Search for music tracks using iTunes API. Renders high-resolution cover art, paginated results (3 tracks per page), instant lyrics lookup via LRCLIB API integration, and direct audio preview links using Discord Message Components V2.
-   * `/help` & `/menu` *(New)*: Displays an interactive help panel. Groups commands dynamically based on their folder categories with custom Font Awesome symbols, interactive filter buttons, and full translation support.
+    * `/help` & `/menu` *(New)*: Displays an interactive help panel. Groups commands dynamically based on their folder categories with custom Font Awesome symbols, interactive filter buttons, and full translation support. Features a customizable title format: `<icon> Help Menu`.
 9. **Anti-Spam Cooldown System**: Global 3-second cooldown per command per user to prevent spam and rate limits.
 10. **Flexible Color Strategies**: Automatically alternates the embed accent colors using a configurable coloring strategy (`SpecificColor`, `SequentialColor`, or `RandomColor` defined in root `config.js`).
-11. **Premium V2 Layouts**: Renders response boxes using Discord's new Message Components V2 system (`ContainerBuilder`, `TextDisplayBuilder`, etc.) with interactive buttons embedded directly inside the container frame.
+11. **Premium V2 Layouts & Custom Font Awesome Emojis**: Renders response boxes using Discord's new Message Components V2 system (`ContainerBuilder`, `TextDisplayBuilder`, etc.) with interactive buttons embedded directly inside the container frame. Custom Font Awesome emojis are automatically mapped (e.g. `oz_letterboxd` for summaries, `oz_discord` for categories, `oz_border_all` for All category button, `oz_black_tie` for Moderation, `oz_music` for Music, and `oz_screwdriver_wrench` for Utility) and can be deployed with a single command.
 12. **Local Logging**: Tracks chat activities and command executions locally in the console using Chalk colors and Winston log files (`logs/`).
 13. **Bot Status/Activity**: Automatically sets rich presence status (e.g., *Playing GTA 6*) on startup. Sets to `invisible` when running in a local development environment.
 14. **Rules Deployment**: Easily post or edit clean, formatted server rules using a simple command line utility.
-15. **Semantic Versioning (SemVer)** *(New)*: Globally tracks bot releases using the SemVer format (e.g. `1.7.0`). Managed via a root `VERSION` file and synchronized dynamically to configurations.
+15. **Semantic Versioning (SemVer)** *(New)*: Globally tracks bot releases using the SemVer format (current version: `1.7.60`). Managed via a root `VERSION` file and synchronized dynamically to configurations.
 
 ---
 
@@ -89,7 +89,13 @@ To make your bot's commands appear **instantly** in your test server without wai
    SUPABASE_KEY=YOUR_SUPABASE_ANON_KEY_HERE
    ```
 
-### Step 6: Activate & Start the Bot
+### Step 6: Setup Custom Emojis (Optional but Recommended)
+To enable custom Font Awesome emojis for help categories and other premium UI embeds, run the following command in your server (ensure the bot has `Manage Emojis and Stickers` permissions):
+```bash
+npm run setup-emojis
+```
+
+### Step 7: Activate & Start the Bot
 1. Open a terminal in the bot's directory.
 2. Install the dependencies:
    ```bash
@@ -102,7 +108,7 @@ To make your bot's commands appear **instantly** in your test server without wai
    *(Use `npm run dev` to automatically restart the bot whenever configurations or commands are updated).*
 4. When you see `[Client] Login berhasil!` in the console, the bot is online!
 
-### Step 7: Testing the Code
+### Step 8: Testing the Code
 This repository comes with pre-configured unit tests to verify moderation, i18n, and context menu commands.
 Run the tests using Jest:
 ```bash

@@ -26,14 +26,14 @@ Ini adalah **OpenZero Local Version**—sebuah bot Discord mandiri yang dirancan
    * `/role`: Menambah, menghapus, atau melihat detail informasi ID role secara cepat.
    * `/webhook`: Membuat, melihat informasi detail, dan mengelola webhook server.
    * `/music-search`: Mencari trek musik menggunakan iTunes API. Menampilkan gambar cover resolusi tinggi, hasil paginasi (3 trek per halaman), pencarian lirik instan melalui integrasi LRCLIB API, dan tombol pratinjau audio langsung menggunakan Discord Message Components V2.
-   * `/help` & `/menu` *(Baru)*: Menampilkan panel bantuan interaktif. Mengelompokkan perintah secara dinamis berdasarkan kategori foldernya dengan simbol kustom Font Awesome, tombol filter interaktif, dan dukungan lokalisasi penuh.
+    * `/help` & `/menu` *(Baru)*: Menampilkan panel bantuan interaktif. Mengelompokkan perintah secara dinamis berdasarkan kategori foldernya dengan simbol kustom Font Awesome, tombol filter interaktif, dan dukungan lokalisasi penuh. Dilengkapi format judul yang dapat disesuaikan: `<icon> Help Menu`.
 9. **Sistem Cooldown Anti-Spam**: Batasan waktu tunggu (cooldown) selama 3 detik per perintah per pengguna untuk mencegah spam dan rate limit.
 10. **Strategi Warna Embed Fleksibel**: Secara otomatis mengatur warna aksen garis samping embed menggunakan strategi pewarnaan yang dapat dikonfigurasi (`SpecificColor`, `SequentialColor`, atau `RandomColor` di dalam root `config.js`).
-11. **Layout Embed Premium (Components V2)**: Tampilan informasi bot menggunakan layout modern baru dari Discord (bukan embed lama yang monoton) lengkap dengan tombol interaktif yang tertanam langsung di dalam kotak informasi.
+11. **Layout Embed Premium & Emoji Font Awesome Kustom**: Tampilan informasi bot menggunakan layout modern baru dari Discord (bukan embed lama yang monoton) lengkap dengan tombol interaktif yang tertanam langsung di dalam kotak informasi. Emoji Font Awesome kustom dipetakan secara otomatis (misalnya `oz_letterboxd` untuk ringkasan, `oz_discord` untuk kategori, `oz_border_all` untuk tombol Semua, `oz_black_tie` untuk Moderasi, `oz_music` untuk Musik, dan `oz_screwdriver_wrench` untuk Utility) dan dapat dipasang dengan satu perintah mudah.
 12. **Logger Konsol & File**: Mencatat setiap aktivitas chat dan eksekusi perintah bot di konsol dengan indikator status Unicode berwarna, serta menyimpannya otomatis ke file log lokal (`logs/`).
 13. **Auto Status Kehadiran**: Bot secara otomatis menampilkan status bermain game (default: *Playing GTA 6*) saat aktif. Bot otomatis diatur menjadi `invisible` (offline) jika dijalankan di lingkungan pengujian lokal (development).
 14. **Script Admin Peraturan (Rules)**: Perintah cepat bagi pemilik bot untuk mengirim atau mengedit pesan peraturan komunitas yang rapi dan minim emoji di channel server tertentu.
-15. **Semantic Versioning (SemVer)** *(Baru)*: Pelacakan versi bot secara global menggunakan format SemVer (seperti `1.7.0`). Dikelola melalui file root `VERSION` dan disinkronkan secara dinamis ke seluruh konfigurasi bot.
+15. **Semantic Versioning (SemVer)** *(Baru)*: Pelacakan versi bot secara global menggunakan format SemVer (versi saat ini: `1.7.60`). Dikelola melalui file root `VERSION` dan disinkronkan secara dinamis ke seluruh konfigurasi bot.
 
 ---
 
@@ -89,7 +89,13 @@ Agar perintah slash bot langsung muncul **seketika** di server Anda tanpa perlu 
    SUPABASE_KEY=MASUKKAN_ANON_KEY_SUPABASE_DI_SINI
    ```
 
-### Langkah 6: Mengaktifkan & Menjalankan Bot
+### Langkah 6: Konfigurasi Emoji Kustom (Opsional tetapi Direkomendasikan)
+Untuk mengaktifkan emoji kustom Font Awesome pada kategori menu bantuan dan layout embed premium lainnya, jalankan perintah berikut di server Anda (pastikan bot memiliki izin `Manage Emojis and Stickers`):
+```bash
+npm run setup-emojis
+```
+
+### Langkah 7: Mengaktifkan & Menjalankan Bot
 1. Buka terminal atau command prompt, masuk ke folder tempat bot ini berada.
 2. Instal pustaka-pustaka pendukung bot dengan mengetik:
    ```bash
@@ -102,7 +108,7 @@ Agar perintah slash bot langsung muncul **seketika** di server Anda tanpa perlu 
    *(Gunakan `npm run dev` jika Anda ingin bot otomatis me-restart sendiri apabila ada perubahan konfigurasi atau kode perintah).*
 4. Setelah terminal memunculkan log `[Client] Login berhasil!`, bot Anda resmi online!
 
-### Langkah 7: Pengujian Keandalan Kode (Unit Testing)
+### Langkah 8: Pengujian Keandalan Kode (Unit Testing)
 Repositori ini dilengkapi dengan unit test pra-konfigurasi untuk memverifikasi perintah moderasi, i18n, database local fallback, dan menu konteks.
 Jalankan pengujian menggunakan Jest:
 ```bash

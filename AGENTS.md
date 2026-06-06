@@ -87,7 +87,7 @@ When extending or editing this codebase, you **must** strictly follow these rule
 - All event listeners must be created in `src/events/`.
 - The `interactionCreate` event listener contains a **3-second cooldown** system per command per user. If adding high-frequency features, verify they are compatible or exclude them from the global map if necessary.
 
-### 4. Components V2 & Embedding
+### 4. Components V2, Embedding & Custom Emojis
 - Do **not** use legacy `EmbedBuilder` for messages. Always use the kustom helper class **`V2Embed`** (located at `src/utils/v2Embed.js`).
 - Default colors in `V2Embed` are resolved using the global `config.embedColor` generator (configured via `colorStrategy` in the root `config.js`) on every instantiation.
 - When sending a `V2Embed` in a reply or edit, you must pass the `MessageFlags.IsComponentsV2` flag:
@@ -98,6 +98,7 @@ When extending or editing this codebase, you **must** strictly follow these rule
   const embed = new V2Embed().setTitle('Title').setDescription('Content').build();
   await interaction.reply({ components: [embed], flags: MessageFlags.IsComponentsV2 });
   ```
+- Emojis in embeds are automatically mapped and formatted using the custom Font Awesome guild symbols (configured via `src/utils/symbols.js` and uploaded to the guild using `npm run setup-emojis`). The bot resolves matching emojis such as `oz_border_all` (All category button), `oz_tools` (Utility), `oz_black_tie` (Moderation), `oz_music` (Music), `oz_discord` (Category title), and `oz_letterboxd` (Summary icon). Help and Menu embeds format their titles as `<icon> Help Menu`.
 
 ### 5. Interactive Routing (Buttons, Select Menus)
 - Any button click or select menu interaction will trigger the `interactionCreate` event.

@@ -84,9 +84,9 @@ Mencari trek lagu di Apple iTunes Search API dan menampilkan hasilnya dengan vis
 ### 5. Perintah `/help` & `/menu` (Utility)
 Menampilkan menu bantuan interaktif dengan daftar perintah bot yang dikelompokkan secara dinamis berdasarkan kategori.
 *   Menggunakan layout **Discord Message Components V2** (`V2Embed`).
-*   Dilengkapi dengan tombol navigasi kategori interaktif yang secara otomatis memfilter perintah.
-*   Menggunakan emoji kustom Font Awesome (seperti `border-all`, `black-tie`, `music`, `screwdriver-wrench`, `discord`, `letterboxd`) yang disiapkan melalui skrip `npm run setup-emojis`.
-*   Mendukung lokalisasi i18n penuh (Bahasa Indonesia / Inggris).
+*   Menggunakan emoji kustom Font Awesome (seperti `oz_border_all` untuk Semua, `oz_black_tie` untuk Moderasi, `oz_music` untuk Musik, `oz_tools` untuk Utility, `oz_discord` untuk kategori, dan `oz_letterboxd` untuk ringkasan) yang disiapkan melalui skrip `npm run setup-emojis`.
+*   Mempunyai format judul yang disesuaikan menjadi `<icon> Help Menu` (misal: `oz_discord Help Menu`).
+*   Mendukung lokalisasi i18n penuh (Bahasa Indonesia / Inggris, default ke Bahasa Inggris).
 
 ### 6. Context Menu: `Translate to English` (Apps Selection)
 Penerjemah pesan otomatis yang diintegrasikan ke menu konteks Discord.

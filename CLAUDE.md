@@ -10,12 +10,12 @@ The codebase is built on **Node.js** using **discord.js v14.26+** (supporting Di
 
 ### Key Components:
 - **`src/index.js`**: Bootstraps the bot. Configures essential intents (`Guilds`, `GuildMessages`, `MessageContent`, `DirectMessages`, `GuildPresences`), imports the global SemVer version, and uncaught error handlers.
-- **`src/version.js`**: Stores the global version code in SemVer (`1.7.x`) format, synchronized from the root `VERSION` file.
+- **`src/version.js`**: Stores the global version code in SemVer (`1.7.60`) format, synchronized from the root `VERSION` file.
 - **`src/config.js`**: Wrapper re-exporting the root global configuration `config.js`.
 - **`src/utils/logger.js`**: Custom Winston logging wrapper with Chalk formatting.
 - **`src/utils/v2Embed.js`**: Fluid wrapper class translating basic metadata (Title, Description, Color, ActionRows) into Discord's new Components V2 layout.
 - **`src/utils/color.js`**: Color strategy classes (SpecificColor, SequentialColor, RandomColor).
-- **`src/utils/i18n.js`**: i18n helper utility providing the `t(key, locale, replaceData)` translation helper. Dict locales are situated under `src/locales/` (`id.json` and `en.json`).
+- **`src/utils/i18n.js`**: i18n helper utility providing the `t(key, locale, replaceData)` translation helper. Default bot locale is set to English (`en`). Dict locales are situated under `src/locales/` (`id.json` and `en.json`).
 - **`src/utils/supabase.js`**: Connects to Supabase to insert and retrieve message records. Safely falls back to `src/utils/database.js` local JSON methods if credentials are not specified.
 - **`src/utils/database.js`**: Local JSON storage utility for handling local message counts and logging fallbacks.
 - **`src/handlers/`**: Houses loaders for commands and events.
@@ -84,7 +84,7 @@ A 3-second cooldown is enforced globally per command per user in `src/events/int
 - **`/webhook`** (Utility): Create or view details of webhooks with copy URL buttons.
 - **`/role`** (Utility): Assign, remove, or view positions and IDs of server roles.
 - **`/music-search`** (Utility): Query Apple iTunes Music API for tracks. Show cover art, navigate results page-by-page, fetch lyrics via LRCLIB integration with a button click, and link direct previews. Utilizes Discord Message Components V2 and i18n support.
-- **`/help` & **`/menu`** (Utility): Shows a beautifully styled interactive category navigation menu for all bot commands using V2Embed, custom Font Awesome symbols, and translation options.
+- **`/help` & `/menu`** (Utility): Shows a beautifully styled interactive category navigation menu for all bot commands using `V2Embed`, custom Font Awesome symbols (e.g. `oz_border_all` for All category, `oz_tools` for Utility, `oz_black_tie` for Moderation, and `oz_music` for Music), and full translation support. Features a customizable title format: `<icon> Help Menu`. Can be set up via `npm run setup-emojis`.
 - **`/purge`** (Moderation): Bulk delete messages (1-100, default is 100). Automatically filters out messages older than 14 days to comply with Discord API limits.
 - **`Translate to English`** (Context Menu Command): Translates any targeted message to English. Accessed via right-clicking/long-pressing a message -> **Apps** -> **Translate to English**. Powered by the lightweight `@vitalets/google-translate-api` package.
 - **`User Info`** (Context Menu Command - Consolidated): Consolidated user profiling command showing global properties (ID, Username, Bot/System status, badges, banner color), server-specific details (Roles, Server Nickname, server avatar, boosting status, key permissions), joined dates, status/presence activity, and message counts. Includes download action buttons for global avatar, server avatar, and banner. Fully localizable (supports ID and EN-US, defaults to EN).
