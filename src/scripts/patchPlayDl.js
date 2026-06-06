@@ -93,6 +93,16 @@ files.forEach(file => {
       modified = true;
     }
 
+    // 9. Fix discordPlayerCompatibility: force mp4/aac (arbitrary) format instead of webm/opus
+    //    This prevents SeekStream (WebmSeeker) from being used which causes 403 on byte-range requests
+    const targetDPC = '="webm"?"webm/opus":"arbitrary";if(await _(`https://${new dt.URL(t[0].url).host}/generate_204`),s==="webm/opus")if(e.discordPlayerCompatibility){if(e.seek)throw new Error("Can not seek with discordPlayerCompatibility set to true.")}else{if(e.seek??=0,e.seek>=i.video_details.durationInSec||e.seek<0)throw new Error(`Seeking beyond limit. [ 0 - ${i.video_details.durationInSec-1}]`);return new fe(t[0].url,i.video_details.durationInSec,t[0].indexRange.end,Number(t[0].contentLength),Number(t[0].bitrate),i.video_details.url,e)}';
+    const replacementDPC = '="webm"?"webm/opus":"arbitrary";if(e.discordPlayerCompatibility&&s==="webm/opus"){const mp4fmt=t.find(f=>f.container==="mp4")||t[t.length-1];s="arbitrary";t[0]=mp4fmt;}if(await _(`https://${new dt.URL(t[0].url).host}/generate_204`),s==="webm/opus")if(e.discordPlayerCompatibility){if(e.seek)throw new Error("Can not seek with discordPlayerCompatibility set to true.")}else{if(e.seek??=0,e.seek>=i.video_details.durationInSec||e.seek<0)throw new Error(`Seeking beyond limit. [ 0 - ${i.video_details.durationInSec-1}]`);return new fe(t[0].url,i.video_details.durationInSec,t[0].indexRange.end,Number(t[0].contentLength),Number(t[0].bitrate),i.video_details.url,e)}';
+    if (content.includes(targetDPC)) {
+      content = content.replaceAll(targetDPC, replacementDPC);
+      console.log(`[Patch Play-DL] Patched discordPlayerCompatibility to force mp4/arbitrary format in ${file}`);
+      modified = true;
+    }
+
     if (modified) {
       fs.writeFileSync(filePath, content, 'utf8');
       console.log(`[Patch Play-DL] Successfully updated ${file}`);

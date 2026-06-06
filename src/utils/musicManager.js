@@ -76,6 +76,33 @@ export class MusicSession {
   }
 
   /**
+   * Fetch audio stream with retry logic (exponential backoff) for network errors
+   * @param {string} url - YouTube URL
+   * @param {number} attempt - current attempt number (1-based)
+   */
+  async fetchStreamWithRetry(url, attempt = 1) {
+    const MAX_RETRIES = 3;
+    const RETRY_DELAYS = [2000, 5000, 10000]; // 2s, 5s, 10s
+
+    try {
+      return await play.stream(url, { discordPlayerCompatibility: true });
+    } catch (error) {
+      const isNetworkError = error.code === 'ETIMEDOUT' || error.code === 'ECONNRESET' ||
+        error.code === 'ECONNREFUSED' || error.message?.includes('ETIMEDOUT') ||
+        error.message?.includes('ECONNRESET');
+
+      if (isNetworkError && attempt < MAX_RETRIES) {
+        const delay = RETRY_DELAYS[attempt - 1] ?? 5000;
+        logger.warn(`[Music Manager] Stream attempt ${attempt}/${MAX_RETRIES} failed (${error.code || error.message}). Retrying in ${delay / 1000}s...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return this.fetchStreamWithRetry(url, attempt + 1);
+      }
+
+      throw error;
+    }
+  }
+
+  /**
    * Play the next track in the queue
    */
   async playNext() {
@@ -100,10 +127,15 @@ export class MusicSession {
 
     try {
       logger.info(`[Music Manager] Fetching stream for track: ${this.currentTrack.title} (${this.currentTrack.url})`);
-      const stream = await play.stream(this.currentTrack.url, { discordPlayerCompatibility: true });
-      
+      const stream = await this.fetchStreamWithRetry(this.currentTrack.url);
+
       const resource = createAudioResource(stream.stream, {
         inputType: stream.type
+      });
+
+      // Handle stream-level errors (e.g. ETIMEDOUT mid-playback)
+      stream.stream.on('error', (err) => {
+        logger.error(`[Music Manager] Stream read error in guild ${this.guildId}: ${err.message}`);
       });
 
       this.player.play(resource);
