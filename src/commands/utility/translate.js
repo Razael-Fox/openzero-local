@@ -38,7 +38,8 @@ export default {
       const detectedLang = res.raw && res.raw.src ? res.raw.src.toUpperCase() : 'UNKNOWN';
 
       const successEmbed = new V2Embed()
-        .setTitle('Translate to English 🇺🇸')
+        .setContext(interaction)
+        .setTitle('Translate to English 🌐')
         .setDescription(
           `**Teks Asli (${detectedLang}):**\n` +
             `> ${originalText.length > 500 ? originalText.slice(0, 500) + '...' : originalText}\n\n` +

@@ -11,6 +11,7 @@ import { V2Embed } from '../../utils/v2Embed.js';
 import { getMessageCount } from '../../utils/database.js';
 import { t } from '../../utils/i18n.js';
 import logger from '../../utils/logger.js';
+import { resolveEmoji } from '../../utils/symbols.js';
 
 export default {
   data: new ContextMenuCommandBuilder()
@@ -150,7 +151,7 @@ export default {
         .setLabel(t('downloadPfp', locale))
         .setStyle(ButtonStyle.Link)
         .setURL(globalAvatar)
-        .setEmoji('🖼️')
+        .setEmoji(resolveEmoji(interaction.guild, '🖼️'))
     );
 
     if (serverAvatar) {
@@ -159,7 +160,7 @@ export default {
           .setLabel(t('downloadServerAvatar', locale))
           .setStyle(ButtonStyle.Link)
           .setURL(serverAvatar)
-          .setEmoji('👤')
+          .setEmoji(resolveEmoji(interaction.guild, '👤'))
       );
     }
 
@@ -169,7 +170,7 @@ export default {
           .setLabel(t('downloadBanner', locale))
           .setStyle(ButtonStyle.Link)
           .setURL(bannerUrl)
-          .setEmoji('🏳️')
+          .setEmoji(resolveEmoji(interaction.guild, '🏳️'))
       );
     }
 

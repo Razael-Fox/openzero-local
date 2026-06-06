@@ -9,7 +9,7 @@ import {
 import logger from '../utils/logger.js';
 import { V2Embed } from '../utils/v2Embed.js';
 import { getObtainiumEmbed } from '../utils/obtainiumHelper.js';
-import { Symbols } from '../utils/symbols.js';
+import { Symbols, resolveEmoji } from '../utils/symbols.js';
 
 const cooldowns = new Collection();
 
@@ -34,7 +34,7 @@ export default {
               .setCustomId('ping_refresh')
               .setLabel('Ukur Ulang')
               .setStyle(ButtonStyle.Primary)
-              .setEmoji('🔄')
+              .setEmoji(resolveEmoji(interaction.guild, '🔄'))
           );
 
           const embed = new V2Embed()

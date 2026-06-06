@@ -65,7 +65,7 @@ export function applyGuildEmojis(text, guild) {
 
   const targetGuild = guild || Symbols.guild;
 
-  if (targetGuild) {
+  if (targetGuild && targetGuild.emojis && targetGuild.emojis.cache) {
     const emojis = targetGuild.emojis.cache;
     const emojiMapping = {
       // Core Embed Symbols
@@ -79,7 +79,6 @@ export function applyGuildEmojis(text, guild) {
       [Symbols.HELLO]: 'oz_hello',
       [Symbols.REFRESH]: 'oz_refresh',
 
-      // Additional UI / Locale Symbols
       '👤': 'oz_user',
       '📅': 'oz_calendar',
       '🛡️': 'oz_shield',
@@ -94,6 +93,11 @@ export function applyGuildEmojis(text, guild) {
       '⏳': 'oz_hourglass',
       '🌐': 'oz_globe',
       '🔧': 'oz_wrench',
+      '⬅️': 'oz_arrow_left',
+      '➡️': 'oz_arrow_right',
+      '📋': 'oz_clipboard',
+      '🖼️': 'oz_image',
+      '🏳️': 'oz_flag',
 
       // Sub-parts of logger / system headers
       'ℹ': 'oz_info',
@@ -116,3 +120,62 @@ export function applyGuildEmojis(text, guild) {
 
   return formattedText;
 }
+
+/**
+ * Resolves a custom guild emoji or fallback standard emoji for buttons/components.
+ * 
+ * @param {import('discord.js').Guild|null} guild - The Discord guild to check
+ * @param {string} symbolOrName - E.g. '🔄' or 'oz_refresh' or Symbols.REFRESH
+ * @param {string} [fallback] - The fallback standard emoji
+ * @returns {string|import('discord.js').GuildEmoji} The resolved emoji (GuildEmoji instance, ID string, or fallback string)
+ */
+export function resolveEmoji(guild, symbolOrName, fallback) {
+  const targetGuild = guild || Symbols.guild;
+  if (!targetGuild) return fallback || symbolOrName;
+
+  const emojiMapping = {
+    '✅': 'oz_success',
+    '❌': 'oz_failure',
+    '⚠️': 'oz_warning',
+    '🏓': 'oz_ping',
+    '⏱️': 'oz_cooldown',
+    '🎵': 'oz_music',
+    '🎤': 'oz_microphone',
+    '👋': 'oz_hello',
+    '🔄': 'oz_refresh',
+    '👤': 'oz_user',
+    '📅': 'oz_calendar',
+    '🛡️': 'oz_shield',
+    '🛡': 'oz_shield',
+    '💬': 'oz_chat',
+    '🛑': 'oz_stop',
+    '🔨': 'oz_hammer',
+    '🗑️': 'oz_trash',
+    '🗑': 'oz_trash',
+    '🔇': 'oz_mute',
+    '🔊': 'oz_volume',
+    '⏳': 'oz_hourglass',
+    '🌐': 'oz_globe',
+    '🔧': 'oz_wrench',
+    '⬅️': 'oz_arrow_left',
+    '➡️': 'oz_arrow_right',
+    '📋': 'oz_clipboard',
+    '🖼️': 'oz_image',
+    '🏳️': 'oz_flag',
+    'ℹ': 'oz_info',
+    '🧭': 'oz_compass',
+    '⚠': 'oz_warn',
+    '⚡': 'oz_bolt',
+    '✖': 'oz_error',
+    '🔥': 'oz_fire',
+    '⚙': 'oz_gear',
+    '🛠': 'oz_tools'
+  };
+
+  const emojiName = emojiMapping[symbolOrName] || symbolOrName;
+  const customEmoji = targetGuild.emojis && targetGuild.emojis.cache
+    ? targetGuild.emojis.cache.find(e => e.name === emojiName)
+    : null;
+  return customEmoji || fallback || symbolOrName;
+}
+

@@ -35,7 +35,14 @@ const emojiMapping = {
   oz_bolt: { name: 'bolt', provider: 'fontawesome' },
   oz_fire: { name: 'fire', provider: 'fontawesome' },
   oz_gear: { name: 'gear', provider: 'fontawesome' },
-  oz_tools: { name: 'screwdriver-wrench', provider: 'fontawesome' }
+  oz_tools: { name: 'screwdriver-wrench', provider: 'fontawesome' },
+
+  // New Button and Interface Emojis
+  oz_arrow_left: { name: 'arrow-left', provider: 'fontawesome' },
+  oz_arrow_right: { name: 'arrow-right', provider: 'fontawesome' },
+  oz_clipboard: { name: 'clipboard', provider: 'fontawesome' },
+  oz_image: { name: 'image', provider: 'fontawesome' },
+  oz_flag: { name: 'flag', provider: 'fontawesome' }
 };
 
 async function setupGuildEmojis() {

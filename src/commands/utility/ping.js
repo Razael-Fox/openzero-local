@@ -6,6 +6,7 @@ import {
   ButtonStyle
 } from 'discord.js';
 import { V2Embed } from '../../utils/v2Embed.js';
+import { resolveEmoji } from '../../utils/symbols.js';
 
 export default {
   data: new SlashCommandBuilder()
@@ -27,7 +28,7 @@ export default {
         .setCustomId('ping_refresh')
         .setLabel('Ukur Ulang')
         .setStyle(ButtonStyle.Primary)
-        .setEmoji('🔄')
+        .setEmoji(resolveEmoji(interaction.guild, '🔄'))
     );
 
     // Membuat container menggunakan class helper V2Embed (menggunakan warna global default)
