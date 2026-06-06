@@ -23,6 +23,20 @@ export class Symbols {
   static get MUSIC() { return '🎵'; }
   static get MICROPHONE() { return '🎤'; }
   static get HELLO() { return '👋'; }
+
+  // More Emojis used in commands and locales
+  static get USER() { return '👤'; }
+  static get CALENDAR() { return '📅'; }
+  static get SHIELD() { return '🛡️'; }
+  static get CHAT() { return '💬'; }
+  static get STOP() { return '🛑'; }
+  static get HAMMER() { return '🔨'; }
+  static get TRASH() { return '🗑️'; }
+  static get MUTE() { return '🔇'; }
+  static get VOLUME() { return '🔊'; }
+  static get HOURGLASS() { return '⏳'; }
+  static get GLOBE() { return '🌐'; }
+  static get WRENCH() { return '🔧'; }
 }
 
 /**
@@ -54,6 +68,7 @@ export function applyGuildEmojis(text, guild) {
   if (targetGuild) {
     const emojis = targetGuild.emojis.cache;
     const emojiMapping = {
+      // Core Embed Symbols
       [Symbols.SUCCESS]: 'oz_success',
       [Symbols.FAILURE]: 'oz_failure',
       [Symbols.WARNING]: 'oz_warning',
@@ -62,13 +77,38 @@ export function applyGuildEmojis(text, guild) {
       [Symbols.MUSIC]: 'oz_music',
       [Symbols.MICROPHONE]: 'oz_microphone',
       [Symbols.HELLO]: 'oz_hello',
-      [Symbols.REFRESH]: 'oz_refresh'
+      [Symbols.REFRESH]: 'oz_refresh',
+
+      // Additional UI / Locale Symbols
+      '👤': 'oz_user',
+      '📅': 'oz_calendar',
+      '🛡️': 'oz_shield',
+      '🛡': 'oz_shield',
+      '💬': 'oz_chat',
+      '🛑': 'oz_stop',
+      '🔨': 'oz_hammer',
+      '🗑️': 'oz_trash',
+      '🗑': 'oz_trash',
+      '🔇': 'oz_mute',
+      '🔊': 'oz_volume',
+      '⏳': 'oz_hourglass',
+      '🌐': 'oz_globe',
+      '🔧': 'oz_wrench',
+
+      // Sub-parts of logger / system headers
+      'ℹ': 'oz_info',
+      '🧭': 'oz_compass',
+      '⚠': 'oz_warn',
+      '⚡': 'oz_bolt',
+      '✖': 'oz_error',
+      '🔥': 'oz_fire',
+      '⚙': 'oz_gear',
+      '🛠': 'oz_tools'
     };
 
     for (const [symbol, emojiName] of Object.entries(emojiMapping)) {
       const customEmoji = emojis.find(e => e.name === emojiName);
       if (customEmoji) {
-        // Replace all instances of standard emoji with the custom guild emoji mention
         formattedText = formattedText.replaceAll(symbol, customEmoji.toString());
       }
     }

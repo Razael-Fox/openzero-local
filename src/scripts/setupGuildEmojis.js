@@ -4,6 +4,7 @@ import { downloadIcon } from '../utils/iconHelper.js';
 import logger from '../utils/logger.js';
 
 const emojiMapping = {
+  // Core UI Symbols
   oz_success: { name: 'check', provider: 'fontawesome' },
   oz_failure: { name: 'xmark', provider: 'fontawesome' },
   oz_warning: { name: 'triangle-exclamation', provider: 'fontawesome' },
@@ -11,11 +12,30 @@ const emojiMapping = {
   oz_cooldown: { name: 'clock', provider: 'fontawesome' },
   oz_music: { name: 'music', provider: 'fontawesome' },
   oz_microphone: { name: 'microphone', provider: 'fontawesome' },
-  oz_hello: { name: 'hand-spock', provider: 'fontawesome' }, // hand-spock is a classic brand/solid icon
+  oz_hello: { name: 'hand-spock', provider: 'fontawesome' },
   oz_refresh: { name: 'arrows-rotate', provider: 'fontawesome' },
-  oz_arrow_left: { name: 'arrow-left', provider: 'fontawesome' },
-  oz_arrow_right: { name: 'arrow-right', provider: 'fontawesome' },
-  oz_enter: { name: 'arrow-turn-down', provider: 'fontawesome' }
+
+  // Additional UI & Locale Symbols
+  oz_user: { name: 'user', provider: 'fontawesome' },
+  oz_calendar: { name: 'calendar-days', provider: 'fontawesome' },
+  oz_shield: { name: 'shield-halved', provider: 'fontawesome' },
+  oz_chat: { name: 'comment-dots', provider: 'fontawesome' },
+  oz_stop: { name: 'circle-stop', provider: 'fontawesome' },
+  oz_hammer: { name: 'hammer', provider: 'fontawesome' },
+  oz_trash: { name: 'trash-can', provider: 'fontawesome' },
+  oz_mute: { name: 'volume-xmark', provider: 'fontawesome' },
+  oz_volume: { name: 'volume-high', provider: 'fontawesome' },
+  oz_hourglass: { name: 'hourglass-half', provider: 'fontawesome' },
+  oz_globe: { name: 'globe', provider: 'fontawesome' },
+  oz_wrench: { name: 'wrench', provider: 'fontawesome' },
+
+  // Logger & System headers
+  oz_info: { name: 'circle-info', provider: 'fontawesome' },
+  oz_compass: { name: 'compass', provider: 'fontawesome' },
+  oz_bolt: { name: 'bolt', provider: 'fontawesome' },
+  oz_fire: { name: 'fire', provider: 'fontawesome' },
+  oz_gear: { name: 'gear', provider: 'fontawesome' },
+  oz_tools: { name: 'screwdriver-wrench', provider: 'fontawesome' }
 };
 
 async function setupGuildEmojis() {
