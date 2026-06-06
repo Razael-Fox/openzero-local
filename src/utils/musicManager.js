@@ -40,6 +40,15 @@ export class MusicSession {
     this.player = createAudioPlayer();
     this.connection.subscribe(this.player);
 
+    // Setup state change logs for debugging
+    this.connection.on('stateChange', (oldState, newState) => {
+      logger.info(`[Music Manager] Connection state changed from ${oldState.status} to ${newState.status}`);
+    });
+
+    this.player.on('stateChange', (oldState, newState) => {
+      logger.info(`[Music Manager] Player state changed from ${oldState.status} to ${newState.status}`);
+    });
+
     // Setup event listeners
     this.player.on(AudioPlayerStatus.Idle, () => {
       logger.info(`[Music Manager] Player in guild ${this.guildId} became Idle. Playing next track.`);
@@ -139,7 +148,18 @@ export class MusicSession {
           resolved = true;
           // Push back the chunk and return the full stream
           ytdlp.stdout.unshift(chunk);
-          resolve({ stream: ytdlp.stdout, type: StreamType.Arbitrary });
+
+          // Detect EBML / WebM signature (1A 45 DF A3)
+          const isWebm = chunk.length >= 4 &&
+            chunk[0] === 0x1A &&
+            chunk[1] === 0x45 &&
+            chunk[2] === 0xDF &&
+            chunk[3] === 0xA3;
+
+          const streamType = isWebm ? StreamType.WebmOpus : StreamType.Arbitrary;
+          logger.info(`[Music Manager] Detected stream format: ${isWebm ? 'WebM/Opus (StreamType.WebmOpus)' : 'Other (StreamType.Arbitrary)'}`);
+
+          resolve({ stream: ytdlp.stdout, type: streamType });
         }
       });
 
