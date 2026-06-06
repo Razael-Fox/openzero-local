@@ -20,7 +20,7 @@ files.forEach(file => {
     let content = fs.readFileSync(filePath, 'utf8');
     let modified = false;
 
-    // 1. Replace te array (User-Agents) in index.js (since it's not present in index.mjs usually)
+    // 1. Replace te array (User-Agents) in index.js
     const teRegex = /var te=\[.*?\];/;
     if (teRegex.test(content)) {
       content = content.replace(teRegex, `var te=${modernUserAgents};`);
@@ -28,10 +28,14 @@ files.forEach(file => {
       modified = true;
     }
 
-    // 2. Replace Android clientVersion "16.49" with "19.11.38"
+    // 2. Replace Android clientVersion "16.49" with "20.10.38"
     if (content.includes('clientVersion:"16.49"')) {
-      content = content.replaceAll('clientVersion:"16.49"', 'clientVersion:"19.11.38"');
+      content = content.replaceAll('clientVersion:"16.49"', 'clientVersion:"20.10.38"');
       console.log(`[Patch Play-DL] Patched Android clientVersion in ${file}`);
+      modified = true;
+    } else if (content.includes('clientVersion:"19.11.38"')) {
+      content = content.replaceAll('clientVersion:"19.11.38"', 'clientVersion:"20.10.38"');
+      console.log(`[Patch Play-DL] Updated Android clientVersion to 20.10.38 in ${file}`);
       modified = true;
     }
 
@@ -44,9 +48,9 @@ files.forEach(file => {
       modified = true;
     }
 
-    // 4. Patch parseAudioFormats (O) to filter out formats without urls and fallback to itag 18
+    // 4. Patch parseAudioFormats (O) to filter out formats without urls and fallback to itag 18 with url
     const targetO = 'function O(i){let e=[];return i.forEach(t=>{let r=t.mimeType;r.startsWith("audio")&&(t.codec=r.split(\'codecs="\')[1].split(\'"\')[0],t.container=r.split("audio/")[1].split(";")[0],e.push(t))}),e}a(O,"parseAudioFormats");';
-    const replacementO = 'function O(i){let e=[];i.forEach(t=>{let r=t.mimeType;r.startsWith("audio")&&(t.url||t.signatureCipher||t.cipher)&&(t.codec=r.split(\'codecs="\')[1].split(\'"\')[0],t.container=r.split("audio/")[1].split(";")[0],e.push(t))});if(e.length===0){let t=i.find(f=>f.itag===18&&(f.url||f.signatureCipher||f.cipher));if(t){let r=t.mimeType;t.codec=r.includes(\'codecs="\')?r.split(\'codecs="\')[1].split(\'"\')[0]:"mp4a.40.2";t.container="mp4";e.push(t)}}return e}a(O,"parseAudioFormats");';
+    const replacementO = 'function O(i){let e=[];i.forEach(t=>{let r=t.mimeType;r.startsWith("audio")&&t.url&&(t.codec=r.split(\'codecs="\')[1].split(\'"\')[0],t.container=r.split("audio/")[1].split(";")[0],e.push(t))});if(e.length===0){let t=i.find(f=>f.itag===18&&f.url);if(t){let r=t.mimeType;t.codec=r.includes(\'codecs="\')?r.split(\'codecs="\')[1].split(\'"\')[0]:"mp4a.40.2";t.container="mp4";e.push(t)}}return e}a(O,"parseAudioFormats");';
     if (content.includes(targetO)) {
       content = content.replaceAll(targetO, replacementO);
       console.log(`[Patch Play-DL] Patched parseAudioFormats in ${file}`);
@@ -59,6 +63,33 @@ files.forEach(file => {
     if (content.includes(targetRetry)) {
       content = content.replaceAll(targetRetry, replacementRetry);
       console.log(`[Patch Play-DL] Patched retry url access in ${file}`);
+      modified = true;
+    }
+
+    // 6. Patch h header merge logic to support User-Agent overrides
+    const targetHMerge = 'e.headers&&(e.headers={...e.headers,"accept-encoding":"gzip, deflate, br","user-agent":Ge()})';
+    const replacementHMerge = 'e.headers&&(e.headers={"user-agent":Ge(),"accept-encoding":"gzip, deflate, br",...e.headers})';
+    if (content.includes(targetHMerge)) {
+      content = content.replaceAll(targetHMerge, replacementHMerge);
+      console.log(`[Patch Play-DL] Patched header override support in h for ${file}`);
+      modified = true;
+    }
+
+    // 7. Patch Android client request to include proper YouTube app User-Agent header
+    const targetAndroidCall = 'contentCheckOk:!0,racyCheckOk:!0}),cookies:!0,cookieJar:e})';
+    const replacementAndroidCall = 'contentCheckOk:!0,racyCheckOk:!0}),headers:{"User-Agent":"com.google.android.youtube/20.10.38 (Linux; U; Android 11; Scale/2.00; Sylph/1.0.0; Build/RQ3A.210605.005)"},cookies:!0,cookieJar:e})';
+    if (content.includes(targetAndroidCall)) {
+      content = content.replaceAll(targetAndroidCall, replacementAndroidCall);
+      console.log(`[Patch Play-DL] Patched Android API call headers in ${file}`);
+      modified = true;
+    }
+
+    // 8. Patch getAndroidFormats to return combined formats and adaptiveFormats
+    const targetAndroidReturn = 'return JSON.parse(s).streamingData?.formats||[]}';
+    const replacementAndroidReturn = 'const sd=JSON.parse(s).streamingData;const formats=[];if(sd){if(sd.formats)formats.push(...sd.formats);if(sd.adaptiveFormats)formats.push(...sd.adaptiveFormats)}return formats;}';
+    if (content.includes(targetAndroidReturn)) {
+      content = content.replaceAll(targetAndroidReturn, replacementAndroidReturn);
+      console.log(`[Patch Play-DL] Patched getAndroidFormats to return combined formats in ${file}`);
       modified = true;
     }
 
