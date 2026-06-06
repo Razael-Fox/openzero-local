@@ -134,12 +134,12 @@ export class MusicSession {
       });
 
       // Resolve as soon as first data chunk arrives (stream is flowing)
-      ytdlp.stdout.once('data', () => {
+      ytdlp.stdout.once('data', (chunk) => {
         if (!resolved) {
           resolved = true;
           // Push back the chunk and return the full stream
-          const readable = ytdlp.stdout;
-          resolve({ stream: readable, type: StreamType.Arbitrary });
+          ytdlp.stdout.unshift(chunk);
+          resolve({ stream: ytdlp.stdout, type: StreamType.Arbitrary });
         }
       });
 
