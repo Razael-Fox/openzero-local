@@ -88,12 +88,21 @@ export async function downloadIcon(name, provider = 'fontawesome') {
 
   for (const entry of urlsToTry) {
     try {
-      const response = await fetch(entry.url);
+      let fetchUrl = entry.url;
+      let targetExt = entry.ext;
+
+      // Convert SVG to PNG using images.weserv.nl so Discord can render it properly
+      if (entry.ext === 'svg') {
+        fetchUrl = `https://images.weserv.nl/?url=${encodeURIComponent(entry.url.replace(/^https?:\/\//, ''))}&output=png`;
+        targetExt = 'png';
+      }
+
+      const response = await fetch(fetchUrl);
       if (response.ok) {
         const arrayBuffer = await response.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
         
-        let ext = entry.ext;
+        let ext = targetExt;
         const contentType = response.headers.get('content-type');
         if (contentType) {
           if (contentType.includes('svg')) ext = 'svg';
@@ -115,9 +124,9 @@ export async function downloadIcon(name, provider = 'fontawesome') {
         };
       }
     } catch (err) {
-      logger.warn(`[IconHelper] Failed to download from URL: ${entry.url}`, err);
+      logger.warn(`[IconHelper] Failed to download/convert from URL: ${entry.url}`, err);
     }
   }
 
-  throw new Error(`Icon "${name}" could not be downloaded from any provider.`);
+  throw new Error(`Icon "${name}" could not be downloaded or converted from any provider.`);
 }

@@ -22,11 +22,11 @@ describe('IconHelper Test Suite', () => {
     }
   });
 
-  test('should successfully download SVG icon from Font Awesome (github)', async () => {
-    // GitHub is a popular brand icon, should download as SVG
+  test('should successfully download SVG icon from Font Awesome (github) converted to PNG', async () => {
+    // GitHub is a popular brand icon, should download as SVG and be converted to PNG
     const icon = await downloadIcon('github', 'fontawesome');
     expect(icon).toBeDefined();
-    expect(icon.ext).toBe('svg');
+    expect(icon.ext).toBe('png');
     expect(fs.existsSync(icon.filePath)).toBe(true);
   }, 15000);
 
