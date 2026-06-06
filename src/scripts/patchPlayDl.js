@@ -53,6 +53,15 @@ files.forEach(file => {
       modified = true;
     }
 
+    // 5. Patch retry url access in stream logic to be safe
+    const targetRetry = 'this.url=t[this.quality].url';
+    const replacementRetry = 'this.url=t[this.quality]?.url||t[0]?.url||""';
+    if (content.includes(targetRetry)) {
+      content = content.replaceAll(targetRetry, replacementRetry);
+      console.log(`[Patch Play-DL] Patched retry url access in ${file}`);
+      modified = true;
+    }
+
     if (modified) {
       fs.writeFileSync(filePath, content, 'utf8');
       console.log(`[Patch Play-DL] Successfully updated ${file}`);
