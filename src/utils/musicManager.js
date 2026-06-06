@@ -146,6 +146,8 @@ export class MusicSession {
       ytdlp.stdout.once('data', (chunk) => {
         if (!resolved) {
           resolved = true;
+          // Pause the stream immediately to stop flowing mode and prevent data loss
+          ytdlp.stdout.pause();
           // Push back the chunk and return the full stream
           ytdlp.stdout.unshift(chunk);
 
