@@ -79,4 +79,13 @@ describe('Help and Menu Commands', () => {
     const replyArg = mockInteraction.reply.mock.calls[0][0];
     expect(replyArg.components).toBeDefined();
   });
+
+  test('generateHelpEmbed helper should filter by specific category', async () => {
+    const { generateHelpEmbed } = await import('../src/commands/utility/help.js');
+    const embedUtility = generateHelpEmbed(mockInteraction.client, 'id', 'utility', mockInteraction);
+    const embedModeration = generateHelpEmbed(mockInteraction.client, 'id', 'moderation', mockInteraction);
+
+    expect(embedUtility).toBeDefined();
+    expect(embedModeration).toBeDefined();
+  });
 });

@@ -137,6 +137,27 @@ export default {
             error
           );
         }
+      } else if (interaction.customId.startsWith('help_cat_')) {
+        try {
+          await interaction.deferUpdate();
+          const category = interaction.customId.replace('help_cat_', '');
+          const { generateHelpEmbed } = await import('../commands/utility/help.js');
+          const embed = generateHelpEmbed(interaction.client, interaction.locale, category, interaction);
+
+          await interaction.editReply({
+            components: [embed],
+            flags: MessageFlags.IsComponentsV2
+          });
+
+          logger.info(
+            `[Button Clicked] ${interaction.customId} diproses (Category: ${category}) untuk ${interaction.user.tag}`
+          );
+        } catch (error) {
+          logger.error(
+            `[Button Error] Gagal memproses interaksi tombol ${interaction.customId}:`,
+            error
+          );
+        }
       }
       return;
     }
