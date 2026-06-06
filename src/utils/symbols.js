@@ -176,6 +176,15 @@ export function resolveEmoji(guild, symbolOrName, fallback) {
   const customEmoji = targetGuild.emojis && targetGuild.emojis.cache
     ? targetGuild.emojis.cache.find(e => e.name === emojiName)
     : null;
-  return customEmoji || fallback || symbolOrName;
+  
+  if (customEmoji) {
+    return {
+      id: customEmoji.id,
+      name: customEmoji.name,
+      animated: customEmoji.animated
+    };
+  }
+
+  return fallback || symbolOrName;
 }
 
