@@ -101,7 +101,8 @@ export function applyGuildEmojis(text, guild) {
 
       // Sub-parts of logger / system headers
       'ℹ': 'oz_info',
-      '🧭': 'oz_compass',
+      '🧭': 'oz_discord',
+      '📊': 'oz_letterboxd',
       '⚠': 'oz_warn',
       '⚡': 'oz_bolt',
       '✖': 'oz_error',
@@ -163,7 +164,8 @@ export function resolveEmoji(guild, symbolOrName, fallback) {
     '🖼️': 'oz_image',
     '🏳️': 'oz_flag',
     'ℹ': 'oz_info',
-    '🧭': 'oz_compass',
+    '🧭': 'oz_discord',
+    '📊': 'oz_letterboxd',
     '⚠': 'oz_warn',
     '⚡': 'oz_bolt',
     '✖': 'oz_error',

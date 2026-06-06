@@ -42,7 +42,11 @@ const emojiMapping = {
   oz_arrow_right: { name: 'arrow-right', provider: 'fontawesome' },
   oz_clipboard: { name: 'clipboard', provider: 'fontawesome' },
   oz_image: { name: 'image', provider: 'fontawesome' },
-  oz_flag: { name: 'flag', provider: 'fontawesome' }
+  oz_flag: { name: 'flag', provider: 'fontawesome' },
+  oz_letterboxd: { name: 'letterboxd', provider: 'fontawesome' },
+  oz_discord: { name: 'discord', provider: 'fontawesome' },
+  oz_border_all: { name: 'border-all', provider: 'fontawesome' },
+  oz_black_tie: { name: 'black-tie', provider: 'fontawesome' }
 };
 
 async function setupGuildEmojis() {

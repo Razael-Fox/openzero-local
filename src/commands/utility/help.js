@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { V2Embed } from '../../utils/v2Embed.js';
 import { t } from '../../utils/i18n.js';
+import { resolveEmoji } from '../../utils/symbols.js';
 
 /**
  * Generates help container embed dynamically with category filtering buttons
@@ -96,22 +97,32 @@ export function generateHelpEmbed(client, locale, selectedCategory = 'all', cont
   const buttonRow = new ActionRowBuilder();
 
   // Add "All" button
+  const guildObj = context ? (context.guild || null) : null;
   buttonRow.addComponents(
     new ButtonBuilder()
       .setCustomId(`help_cat_all`)
       .setLabel(locale === 'id' ? 'Semua' : 'All')
       .setStyle(selectedCategory === 'all' ? ButtonStyle.Success : ButtonStyle.Secondary)
+      .setEmoji(resolveEmoji(guildObj, 'oz_border_all', '📋'))
   );
 
   // Add a button for each category (max 4 categories to keep it in a single row of 5 buttons max)
   sortedCategories.slice(0, 4).forEach((cat) => {
     const capitalizedCat = cat.charAt(0).toUpperCase() + cat.slice(1);
-    buttonRow.addComponents(
-      new ButtonBuilder()
-        .setCustomId(`help_cat_${cat}`)
-        .setLabel(capitalizedCat)
-        .setStyle(selectedCategory === cat ? ButtonStyle.Success : ButtonStyle.Primary)
-    );
+    const button = new ButtonBuilder()
+      .setCustomId(`help_cat_${cat}`)
+      .setLabel(capitalizedCat)
+      .setStyle(selectedCategory === cat ? ButtonStyle.Success : ButtonStyle.Primary);
+
+    if (cat === 'utility') {
+      button.setEmoji(resolveEmoji(guildObj, 'oz_tools', '🔧'));
+    } else if (cat === 'moderation') {
+      button.setEmoji(resolveEmoji(guildObj, 'oz_black_tie', '🛡️'));
+    } else if (cat === 'music') {
+      button.setEmoji(resolveEmoji(guildObj, 'oz_music', '🎵'));
+    }
+
+    buttonRow.addComponents(button);
   });
 
   const embed = new V2Embed()
