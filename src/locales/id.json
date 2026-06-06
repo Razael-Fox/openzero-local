@@ -58,5 +58,15 @@
   "helpDescription": "Berikut adalah daftar perintah yang tersedia di bot ini:\n\n",
   "helpCategory": "Kategori",
   "helpCommandFormat": "Perintah",
-  "helpDescriptionFormat": "Deskripsi"
+  "helpDescriptionFormat": "Deskripsi",
+  "notInVoiceChannel": "Anda harus berada di saluran suara untuk menggunakan perintah ini!",
+  "differentVoiceChannel": "Anda harus berada di saluran suara yang sama dengan bot untuk menggunakan perintah ini!",
+  "addedToQueue": "Menambahkan **{title}** ke antrean.",
+  "skippedTrack": "Melewati lagu saat ini.",
+  "noMusicPlaying": "Tidak ada musik yang sedang diputar saat ini.",
+  "pausedMusic": "Pemutaran musik dijeda.",
+  "resumedMusic": "Pemutaran musik dilanjutkan.",
+  "stoppedMusic": "Menghentikan musik dan mengosongkan antrean.",
+  "queueTitle": "Antrean Musik 🎵",
+  "queueEmpty": "Antrean saat ini kosong."
 }

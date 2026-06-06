@@ -17,15 +17,20 @@
     "fetch-repos": "node src/scripts/fetchRepos.js",
     "setup-emojis": "node src/scripts/setupGuildEmojis.js",
     "version:update": "node src/scripts/updateVersion.js",
-    "version:bump": "node src/scripts/updateVersion.js"
+    "version:bump": "node src/scripts/updateVersion.js",
+    "postinstall": "node src/scripts/patchPlayDl.js"
   },
   "dependencies": {
+    "@discordjs/voice": "^0.19.2",
     "@sentry/node": "^10.56.0",
     "@supabase/supabase-js": "^2.107.0",
     "@vitalets/google-translate-api": "^9.2.1",
     "chalk": "^5.6.2",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.5",
+    "libsodium-wrappers": "^0.8.4",
+    "opusscript": "^0.0.8",
+    "play-dl": "^1.9.7",
     "winston": "^3.17.0"
   },
   "devDependencies": {
