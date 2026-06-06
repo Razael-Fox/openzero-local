@@ -53,5 +53,6 @@
   "lyricsSearchError": "An error occurred while fetching lyrics from database.",
   "pageText": "Page {current} of {total}",
   "lyricsButtonLabel": "Lyrics {index}",
-  "previewButtonLabel": "Preview {index}"
+  "previewButtonLabel": "Preview {index}",
+  "welcomeMessage": "Welcome to the server, {user}! We are glad to have you here."
 }

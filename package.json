@@ -20,6 +20,7 @@
     "version:bump": "node src/scripts/updateVersion.js"
   },
   "dependencies": {
+    "@napi-rs/canvas": "^1.0.0",
     "@sentry/node": "^10.56.0",
     "@supabase/supabase-js": "^2.107.0",
     "@vitalets/google-translate-api": "^9.2.1",

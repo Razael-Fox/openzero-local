@@ -77,5 +77,10 @@ export const config = {
   obtainium: {
     channelId: '1511326472219001014',
     messageId: '1511327184546042019'
+  },
+
+  // Konfigurasi sistem welcome member baru
+  welcome: {
+    channelId: process.env.WELCOME_CHANNEL_ID || '1511326472219001014' // Default ke channel utama jika env kosong
   }
 };
