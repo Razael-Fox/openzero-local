@@ -44,6 +44,7 @@ export async function loadCommands(client) {
           continue;
         }
 
+        command.category = folder;
         client.commands.set(command.data.name, command);
         logger.info(`[Command Handler] Berhasil memuat command: /${command.data.name}`);
       } catch (error) {
