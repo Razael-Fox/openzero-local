@@ -62,9 +62,6 @@ export function applyGuildEmojis(text, guild) {
       [Symbols.MUSIC]: 'oz_music',
       [Symbols.MICROPHONE]: 'oz_microphone',
       [Symbols.HELLO]: 'oz_hello',
-      [Symbols.ENTER]: 'oz_enter',
-      [Symbols.ARROW_LEFT]: 'oz_arrow_left',
-      [Symbols.ARROW_RIGHT]: 'oz_arrow_right',
       [Symbols.REFRESH]: 'oz_refresh'
     };
 
