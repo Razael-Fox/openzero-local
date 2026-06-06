@@ -12,50 +12,42 @@ export async function createWelcomeImage(member, locale = 'en') {
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
-  // 1. Draw Sleek Dark Background with Gradients
-  const bgGradient = ctx.createLinearGradient(0, 0, width, height);
-  bgGradient.addColorStop(0, '#100a20'); // Dark violet
-  bgGradient.addColorStop(0.5, '#191135'); // Deep indigo
-  bgGradient.addColorStop(1, '#0b0813'); // Near black
-  ctx.fillStyle = bgGradient;
+  // 1. Draw Rounded Mask for the entire Canvas
+  const borderRadius = 16;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, width, height, borderRadius);
+  ctx.clip();
+
+  // 2. Flat Minimalist Background (Discord dark style)
+  ctx.fillStyle = '#1e1f22';
   ctx.fillRect(0, 0, width, height);
 
-  // 2. Add Decorative Glassmorphic & Neon Accents
-  ctx.strokeStyle = 'rgba(110, 76, 193, 0.4)';
-  ctx.lineWidth = 1.5;
+  // Draw a very subtle flat accent line on the left or top border
+  ctx.strokeStyle = '#6e4cc1'; // Accent purple
+  ctx.lineWidth = 6;
   ctx.beginPath();
-  ctx.arc(width, 0, 200, 0, Math.PI * 2);
+  ctx.moveTo(3, 0);
+  ctx.lineTo(3, height);
   ctx.stroke();
 
-  ctx.strokeStyle = 'rgba(245, 142, 37, 0.15)';
-  ctx.beginPath();
-  ctx.arc(0, height, 150, 0, Math.PI * 2);
-  ctx.stroke();
-
-  // Draw a sleek frame border around the canvas
-  const borderGradient = ctx.createLinearGradient(0, 0, width, 0);
-  borderGradient.addColorStop(0, '#6e4cc1');
-  borderGradient.addColorStop(0.5, '#f58e25');
-  borderGradient.addColorStop(1, '#6e4cc1');
-  ctx.strokeStyle = borderGradient;
-  ctx.lineWidth = 8;
+  // Thin outer border to define the card edge
+  ctx.strokeStyle = '#2b2d31';
+  ctx.lineWidth = 2;
   ctx.strokeRect(0, 0, width, height);
 
-  // 3. Draw Circular Avatar with Glowing Neon Border
+  // 3. Draw Circular Avatar with Flat Border
   const avatarX = 140;
   const avatarY = height / 2;
-  const avatarRadius = 80;
+  const avatarRadius = 75;
 
-  // Outer Neon Glow circle
-  ctx.save();
+  // Draw flat outer ring
   ctx.beginPath();
-  ctx.arc(avatarX, avatarY, avatarRadius + 6, 0, Math.PI * 2);
-  ctx.shadowColor = '#6e4cc1';
-  ctx.shadowBlur = 15;
+  ctx.arc(avatarX, avatarY, avatarRadius + 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#2b2d31';
+  ctx.fill();
   ctx.strokeStyle = '#6e4cc1';
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 3;
   ctx.stroke();
-  ctx.restore();
 
   // Draw Avatar Image
   let avatarImg;
@@ -67,7 +59,6 @@ export async function createWelcomeImage(member, locale = 'en') {
     const avatarBuffer = Buffer.from(arrayBuffer);
     avatarImg = await loadImage(avatarBuffer);
   } catch (err) {
-    // Fallback to default avatar color block or generic shape if fetch fails
     avatarImg = null;
   }
 
@@ -79,34 +70,31 @@ export async function createWelcomeImage(member, locale = 'en') {
   if (avatarImg) {
     ctx.drawImage(avatarImg, avatarX - avatarRadius, avatarY - avatarRadius, avatarRadius * 2, avatarRadius * 2);
   } else {
-    // Fallback draw
     ctx.fillStyle = '#6e4cc1';
     ctx.fillRect(avatarX - avatarRadius, avatarY - avatarRadius, avatarRadius * 2, avatarRadius * 2);
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 40px sans-serif';
+    ctx.font = 'bold 36px sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(member.user.username.slice(0, 2).toUpperCase(), avatarX, avatarY);
   }
   ctx.restore();
 
-  // 4. Draw Typography & Information
+  // 4. Flat Minimalist Typography
   const textStartX = 260;
-  ctx.shadowBlur = 0; // Reset shadow
 
-  // A. Welcome Title Text
+  // A. Welcome Title Text (Flat gray-purple text)
   const titleText = locale === 'id' ? 'SELAMAT DATANG' : 'WELCOME';
-  ctx.fillStyle = '#f58e25'; // Accent orange
-  ctx.font = 'bold 22px "Montserrat", "Segoe UI", Arial, sans-serif';
+  ctx.fillStyle = '#949ba4'; // Minimalist Discord grey
+  ctx.font = '600 16px "Segoe UI", Roboto, Arial, sans-serif';
   ctx.textBaseline = 'top';
   ctx.fillText(titleText, textStartX, 75);
 
-  // B. User Tag / Name
+  // B. User Tag
   const userTag = member.user.tag;
-  ctx.fillStyle = '#ffffff'; // White
-  ctx.font = 'bold 36px "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 36px "Segoe UI", Roboto, Arial, sans-serif';
   
-  // Truncate username if too long to prevent overflowing canvas
   let maxTagWidth = 480;
   let tagToDraw = userTag;
   if (ctx.measureText(tagToDraw).width > maxTagWidth) {
@@ -115,35 +103,41 @@ export async function createWelcomeImage(member, locale = 'en') {
     }
     tagToDraw += '...';
   }
-  ctx.fillText(tagToDraw, textStartX, 115);
+  ctx.fillText(tagToDraw, textStartX, 105);
 
-  // C. Server/Guild Name Info
+  // C. Server Info (Clean minimalist styling)
   const guildNameText = locale === 'id' 
-    ? `di ${member.guild.name}` 
+    ? `ke server ${member.guild.name}` 
     : `to ${member.guild.name}`;
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-  ctx.font = 'italic 20px "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
-  ctx.fillText(guildNameText, textStartX, 170);
+  ctx.fillStyle = '#dbdee1'; // Active text grey
+  ctx.font = '500 20px "Segoe UI", Roboto, Arial, sans-serif';
+  ctx.fillText(guildNameText, textStartX, 155);
 
-  // D. Member Counter Badge
+  // D. Member Counter Badge (Flat capsule pill)
   const memberCount = member.guild.memberCount;
   const countText = locale === 'id'
     ? `Member #${memberCount}`
     : `Member #${memberCount}`;
   
-  // Draw a rounded tag capsule for the member count
-  const badgeY = 220;
-  const badgeHeight = 40;
-  ctx.font = 'bold 18px "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+  const badgeY = 210;
+  const badgeHeight = 36;
+  ctx.font = 'bold 15px "Segoe UI", Roboto, Arial, sans-serif';
   const badgeTextWidth = ctx.measureText(countText).width;
-  const badgeWidth = badgeTextWidth + 30;
+  const badgeWidth = badgeTextWidth + 24;
 
-  ctx.fillStyle = '#6e4cc1'; // Primary purple capsule
+  // Solid flat background for capsule
+  ctx.fillStyle = '#2b2d31';
   ctx.beginPath();
-  ctx.roundRect(textStartX, badgeY, badgeWidth, badgeHeight, 8);
+  ctx.roundRect(textStartX, badgeY, badgeWidth, badgeHeight, 6);
   ctx.fill();
 
-  ctx.fillStyle = '#ffffff';
+  // Draw subtle flat border on the capsule
+  ctx.strokeStyle = '#35363c';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(textStartX, badgeY, badgeWidth, badgeHeight);
+
+  // Text inside capsule
+  ctx.fillStyle = '#dbdee1';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(countText, textStartX + badgeWidth / 2, badgeY + badgeHeight / 2);
