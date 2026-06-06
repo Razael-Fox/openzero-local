@@ -20,11 +20,14 @@ if (!fs.existsSync(ICONS_DIR)) {
  * 
  * @param {string} name - Name of the icon (e.g., 'github', 'user', 'heart')
  * @param {string} [provider='fontawesome'] - Icon provider name ('fontawesome', 'simpleicons', 'lucide')
+ * @param {object} [options={}] - Sizing options (e.g. { size: 320 })
  * @returns {Promise<{ filePath: string, fileName: string, ext: string, localUrl: string }>}
  */
-export async function downloadIcon(name, provider = 'fontawesome') {
+export async function downloadIcon(name, provider = 'fontawesome', options = {}) {
   const cleanName = name.toLowerCase().trim();
   const providerLower = provider.toLowerCase().trim();
+  const size = options.size || null;
+  const cacheKey = size ? `${cleanName}-${size}` : cleanName;
   
   // First, check if the icon already exists locally to avoid redundant downloads
   try {
@@ -32,13 +35,13 @@ export async function downloadIcon(name, provider = 'fontawesome') {
     const matchedFile = existingFiles.find(file => {
       const ext = path.extname(file);
       const base = path.basename(file, ext);
-      return base === cleanName;
+      return base === cacheKey;
     });
 
     if (matchedFile) {
       const ext = path.extname(matchedFile).substring(1);
       const filePath = path.join(ICONS_DIR, matchedFile);
-      logger.info(`[IconHelper] Found cached local icon for: ${cleanName} (${ext})`);
+      logger.info(`[IconHelper] Found cached local icon for: ${cacheKey} (${ext})`);
       return {
         filePath,
         fileName: matchedFile,
@@ -79,12 +82,13 @@ export async function downloadIcon(name, provider = 'fontawesome') {
   }
 
   // Fallbacks to PNG formats if SVG is not found
+  const fallbackPngSize = size || 96;
   urlsToTry.push(
-    { url: `https://img.icons8.com/color/96/${cleanName}.png`, ext: 'png' },
-    { url: `https://img.icons8.com/ios-filled/100/${cleanName}.png`, ext: 'png' }
+    { url: `https://img.icons8.com/color/${fallbackPngSize}/${cleanName}.png`, ext: 'png' },
+    { url: `https://img.icons8.com/ios-filled/${fallbackPngSize}/${cleanName}.png`, ext: 'png' }
   );
 
-  logger.info(`[IconHelper] Attempting to download icon: "${cleanName}" from provider "${providerLower}"`);
+  logger.info(`[IconHelper] Attempting to download icon: "${cleanName}" (Size: ${size || 'original'}) from provider "${providerLower}"`);
 
   for (const entry of urlsToTry) {
     try {
@@ -93,7 +97,11 @@ export async function downloadIcon(name, provider = 'fontawesome') {
 
       // Convert SVG to PNG using images.weserv.nl so Discord can render it properly
       if (entry.ext === 'svg') {
-        fetchUrl = `https://images.weserv.nl/?url=${encodeURIComponent(entry.url.replace(/^https?:\/\//, ''))}&output=png`;
+        let weservUrl = `https://images.weserv.nl/?url=${encodeURIComponent(entry.url.replace(/^https?:\/\//, ''))}&output=png`;
+        if (size) {
+          weservUrl += `&w=${size}&h=${size}&fit=contain`;
+        }
+        fetchUrl = weservUrl;
         targetExt = 'png';
       }
 
@@ -110,7 +118,7 @@ export async function downloadIcon(name, provider = 'fontawesome') {
           else if (contentType.includes('jpeg') || contentType.includes('jpg')) ext = 'jpg';
         }
         
-        const fileName = `${cleanName}.${ext}`;
+        const fileName = `${cacheKey}.${ext}`;
         const filePath = path.join(ICONS_DIR, fileName);
         
         fs.writeFileSync(filePath, buffer);
