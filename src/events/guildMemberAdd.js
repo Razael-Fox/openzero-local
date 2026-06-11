@@ -12,7 +12,7 @@ export default {
    */
   async execute(member) {
     logger.info(
-      `[GuildMemberAdd] User baru bergabung: ${member.user.tag} (${member.id}) di guild: ${member.guild.name}`
+      `[GuildMemberAdd] New user joined: ${member.user.tag} (${member.id}) in guild: ${member.guild.name}`
     );
 
     // Tentukan locale berdasarkan preferredLocale server
@@ -28,7 +28,7 @@ export default {
         channel = await member.guild.channels.fetch(channelId);
       } catch (err) {
         logger.warn(
-          `[GuildMemberAdd] Gagal mengambil channel welcome dari config (${channelId}): ${err.message}`
+          `[GuildMemberAdd] Failed to fetch welcome channel from config (${channelId}): ${err.message}`
         );
       }
     }
@@ -40,7 +40,7 @@ export default {
 
     if (!channel) {
       logger.warn(
-        `[GuildMemberAdd] Tidak ada channel welcome atau system channel yang terdeteksi di guild: ${member.guild.name}. Membatalkan pesan welcome.`
+        `[GuildMemberAdd] No welcome or system channel detected in guild: ${member.guild.name}. Canceling welcome message.`
       );
       return;
     }
@@ -58,11 +58,11 @@ export default {
       });
 
       logger.info(
-        `[GuildMemberAdd] Pesan welcome berhasil dikirim untuk ${member.user.tag} di channel: ${channel.name}`
+        `[GuildMemberAdd] Welcome message successfully sent for ${member.user.tag} in channel: ${channel.name}`
       );
     } catch (error) {
       logger.error(
-        `[GuildMemberAdd] Gagal membuat atau mengirim pesan welcome untuk ${member.user.tag}:`,
+        `[GuildMemberAdd] Failed to create or send welcome message for ${member.user.tag}:`,
         error
       );
     }

@@ -95,7 +95,7 @@ export default {
 
         await message.reply(replyOptions);
       } catch (err) {
-        logger.error('[AI Message Trigger] Gagal merespon mention:', err);
+        logger.error('[AI Message Trigger] Failed to respond to mention:', err);
         await message.reply('Maaf, saya mengalami kesalahan saat memproses permintaan Anda.');
       }
     }

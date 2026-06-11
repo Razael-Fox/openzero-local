@@ -54,9 +54,9 @@ export default {
         flags: MessageFlags.IsComponentsV2
       });
 
-      logger.info(`[Translate Command] Sukses menerjemahkan pesan dari (${detectedLang}) ke EN`);
+      logger.info(`[Translate Command] Successfully translated message from (${detectedLang}) to EN`);
     } catch (error) {
-      logger.error('[Translate Command] Gagal melakukan terjemahan:', error);
+      logger.error('[Translate Command] Failed to perform translation:', error);
 
       const errorEmbed = new V2Embed()
         .setTitle('Terjemahan Gagal')

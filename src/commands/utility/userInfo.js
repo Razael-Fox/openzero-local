@@ -38,7 +38,7 @@ export default {
     try {
       fullUser = await interaction.client.users.fetch(targetUser.id, { force: true });
     } catch (err) {
-      logger.error('[User Info Command] Gagal fetch user:', err);
+      logger.error('[User Info Command] Failed to fetch user:', err);
     }
 
     const createdTimestamp = Math.floor(targetUser.createdTimestamp / 1000);

@@ -49,7 +49,7 @@ export async function handleDevCommand(message) {
         }
       }, 1500);
     } catch (error) {
-      logger.error('[Dev Command] Gagal memicu event GuildMemberAdd secara manual:', error);
+      logger.error('[Dev Command] Failed to manually trigger GuildMemberAdd event:', error);
       await statusMsg
         .edit(`❌ **[Dev Tool]** Gagal memicu event: ${error.message}`)
         .catch(() => {});

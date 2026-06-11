@@ -9,51 +9,28 @@ describe('Logger i18n Translation', () => {
   });
 
   describe('translateLog Utility', () => {
-    test('should translate English logs to Indonesian when language is id', () => {
+    test('should keep English logs as English even if id is requested', () => {
       expect(translateLog('Login successful! Bot is active as Fox#1234', 'id')).toBe(
-        'Login berhasil! Bot aktif sebagai Fox#1234'
-      );
-
-      expect(
-        translateLog('Supabase credentials not configured. Falling back to local database.', 'id')
-      ).toBe('Kredensial Supabase tidak dikonfigurasi. Mengalihkan ke database lokal.');
-
-      expect(translateLog('Failed to ban user: Invalid Permissions', 'id')).toBe(
-        'Gagal memblokir pengguna: Invalid Permissions'
+        'Login successful! Bot is active as Fox#1234'
       );
     });
 
-    test('should translate Indonesian logs to English when language is en', () => {
-      expect(translateLog('Login berhasil!', 'en')).toBe('Login successful!');
+    test('should translate Indonesian logs to English', () => {
+      expect(translateLog('Login berhasil!')).toBe('Login successful!');
 
-      expect(translateLog('Gagal melakukan purge: Error API', 'en')).toBe(
+      expect(translateLog('Gagal melakukan purge: Error API')).toBe(
         'Failed to purge: Error API'
       );
     });
 
-    test('should translate logger types correctly', () => {
-      expect(translateLog('Client', 'id')).toBe('Klien');
-      expect(translateLog('System', 'id')).toBe('Sistem');
-      expect(translateLog('Moderation Error', 'id')).toBe('Error Moderasi');
-      expect(translateLog('Sistem', 'en')).toBe('System');
+    test('should translate logger types correctly to English', () => {
+      expect(translateLog('Sistem')).toBe('System');
     });
   });
 
   describe('resolveLogDetails Integration', () => {
-    test('should dynamically translate messages and types based on config.language', () => {
+    test('should keep messages and types in English even if config.language is id', () => {
       config.language = 'id';
-
-      const { loggerType, loggerMessage } = resolveLogDetails(
-        'info',
-        '[Client] Login successful! Bot is active as Fox#1234'
-      );
-
-      expect(loggerType).toBe('Klien');
-      expect(loggerMessage).toBe('Login berhasil! Bot aktif sebagai Fox#1234');
-    });
-
-    test('should fall back to original English text if config.language is en', () => {
-      config.language = 'en';
 
       const { loggerType, loggerMessage } = resolveLogDetails(
         'info',
@@ -62,6 +39,18 @@ describe('Logger i18n Translation', () => {
 
       expect(loggerType).toBe('Client');
       expect(loggerMessage).toBe('Login successful! Bot is active as Fox#1234');
+    });
+
+    test('should translate Indonesian messages/types to English', () => {
+      config.language = 'id';
+
+      const { loggerType, loggerMessage } = resolveLogDetails(
+        'info',
+        '[Sistem] Login berhasil!'
+      );
+
+      expect(loggerType).toBe('System');
+      expect(loggerMessage).toBe('Login successful!');
     });
   });
 });

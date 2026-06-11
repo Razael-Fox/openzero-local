@@ -53,10 +53,10 @@ export default {
           });
 
           logger.info(
-            `[Button Clicked] ping_refresh diproses untuk ${interaction.user.tag} (Latency: ${latency}ms)`
+            `[Button Clicked] ping_refresh processed for ${interaction.user.tag} (Latency: ${latency}ms)`
           );
         } catch (error) {
-          logger.error('[Button Error] Gagal memproses interaksi tombol ping_refresh:', error);
+          logger.error('[Button Error] Failed to process button interaction ping_refresh:', error);
         }
       } else if (interaction.customId.startsWith('obtainium_page_')) {
         try {
@@ -72,11 +72,11 @@ export default {
           });
 
           logger.info(
-            `[Button Clicked] ${interaction.customId} diproses untuk ${interaction.user.tag}`
+            `[Button Clicked] ${interaction.customId} processed for ${interaction.user.tag}`
           );
         } catch (error) {
           logger.error(
-            `[Button Error] Gagal memproses interaksi tombol ${interaction.customId}:`,
+            `[Button Error] Failed to process button interaction ${interaction.customId}:`,
             error
           );
         }
@@ -99,10 +99,10 @@ export default {
           });
 
           logger.info(
-            `[Button Clicked] ${interaction.customId} diproses (Page: ${pageIndex}) untuk ${interaction.user.tag}`
+            `[Button Clicked] ${interaction.customId} processed (Page: ${pageIndex}) for ${interaction.user.tag}`
           );
         } catch (error) {
-          logger.error('[Button Error] Gagal memproses interaksi tombol music search:', error);
+          logger.error('[Button Error] Failed to process music search button interaction:', error);
         }
       } else if (interaction.customId.startsWith('music_search_lyrics_')) {
         try {
@@ -122,11 +122,11 @@ export default {
           });
 
           logger.info(
-            `[Button Clicked] ${interaction.customId} diproses (Track Index: ${trackIndex}) untuk ${interaction.user.tag}`
+            `[Button Clicked] ${interaction.customId} processed (Track Index: ${trackIndex}) for ${interaction.user.tag}`
           );
         } catch (error) {
           logger.error(
-            `[Button Error] Gagal memproses lirik untuk tombol ${interaction.customId}:`,
+            `[Button Error] Failed to process lyrics for button ${interaction.customId}:`,
             error
           );
         }
@@ -148,11 +148,11 @@ export default {
           });
 
           logger.info(
-            `[Button Clicked] ${interaction.customId} diproses (Category: ${category}) untuk ${interaction.user.tag}`
+            `[Button Clicked] ${interaction.customId} processed (Category: ${category}) for ${interaction.user.tag}`
           );
         } catch (error) {
           logger.error(
-            `[Button Error] Gagal memproses interaksi tombol ${interaction.customId}:`,
+            `[Button Error] Failed to process button interaction ${interaction.customId}:`,
             error
           );
         }
@@ -168,7 +168,7 @@ export default {
           await command.autocomplete(interaction);
         } catch (error) {
           logger.error(
-            `[Autocomplete Error] Gagal memproses autocomplete untuk /${interaction.commandName}:`,
+            `[Autocomplete Error] Failed to process autocomplete for /${interaction.commandName}:`,
             error
           );
         }

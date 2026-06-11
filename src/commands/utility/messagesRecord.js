@@ -67,10 +67,10 @@ export default {
       });
 
       logger.info(
-        `[Messages Record Command] Sukses menampilkan rekaman pesan (${records.length} total) untuk ${targetUser.tag}`
+        `[Messages Record Command] Successfully displayed message records (${records.length} total) for ${targetUser.tag}`
       );
     } catch (err) {
-      logger.error('[Messages Record Command] Gagal mengambil rekaman pesan:', err);
+      logger.error('[Messages Record Command] Failed to fetch message records:', err);
 
       const errorEmbed = new V2Embed()
         .setTitle(t('errorTitle', locale))

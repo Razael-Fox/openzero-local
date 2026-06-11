@@ -281,7 +281,7 @@ export default {
     const locale = interaction.locale;
     await interaction.deferReply();
 
-    logger.info(`[Music Search] Menjalankan pencarian untuk: "${query}"`);
+    logger.info(`[Music Search] Running search for: "${query}"`);
     const results = await searchMusic(query);
 
     if (results.length === 0) {
