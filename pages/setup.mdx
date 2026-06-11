@@ -1,0 +1,48 @@
+# Installation & Setup
+
+Learn how to get OpenZero Local up and running on your device (PC, Home Server, or Termux on Android).
+
+## Prerequisites
+
+Before starting the installation, ensure you have:
+
+- **Node.js**: Version 18.0.0 or higher.
+- **Discord Bot Token**: Create an application on the [Discord Developer Portal](https://discord.com/developers/applications) and obtain a bot token.
+- **Supabase Account** *(Optional)*: If you want to use external logging, prepare a Supabase project and database URL. Otherwise, the bot will store data locally in JSON format.
+
+## Step-by-Step Installation
+
+### 1. Clone the Repository
+
+Clone the project files from GitHub:
+
+```bash
+git clone https://github.com/Razael-Fox/openzero-local.git
+cd openzero-local
+```
+
+### 2. Install Dependencies
+
+Install the required npm packages:
+
+```bash
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the root directory of the project:
+
+```env
+DISCORD_TOKEN=your_discord_bot_token_here
+SUPABASE_URL=your_supabase_project_url_here (optional)
+SUPABASE_KEY=your_supabase_anon_key_here (optional)
+```
+
+### 4. Start the Bot
+
+Run the start command to launch the bot:
+
+```bash
+npm run start
+```

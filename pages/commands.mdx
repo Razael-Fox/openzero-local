@@ -1,0 +1,41 @@
+# Commands & Context Menus
+
+Here is the full list of slash commands and context menus available in OpenZero Local.
+
+## Slash Commands
+
+### Moderation
+
+| Command | Description | Usage |
+| :--- | :--- | :--- |
+| `/purge` | Bulk delete messages in a channel (1-100). | `/purge [amount]` |
+| `/kick` | Kick a member with role hierarchy protection. | `/kick [user] [reason]` |
+| `/ban` | Ban a member with role hierarchy protection. | `/ban [user] [reason]` |
+| `/mute` | Text mute (using Muted role) or Voice mute a member. | `/mute [user] [type] [reason]` |
+| `/unmute` | Unmute text or voice for a member. | `/unmute [user] [type]` |
+| `/timeout` | Timeout members for a custom duration or remove timeout. | `/timeout [user] [duration] [reason]` |
+| `/deafen` | Deafen member in voice channels. | `/deafen [user] [reason]` |
+| `/undeafen` | Undeafen member in voice channels. | `/undeafen [user]` |
+
+### Utility
+
+| Command | Description | Usage |
+| :--- | :--- | :--- |
+| `/music-search` | Search for music tracks using iTunes API, lyrics via LRCLIB, and audio previews. | `/music-search [query]` |
+| `/role` | Quick assignment, removal, or retrieval of detailed role IDs. | `/role [action] [user] [role]` |
+| `/webhook` | Create, view details of, and manage webhooks. | `/webhook [action] [name] [channel]` |
+| `/hello` | Greet the user in their preferred client language. | `/hello` |
+| `/ping` | Check bot latency and API response times. | `/ping` |
+
+---
+
+## Context Menus
+
+Context menus can be accessed by right-clicking on a user profile or a message:
+
+- **User Info** *(User Context)*
+  Inspect detailed profile dashboard (avatar download, banner color, booster status, roles, joined date).
+- **Messages Record** *(User Context)*
+  Retrieves the last 15 messages sent by the user in this server within the last 7 days.
+- **Translate to English** *(Message Context)*
+  Translate message instantly using free Google Translate integration.

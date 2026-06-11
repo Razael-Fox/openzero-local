@@ -1,0 +1,18 @@
+# OpenZero Local
+
+A self-contained, standalone Discord bot designed to run entirely on local machines (PC, Home Server, or Termux on Android). 100% free of paid cloud API dependencies, all data runs fully under your control.
+
+## Key Features
+
+- **No API Dependencies**
+  Operates 100% free of paid translation or hosting services. Perfect for lightweight environments like Termux on Android.
+- **Multi-Language Support (i18n)**
+  Dynamically detects the user's Discord client language setting to automatically output responses in English or Indonesian.
+- **Flexible Supabase Logging**
+  Audits guild message histories to Supabase SQL. Seamlessly and silently falls back to local JSON database storage if keys are missing.
+- **Rolling 7-Day Message Pruning**
+  Maintains system lightness and data privacy by automatically pruning logs older than 7 days on startup and every 24 hours.
+- **Music Search with Lyrics**
+  Search for tracks via iTunes API. Interactively browse with paginated result pages and load synchronized lyrics via LRCLIB integration.
+- **Premium Component Layouts**
+  Leverages Discord's newest component systems (`ContainerBuilder`, `TextDisplayBuilder`) with nested inline buttons.
