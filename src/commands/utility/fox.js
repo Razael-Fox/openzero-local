@@ -44,8 +44,16 @@ export default {
       if (response.result?.embeds) {
         replyOptions.components = response.result.embeds;
         replyOptions.flags = MessageFlags.IsComponentsV2;
-      } else if (response.result?.responseText) {
+      }
+
+      if (response.result?.responseText) {
         replyOptions.content = response.result.responseText;
+      } else if (response.responseText) {
+        replyOptions.content = response.responseText;
+      }
+
+      if (replyOptions.components) {
+        delete replyOptions.content;
       }
 
       await interaction.editReply(replyOptions);
