@@ -96,10 +96,16 @@ export function classifyIntentMock(prompt) {
       .replace(/play/i, '')
       .replace(/putar/i, '')
       .replace(/lagu/i, '')
+      .replace(/musik/i, '')
+      .replace(/music/i, '')
       .replace(/24\/7/i, '')
       .replace(/24 jam/i, '')
       .replace(/menetap/i, '')
       .replace(/selamanya/i, '')
+      .replace(/dengan auto-next aktif/i, '')
+      .replace(/auto-next aktif/i, '')
+      .replace(/di\s+<#\d+>/i, '')
+      .replace(/<#\d+>/i, '')
       .trim();
     return {
       pluginName: 'music',
