@@ -1,7 +1,34 @@
 import React from "react";
 
 export default {
-  logo: <span style={{ fontWeight: 800 }}>OpenZero Local Docs</span>,
+  logo: (
+    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+      <span style={{ fontWeight: 800 }}>OpenZero Local Docs</span>
+      <button
+        onClick={() => {
+          if (typeof window !== "undefined") {
+            if (window.parent !== window) {
+              window.parent.postMessage({ type: "BACK_TO_PORTFOLIO" }, "*");
+            } else {
+              window.location.href = "https://razael-fox.my.id";
+            }
+          }
+        }}
+        style={{
+          fontSize: "12px",
+          padding: "4px 10px",
+          borderRadius: "9999px",
+          background: "#6750A4",
+          color: "white",
+          border: "none",
+          cursor: "pointer",
+          fontWeight: 600,
+        }}
+      >
+        ← Back to Portfolio
+      </button>
+    </div>
+  ),
   project: {
     link: "https://github.com/Razael-Fox/openzero-local",
   },
