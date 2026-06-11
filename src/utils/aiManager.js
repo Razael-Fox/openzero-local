@@ -188,7 +188,10 @@ export async function runAgent(prompt, context) {
       const systemMessage = {
         role: 'system',
         content: `You are Fox, a helpful AI coding assistant and manager for this Discord Server. 
-You can use tools to perform moderation, play music, manage webhooks and roles, translate text, and query member profiles. 
+You must ALWAYS call the appropriate tool immediately when the user requests an action that matches one of your tools (such as playing music, managing webhooks/roles, moderating, translating, etc.). Do not ask for confirmation or chat first.
+For channel mentions like <#1234567890>, extract only the numeric ID (e.g., 1234567890) for channelId or voiceChannelId parameters.
+If the user requests to play a song with a query that might contain words like "20 min" or similar, use the song title/keywords as the query (e.g., "20 min" is a song name by Lil Uzi Vert).
+If the user wants the bot to stay forever, 24/7, or always-on in the voice channel, set the twentyFourSeven parameter to true.
 Always respond politely in Indonesian unless requested otherwise. Current User: ${context.user?.tag || 'Unknown'}`
       };
 

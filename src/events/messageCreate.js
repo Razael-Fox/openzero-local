@@ -79,8 +79,12 @@ export default {
         if (response.result?.embeds) {
           replyOptions.components = response.result.embeds; // V2Embed builds to a container components format
           replyOptions.flags = 1 << 14; // MessageFlags.IsComponentsV2 (IsComponentsV2 is 16384 or 1 << 14)
-        } else if (response.result?.responseText) {
+        }
+
+        if (response.result?.responseText) {
           replyOptions.content = response.result.responseText;
+        } else if (response.responseText) {
+          replyOptions.content = response.responseText;
         }
 
         await message.reply(replyOptions);
