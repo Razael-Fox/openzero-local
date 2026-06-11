@@ -1,34 +1,7 @@
-import fs from 'fs';
 import { supabaseClient } from './supabase.js';
 import { config } from '../config.js';
 import logger from './logger.js';
-
-const dbPath = config.database.path;
-
-/**
- * Helper to get local database content
- */
-function getLocalDb() {
-  try {
-    if (fs.existsSync(dbPath)) {
-      return JSON.parse(fs.readFileSync(dbPath, 'utf8'));
-    }
-  } catch {
-    // Ignore error
-  }
-  return { guilds: {}, messages: [], aiChatHistory: {} };
-}
-
-/**
- * Helper to save local database content
- */
-function saveLocalDb(db) {
-  try {
-    fs.writeFileSync(dbPath, JSON.stringify(db, null, 2), 'utf8');
-  } catch (err) {
-    logger.error('[AI DB] Failed to save chat history locally:', err);
-  }
-}
+import { getAiChatHistoryLocally, saveAiChatHistoryLocally } from './database.js';
 
 /**
  * Record chat history to Supabase or local DB fallback
@@ -59,23 +32,19 @@ export async function recordChat({ guildId, userId, role, content }) {
   }
 
   // Fallback to local database
-  const db = getLocalDb();
-  if (!db.aiChatHistory) db.aiChatHistory = {};
-  const sessionKey = `${guildId}_${userId}`;
-  if (!db.aiChatHistory[sessionKey]) db.aiChatHistory[sessionKey] = [];
-
-  db.aiChatHistory[sessionKey].push({
+  let history = getAiChatHistoryLocally(guildId, userId);
+  history.push({
     role,
     content,
     created_at: createdAt
   });
 
   // Keep last 40 entries to save disk size
-  if (db.aiChatHistory[sessionKey].length > 40) {
-    db.aiChatHistory[sessionKey] = db.aiChatHistory[sessionKey].slice(-40);
+  if (history.length > 40) {
+    history = history.slice(-40);
   }
 
-  saveLocalDb(db);
+  saveAiChatHistoryLocally(guildId, userId, history);
   return { success: true, method: 'local' };
 }
 
@@ -106,10 +75,7 @@ export async function getChatHistory(guildId, userId, limit = 20) {
     }
   }
 
-  const db = getLocalDb();
-  if (!db.aiChatHistory) db.aiChatHistory = {};
-  const sessionKey = `${guildId}_${userId}`;
-  const history = db.aiChatHistory[sessionKey] || [];
+  const history = getAiChatHistoryLocally(guildId, userId);
   return history.slice(-limit);
 }
 
@@ -131,10 +97,5 @@ export async function clearChatHistory(guildId, userId) {
     }
   }
 
-  const db = getLocalDb();
-  if (db.aiChatHistory) {
-    const sessionKey = `${guildId}_${userId}`;
-    delete db.aiChatHistory[sessionKey];
-    saveLocalDb(db);
-  }
+  saveAiChatHistoryLocally(guildId, userId, []);
 }

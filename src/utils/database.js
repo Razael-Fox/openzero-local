@@ -181,3 +181,28 @@ export function setObtainiumMessageId(messageId) {
   saveDbSync();
 }
 
+/**
+ * Get the AI chat history for a session locally
+ * @param {string} guildId
+ * @param {string} userId
+ * @returns {Array}
+ */
+export function getAiChatHistoryLocally(guildId, userId) {
+  if (!db.aiChatHistory) db.aiChatHistory = {};
+  const sessionKey = `${guildId}_${userId}`;
+  return db.aiChatHistory[sessionKey] || [];
+}
+
+/**
+ * Save the AI chat history for a session locally
+ * @param {string} guildId
+ * @param {string} userId
+ * @param {Array} history
+ */
+export function saveAiChatHistoryLocally(guildId, userId, history) {
+  if (!db.aiChatHistory) db.aiChatHistory = {};
+  const sessionKey = `${guildId}_${userId}`;
+  db.aiChatHistory[sessionKey] = history;
+  saveDb();
+}
+
