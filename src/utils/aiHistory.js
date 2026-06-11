@@ -66,7 +66,7 @@ export async function getChatHistory(guildId, userId, limit = 20) {
         .order('created_at', { ascending: false })
         .limit(limit);
 
-      if (!error && data) {
+      if (!error && data && data.length > 0) {
         // Reverse to chronological order (system, user, assistant)
         return data.reverse();
       }
