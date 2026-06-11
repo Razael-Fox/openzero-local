@@ -24,6 +24,7 @@ export const config = {
   guildId: process.env.GUILD_ID,
   nodeEnv: nodeEnv,
   sentryDsn: process.env.SENTRY_DSN,
+  language: process.env.BOT_LANGUAGE || 'en',
 
   // Supabase Configuration
   supabase: {

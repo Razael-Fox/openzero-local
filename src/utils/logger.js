@@ -6,6 +6,121 @@ import { config } from '../config.js';
 
 const { combine, timestamp, printf } = winston.format;
 
+// Translation mapping for logger types and messages to ensure consistency (Indonesian or English)
+function translateLog(message, lang) {
+  const idToEn = {
+    'Login berhasil!': 'Login successful!',
+    'Gagal melakukan purge:': 'Failed to purge:',
+    'Menjalankan pencarian untuk:': 'Running search for:',
+    'Gagal mengambil rekaman pesan:': 'Failed to fetch messages record:',
+    'Berhasil mengeksekusi plugin': 'Successfully executed plugin'
+  };
+
+  const enToId = {
+    'Login successful! Bot is active as': 'Login berhasil! Bot aktif sebagai',
+    'Custom emojis guild cache reference set globally for guild:': 'Referensi cache emoji kustom server disetel secara global untuk server:',
+    'Failed to pre-fetch guild for global custom emojis:': 'Gagal mengambil data server untuk emoji kustom global:',
+    'Bot activity set to:': 'Aktivitas bot disetel ke:',
+    'Failed to set bot activity:': 'Gagal menyetel aktivitas bot:',
+    'Failed to run old messages cleanup:': 'Gagal menjalankan pembersihan pesan lama:',
+    'Failed to initialize Obtainium Watcher:': 'Gagal menginisialisasi Obtainium Watcher:',
+    'Reading raw export from:': 'Membaca ekspor mentah dari:',
+    'No existing enriched JSON found (or failed to read). Fetching all details from scratch.': 'Tidak ada JSON lengkap yang ditemukan (atau gagal membaca). Mengambil semua detail dari awal.',
+    'Saved JSON to': 'Menyimpan JSON ke',
+    'Saved YAML to': 'Menyimpan YAML ke',
+    'Failed to ban user:': 'Gagal memblokir pengguna:',
+    'Failed to kick user:': 'Gagal mengeluarkan pengguna:',
+    'Failed to mute user:': 'Gagal menonaktifkan suara (mute) pengguna:',
+    'Failed to timeout user:': 'Gagal memberikan timeout pada pengguna:',
+    'Failed to deafen user:': 'Gagal menulikan (deafen) pengguna:',
+    'Failed to undeafen user:': 'Gagal membatalkan tuli pengguna:',
+    'Failed to unmute user:': 'Gagal membatalkan mute pengguna:',
+    'Failed to create Muted role:': 'Gagal membuat role Muted:',
+    'Created emoji': 'Berhasil membuat emoji',
+    'Failed to create emoji:': 'Gagal membuat emoji:',
+    'Error fetching tracks:': 'Gagal mengambil trek lagu:',
+    'Error fetching lyrics:': 'Gagal mengambil lirik lagu:',
+    'Plugin': 'Plugin',
+    'installed for guild': 'terpasang untuk server',
+    'uninstalled for guild': 'dihapus dari server',
+    'by': 'oleh',
+    'Re-deploying commands...': 'Mendaftarkan ulang perintah...',
+    'Failed to read custom templates database:': 'Gagal membaca database template kustom:',
+    'Failed to write custom templates database:': 'Gagal menulis database template kustom:',
+    'Permissions list displayed for': 'Daftar izin ditampilkan untuk',
+    'Failed to display permissions list:': 'Gagal menampilkan daftar izin:',
+    'Failed to fetch role ID info:': 'Gagal mengambil informasi ID role:',
+    'Failed to save custom template:': 'Gagal menyimpan template kustom:',
+    'Failed to create custom template:': 'Gagal membuat template kustom:',
+    'Supabase credentials not configured. Falling back to local database.': 'Kredensial Supabase tidak dikonfigurasi. Mengalihkan ke database lokal.',
+    'Groq request returned status 400 (tool_use_failed), but successfully recovered tool call from failed_generation: plugin=': 'Request Groq mengembalikan status 400 (tool_use_failed), tetapi berhasil memulihkan panggilan alat dari failed_generation: plugin=',
+    'Successfully recovered tool call from failed_generation: plugin=': 'Berhasil memulihkan panggilan alat dari failed_generation: plugin=',
+    'Triggering plugin': 'Menjalankan plugin',
+    'with arguments:': 'dengan argumen:',
+    'Running real AI Agent with Groq provider using model': 'Menjalankan AI Agent riil dengan penyedia Groq menggunakan model',
+    'Processing user prompt:': 'Memproses input pengguna:',
+    'with': 'dengan',
+    'messages of history context.': 'pesan konteks riwayat.'
+  };
+
+  const idToEnTypes = {
+    'Sistem': 'System'
+  };
+
+  const enToIdTypes = {
+    'System': 'Sistem',
+    'Client': 'Klien',
+    'Cleanup Interval': 'Pembersihan Berkala',
+    'Obtainium Watcher': 'Pemantau Obtainium',
+    'Obtainium Startup': 'Inisialisasi Obtainium',
+    'Obtainium Converter': 'Pengonversi Obtainium',
+    'Emoji': 'Emoji',
+    'Emoji Error': 'Error Emoji',
+    'Messages Record Command': 'Perintah Riwayat Pesan',
+    'Music Search API': 'API Pencarian Musik',
+    'Lyrics API': 'API Lirik',
+    'Music Search': 'Pencarian Musik',
+    'Plugins': 'Plugin',
+    'DB Error': 'Error Database',
+    'Role Perms Listed': 'Izin Role Ditampilkan',
+    'Role Perms List Error': 'Error Tampilan Izin Role',
+    'Role ID Error': 'Error ID Role',
+    'Role Template Save Error': 'Error Simpan Template Role',
+    'Role Template Create Error': 'Error Buat Template Role',
+    'Moderation Error': 'Error Moderasi',
+    'AI Agent': 'AI Agent',
+    'AI Agent Debug': 'Debug AI Agent',
+    'Cleanup': 'Pembersihan',
+    'Instagram Plugin': 'Plugin Instagram'
+  };
+
+  let cleanMsg = String(message);
+
+  if (lang === 'id') {
+    // Translate English to Indonesian
+    for (const [enKey, idVal] of Object.entries(enToId)) {
+      if (cleanMsg.includes(enKey)) {
+        cleanMsg = cleanMsg.replace(enKey, idVal);
+      }
+    }
+    if (enToIdTypes[cleanMsg]) {
+      cleanMsg = enToIdTypes[cleanMsg];
+    }
+  } else {
+    // Translate Indonesian to English
+    for (const [idKey, enVal] of Object.entries(idToEn)) {
+      if (cleanMsg.includes(idKey)) {
+        cleanMsg = cleanMsg.replace(idKey, enVal);
+      }
+    }
+    if (idToEnTypes[cleanMsg]) {
+      cleanMsg = idToEnTypes[cleanMsg];
+    }
+  }
+
+  return cleanMsg;
+}
+
 // Custom log helper to resolve type and logger_type from metadata or message contents
 function resolveLogDetails(level, message, meta = {}) {
   let type = meta.type;
@@ -29,9 +144,14 @@ function resolveLogDetails(level, message, meta = {}) {
     }
   }
 
+  const lang = config.language || 'en';
+
   if (!loggerType) {
     loggerType = 'System';
   }
+  loggerType = translateLog(loggerType, lang);
+
+  loggerMessage = translateLog(loggerMessage, lang);
 
   if (!type) {
     const lvl = String(level).toLowerCase().trim();
@@ -213,3 +333,4 @@ const logger = winston.createLogger({
 });
 
 export default logger;
+export { translateLog, resolveLogDetails };
