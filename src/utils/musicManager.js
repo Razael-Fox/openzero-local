@@ -101,6 +101,15 @@ export class MusicSession {
    * Add a track to the queue
    */
   addTrack(track) {
+    logger.info(`[Music Manager] Pre-fetching stream for added track: ${track.title}`);
+    track.streamPromise = this.fetchStreamWithRetry(track.url).then(stream => {
+      track.stream = stream;
+      return stream;
+    }).catch(err => {
+      logger.error(`[Music Manager] Pre-fetch failed for track ${track.title}:`, err);
+      throw err;
+    });
+
     this.queue.push(track);
     if (!this.currentTrack) {
       this.playNext();
@@ -117,6 +126,9 @@ export class MusicSession {
       const audioStream = await this.streamViaYtDlp(url);
       return audioStream;
     } catch (ytDlpError) {
+      if (ytDlpError.message === 'Aborted') {
+        throw ytDlpError;
+      }
       logger.warn(`[Music Manager] yt-dlp failed (${ytDlpError.message}), falling back to play-dl...`);
       if (
         ytDlpError.message?.includes('Requests') || 
@@ -134,7 +146,8 @@ export class MusicSession {
     const MAX_RETRIES = 2;
     const RETRY_DELAYS = [3000, 7000];
     try {
-      return await play.stream(url, { discordPlayerCompatibility: true });
+      const playStream = await play.stream(url, { discordPlayerCompatibility: true });
+      return { stream: playStream.stream, type: playStream.type, process: null };
     } catch (error) {
       const isNetwork = ['ETIMEDOUT','ECONNRESET','ECONNREFUSED'].includes(error.code) ||
         error.message?.includes('ETIMEDOUT');
@@ -155,12 +168,6 @@ export class MusicSession {
    */
   streamViaYtDlp(url) {
     return new Promise((resolve, reject) => {
-      if (this.activeProcess) {
-        try {
-          this.activeProcess.kill();
-        } catch (_) {}
-      }
-
       const hasCookies = cookiesPath && fs.existsSync(cookiesPath);
       const ytdlpArgs = [
         '--js-runtimes', 'node',
@@ -168,7 +175,10 @@ export class MusicSession {
         '-f', 'bestaudio[ext=webm]/bestaudio[ext=m4a]/bestaudio',
         '--no-playlist',
         '-o', '-',        // output to stdout
-        '--quiet'
+        '--quiet',
+        '--socket-timeout', '10',
+        '--retries', '3',
+        '--fragment-retries', '3'
       ];
 
       if (hasCookies) {
@@ -182,7 +192,6 @@ export class MusicSession {
 
       const ytdlp = spawn('yt-dlp', ytdlpArgs);
 
-      this.activeProcess = ytdlp;
       let resolved = false;
       let stderr = '';
 
@@ -209,7 +218,7 @@ export class MusicSession {
           const streamType = isWebm ? StreamType.WebmOpus : StreamType.Arbitrary;
           logger.info(`[Music Manager] Detected stream format: ${isWebm ? 'WebM/Opus (StreamType.WebmOpus)' : 'Other (StreamType.Arbitrary)'}`);
 
-          resolve({ stream: ytdlp.stdout, type: streamType });
+          resolve({ stream: ytdlp.stdout, type: streamType, process: ytdlp });
         }
       });
 
@@ -217,12 +226,13 @@ export class MusicSession {
         if (!resolved) reject(new Error(`yt-dlp spawn error: ${err.message}`));
       });
 
-      ytdlp.on('close', code => {
-        if (this.activeProcess === ytdlp) {
-          this.activeProcess = null;
-        }
+      ytdlp.on('close', (code, signal) => {
         if (!resolved) {
-          reject(new Error(`yt-dlp exited ${code}: ${stderr.slice(-200)}`));
+          if (code === null || signal) {
+            reject(new Error('Aborted'));
+          } else {
+            reject(new Error(`yt-dlp exited ${code}: ${stderr.slice(-200)}`));
+          }
         }
       });
 
@@ -244,16 +254,45 @@ export class MusicSession {
       this.currentTrack = null;
       this.isPlaying = false;
       if (this.is247) {
-        logger.info(`[Music Manager] Queue finished for guild ${this.guildId}, but staying in voice channel (24/7 mode active).`);
+        logger.info(`[Music Manager] Queue finished for guild ${this.guildId}, 24/7 mode active. Auto-playing a random chill track to keep channel active.`);
         this.textChannel.send({
           components: [
             new V2Embed()
-              .setTitle('Queue Finished 🎵')
-              .setDescription('No more tracks in the queue. The bot will stay in the voice channel (24/7 mode is active).')
+              .setTitle('24/7 Mode Active 📻')
+              .setDescription('Antrean habis. Memutar musik santai acak untuk menemani saluran suara.')
               .build()
           ],
           flags: MessageFlags.IsComponentsV2
         }).catch(() => {});
+
+        const RANDOM_247_MUSIC = [
+          'https://www.youtube.com/watch?v=jfKfPfyJRdk', // Lofi Girl
+          'https://www.youtube.com/watch?v=5qap5aO4i9A', // Lofi beats
+          'https://www.youtube.com/watch?v=kgx4XNHCS1Y', // Chillhop
+          'lofi hip hop radio',
+          'chill lofi beats',
+          'synthwave radio chill',
+          'lofi hip hop beats to relax'
+        ];
+        const randomQuery = RANDOM_247_MUSIC[Math.floor(Math.random() * RANDOM_247_MUSIC.length)];
+        
+        try {
+          // Resolve metadata asynchronously and play it
+          fetchVideoInfoViaYtDlp(randomQuery).then(videoInfo => {
+            const track = {
+              title: videoInfo.title,
+              url: videoInfo.url,
+              duration: videoInfo.duration,
+              thumbnail: videoInfo.thumbnail,
+              requestedBy: 'System (24/7 Mode)'
+            };
+            this.addTrack(track);
+          }).catch(err => {
+            logger.error(`[Music Manager] Failed to resolve random 24/7 track:`, err);
+          });
+        } catch (err) {
+          logger.error(`[Music Manager] Error queueing random 24/7 track:`, err);
+        }
         return;
       }
       this.textChannel.send({
@@ -274,7 +313,21 @@ export class MusicSession {
 
     try {
       logger.info(`[Music Manager] Fetching stream for track: ${this.currentTrack.title} (${this.currentTrack.url})`);
-      const stream = await this.fetchStreamWithRetry(this.currentTrack.url);
+      const stream = this.currentTrack.stream
+        ? this.currentTrack.stream
+        : (this.currentTrack.streamPromise
+            ? await this.currentTrack.streamPromise
+            : await this.fetchStreamWithRetry(this.currentTrack.url));
+
+      // Kill previous active process before playing next track
+      if (this.activeProcess) {
+        try {
+          this.activeProcess.kill();
+        } catch (_) {}
+        this.activeProcess = null;
+      }
+
+      this.activeProcess = stream.process;
 
       const resource = createAudioResource(stream.stream, {
         inputType: stream.type
@@ -303,6 +356,10 @@ export class MusicSession {
         flags: MessageFlags.IsComponentsV2
       }).catch(() => {});
     } catch (error) {
+      if (error.message === 'Aborted') {
+        logger.info(`[Music Manager] Stream fetch aborted (user skipped or stopped).`);
+        return;
+      }
       logger.error(`[Music Manager] Failed to stream track ${this.currentTrack.title}:`, error);
       this.textChannel.send({
         components: [
@@ -369,6 +426,15 @@ export class MusicSession {
         } catch (_) {}
         this.activeProcess = null;
       }
+      // Kill all pre-fetched processes in queue
+      for (const track of this.queue) {
+        if (track.stream && track.stream.process) {
+          try {
+            track.stream.process.kill();
+          } catch (_) {}
+        }
+      }
+      this.queue = [];
       this.connection.destroy();
     } catch (_) {}
     musicSessions.delete(this.guildId);
@@ -447,6 +513,30 @@ export async function fetchVideoInfoViaYtDlp(query) {
   }
 
   try {
+    const isYtUrl = play.yt_validate(query) === 'video';
+    if (isYtUrl) {
+      logger.info(`[Music Manager] Fast-resolving YouTube URL metadata via play-dl: ${query}`);
+      const videoInfo = await play.video_basic_info(query);
+      const durationStr = videoInfo.video_details.durationRaw || formatDuration(videoInfo.video_details.durationInSec);
+      const thumbnail = videoInfo.video_details.thumbnails?.[0]?.url || null;
+      return {
+        title: videoInfo.video_details.title,
+        url: videoInfo.video_details.url,
+        duration: durationStr,
+        thumbnail: thumbnail,
+        video_details: {
+          title: videoInfo.video_details.title,
+          url: videoInfo.video_details.url,
+          durationRaw: durationStr,
+          thumbnails: [{ url: thumbnail }]
+        }
+      };
+    }
+  } catch (fastResolveError) {
+    logger.warn(`[Music Manager] Fast-resolving YouTube URL metadata failed (${fastResolveError.message}). Falling back to yt-dlp resolver.`);
+  }
+
+  try {
     const isUrl = query.startsWith('http://') || query.startsWith('https://');
     const target = isUrl ? query : `ytsearch1:${query}`;
     
@@ -459,7 +549,7 @@ export async function fetchVideoInfoViaYtDlp(query) {
     }
 
     logger.info(`[Music Manager] Querying yt-dlp metadata for: ${target}`);
-    const { stdout } = await execAsync(`yt-dlp --js-runtimes node --remote-components ejs:github ${extractorArgsFlag}${cookiesFlag}--dump-json --no-playlist ${JSON.stringify(target)}`);
+    const { stdout } = await execAsync(`yt-dlp --js-runtimes node --remote-components ejs:github --socket-timeout 10 --retries 3 ${extractorArgsFlag}${cookiesFlag}--dump-json --no-playlist ${JSON.stringify(target)}`);
     const data = JSON.parse(stdout);
     
     const durationStr = data.duration_string || formatDuration(data.duration);

@@ -147,10 +147,11 @@ When extending or editing this codebase, you **must** strictly follow these rule
 - Plugins must be registered in the `plugins` dictionary in `src/utils/aiManager.js` and their commands mapped in `src/utils/pluginManager.js` to support dynamic installation and automatic Discord re-registration via `/plugin`.
 
 ### 10. Dual Music Resolution & Streaming Pipeline (yt-dlp + play-dl)
-- **Primary Pipeline:** Audio streaming and track metadata resolution use `yt-dlp` as the primary resolver to bypass signature block limits.
-- **Extractor Flags:** All `yt-dlp` command calls (streaming spawn processes and metadata extraction `exec` tasks) must include `--js-runtimes node`, `--remote-components ejs:github`, and `--extractor-args "youtube:player_client=android,web"` (automatically switched to `"youtube:player_client=ios,web"` when a cookies file is present, since the `android` client does not support cookies).
-- **Netscape Cookies Support:** If a netscape-formatted cookies file path is defined in `YTDLP_COOKIES_PATH` (or if a `cookies.txt` file exists in the project root directory as a fallback), it is automatically passed via the `--cookies` option to all `yt-dlp` executions to bypass age restrictions and bot detection.
-- **Fallback Guard:** If `yt-dlp` fails due to a rate limit (`429` or `Too Many Requests`), it must fail immediately and skip the `play-dl` fallback, avoiding unhandled promise rejections.
+- **Primary Pipeline:** Audio streaming and track metadata resolution use `yt-dlp` as the primary resolver to bypass signature block limits. For direct YouTube URLs, the system first attempts to fast-resolve metadata using `play-dl` before falling back to `yt-dlp`.
+- **Extractor Flags:** All `yt-dlp` command calls (streaming spawn processes and metadata extraction `exec` tasks) must include `--js-runtimes node`, `--remote-components ejs:github`, and `--extractor-args "youtube:player_client=android,web"` (which are automatically omitted when cookies are present to allow fallback to clients like `tv downgraded` which support cookies and bypass SABR streaming).
+- **Netscape Cookies Support:** If a netscape-formatted cookies file path is defined in `YTDLP_COOKIES_PATH` (or if a `cookies.txt`/`cookie.txt` file exists in the project root directory as a fallback), it is automatically passed via the `--cookies` option to all `yt-dlp` executions to bypass age restrictions and bot detection.
+- **Fallback Guard:** If `yt-dlp` fails due to a rate limit (`429` or `Too Many Requests`) or a session block, it must fail immediately and skip the `play-dl` fallback. If the process is killed due to a user-triggered skip or stop, it throws an `Aborted` error and exits silently.
+- **24/7 Autoplay:** When 24/7 mode is active and the queue is finished, the bot automatically selects and plays a random chill/lofi track from a predefined list to keep the voice channel active.
 - **Test Bypass:** To keep the test suite fast and robust, `yt-dlp` execution is skipped in test mode (`process.env.NODE_ENV === 'test'`), redirecting immediately to the mocked `play-dl` client.
 
 ---
