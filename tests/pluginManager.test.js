@@ -4,6 +4,7 @@ import { config } from '../src/config.js';
 
 describe('Plugin Installer and Command Registry System', () => {
   const dbPath = config.database.path;
+  const testGuildId = '123456789012345';
 
   // Restore initial state before each test
   let originalDbContent = null;
@@ -21,32 +22,32 @@ describe('Plugin Installer and Command Registry System', () => {
     }
   });
 
-  test('should default to having all plugins active', () => {
-    const installed = getInstalledPlugins();
-    expect(installed).toContain('webhook');
-    expect(installed).toContain('music');
-    expect(isCommandEnabled('webhook')).toBe(true);
-    expect(isCommandEnabled('play')).toBe(true);
-  });
-
-  test('should disable command registration when plugin is uninstalled', () => {
-    uninstallPlugin('webhook');
-    
-    const installed = getInstalledPlugins();
+  test('should default to having no plugins active', async () => {
+    const installed = await getInstalledPlugins(testGuildId);
     expect(installed).not.toContain('webhook');
-    expect(isCommandEnabled('webhook')).toBe(false);
+    expect(installed).not.toContain('music');
+    expect(await isCommandEnabled(testGuildId, 'webhook')).toBe(false);
+    expect(await isCommandEnabled(testGuildId, 'play')).toBe(false);
   });
 
-  test('should enable command registration when plugin is re-installed', () => {
-    installPlugin('webhook');
+  test('should disable command registration when plugin is uninstalled', async () => {
+    await uninstallPlugin(testGuildId, 'webhook');
     
-    const installed = getInstalledPlugins();
-    expect(installed).toContain('webhook');
-    expect(isCommandEnabled('webhook')).toBe(true);
+    const installed = await getInstalledPlugins(testGuildId);
+    expect(installed).not.toContain('webhook');
+    expect(await isCommandEnabled(testGuildId, 'webhook')).toBe(false);
   });
 
-  test('should always report non-plugin commands as enabled', () => {
-    expect(isCommandEnabled('ping')).toBe(true);
-    expect(isCommandEnabled('help')).toBe(true);
+  test('should enable command registration when plugin is re-installed', async () => {
+    await installPlugin(testGuildId, 'webhook');
+    
+    const installed = await getInstalledPlugins(testGuildId);
+    expect(installed).toContain('webhook');
+    expect(await isCommandEnabled(testGuildId, 'webhook')).toBe(true);
+  });
+
+  test('should always report non-plugin commands as enabled', async () => {
+    expect(await isCommandEnabled(testGuildId, 'ping')).toBe(true);
+    expect(await isCommandEnabled(testGuildId, 'help')).toBe(true);
   });
 });

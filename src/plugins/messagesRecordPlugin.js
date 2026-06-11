@@ -3,6 +3,7 @@ import { getUserMessages } from '../utils/supabase.js';
 
 export const messagesRecordPlugin = {
   name: 'messagesRecord',
+  commands: ['Messages Record'],
   description: 'Retrieve the 7-day chat history log of a specific user within this server.',
   parameters: {
     type: 'object',

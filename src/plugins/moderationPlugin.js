@@ -2,6 +2,7 @@ import { V2Embed } from '../utils/v2Embed.js';
 
 export const moderationPlugin = {
   name: 'moderation',
+  commands: ['ban', 'deafen', 'kick', 'mute', 'purge', 'timeout', 'undeafen', 'unmute'],
   description: 'Perform moderation actions on members or text channels. Actions include "kick", "ban", "mute", "unmute", "timeout" (time-out a user), and "purge" (delete messages).',
   parameters: {
     type: 'object',

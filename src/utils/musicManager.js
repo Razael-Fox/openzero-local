@@ -112,6 +112,9 @@ export class MusicSession {
       throw err;
     });
 
+    // Prevent unhandled promise rejection if it rejects before being awaited
+    track.streamPromise.catch(() => {});
+
     this.queue.push(track);
     if (!this.currentTrack) {
       this.playNext();

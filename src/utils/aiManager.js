@@ -1,24 +1,7 @@
-import { webhookPlugin } from '../plugins/webhookPlugin.js';
-import { rolePlugin } from '../plugins/rolePlugin.js';
-import { musicPlugin } from '../plugins/musicPlugin.js';
-import { moderationPlugin } from '../plugins/moderationPlugin.js';
-import { translatePlugin } from '../plugins/translatePlugin.js';
-import { userInfoPlugin } from '../plugins/userInfoPlugin.js';
-import { messagesRecordPlugin } from '../plugins/messagesRecordPlugin.js';
+import { plugins } from './pluginManager.js';
 import { recordChat, getChatHistory } from './aiHistory.js';
 import { config } from '../config.js';
 import logger from './logger.js';
-
-// Aggregate all plugins/extensions
-export const plugins = {
-  webhook: webhookPlugin,
-  role: rolePlugin,
-  music: musicPlugin,
-  moderation: moderationPlugin,
-  translate: translatePlugin,
-  userInfo: userInfoPlugin,
-  messagesRecord: messagesRecordPlugin
-};
 
 /**
  * Mock Pattern Matcher (Intent Classifier) to simulate AI routing without API/token cost.
@@ -154,6 +137,17 @@ export function classifyIntentMock(prompt) {
     };
   }
 
+  // 8. Instagram Stalker
+  if (query.includes('instagram') || query.includes('ig ') || query.includes('stalk')) {
+    const usnMatch = prompt.match(/(?:username|usn|ig|stalk|instagram)\s+['"]?([a-zA-Z0-9_\.]+)/i);
+    return {
+      pluginName: 'instagram',
+      args: {
+        username: usnMatch ? usnMatch[1] : 'razael'
+      }
+    };
+  }
+
   return null;
 }
 
@@ -193,11 +187,10 @@ export async function runAgent(prompt, context) {
       // Construct messages list
       const systemMessage = {
         role: 'system',
-        content: `You are Fox, a helpful AI coding assistant and manager for this Discord Server. 
-You must ALWAYS call the appropriate tool immediately when the user requests an action that matches one of your tools (such as playing music, managing webhooks/roles, moderating, translating, etc.). Do not ask for confirmation or chat first.
-For channel mentions like <#1234567890>, extract only the numeric ID (e.g., 1234567890) for channelId or voiceChannelId parameters.
-If the user requests to play a song with a query that might contain words like "20 min" or similar, use the song title/keywords as the query (e.g., "20 min" is a song name by Lil Uzi Vert).
-If the user wants the bot to stay forever, 24/7, or always-on in the voice channel, set the twentyFourSeven parameter to true.
+        content: `You are Fox, a helpful AI assistant and manager for this Discord Server.
+You have access to tools for playing music, managing webhooks, roles, moderating, translating, and checking Instagram profiles.
+If the user's request matches one of your tools, you MUST call the appropriate tool.
+For channel mentions like <#1234567890>, extract only the numeric ID (e.g., 1234567890) for channelId parameters.
 Always respond politely in Indonesian unless requested otherwise. Current User: ${context.user?.tag || 'Unknown'}`
       };
 
@@ -225,51 +218,144 @@ Always respond politely in Indonesian unless requested otherwise. Current User: 
         })
       });
 
-      if (!response.ok) {
-        logger.warn(`[AI Agent] Groq request with tools failed (Status ${response.status}). Retrying WITHOUT tools for compatibility...`);
-        response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${config.groq.apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: config.groq.model,
-            messages: messages,
-            temperature: 0.7
-          })
-        });
-      }
-
-      if (!response.ok) {
-        throw new Error(`Groq API returned status ${response.status}`);
-      }
-
-      const resBody = await response.json();
-      logger.info(`[AI Agent Debug] Groq raw response: ${JSON.stringify(resBody)}`);
-      const choice = resBody.choices?.[0];
-      const assistantMessage = choice?.message;
-
       // Handle Tool Calls
       let pluginName = null;
       let pluginArgs = null;
       let toolCallId = null;
 
-      if (assistantMessage?.tool_calls && assistantMessage.tool_calls.length > 0) {
-        const toolCall = assistantMessage.tool_calls[0];
-        pluginName = toolCall.function.name;
-        pluginArgs = JSON.parse(toolCall.function.arguments);
-        toolCallId = toolCall.id;
-      } else if (assistantMessage?.content) {
-        const xmlMatch = assistantMessage.content.match(/<(\w+)=({.*?})><\/\1>/s);
-        if (xmlMatch) {
-          pluginName = xmlMatch[1];
-          try {
-            pluginArgs = JSON.parse(xmlMatch[2]);
-            logger.info(`[AI Agent] Extracted tool call from text content: plugin="${pluginName}"`, pluginArgs);
-          } catch (e) {
-            logger.error(`[AI Agent] Failed to parse JSON from XML tool tag:`, e);
+      if (!response.ok) {
+        let errorDetails = '';
+        let errBody = null;
+        try {
+          errBody = await response.json();
+          errorDetails = JSON.stringify(errBody);
+        } catch {
+          errorDetails = await response.text();
+        }
+        
+        // Try to recover tool call from failed_generation if any
+        if (errBody && errBody.error && errBody.error.failed_generation) {
+          const failedGen = errBody.error.failed_generation;
+          // Format is like: <function=instagram>{"username": "markzuckerberg"}
+          const match = failedGen.match(/<function=(\w+)>\s*({.*?})/s);
+          if (match) {
+            pluginName = match[1];
+            try {
+              pluginArgs = JSON.parse(match[2]);
+              logger.info(`[AI Agent] Groq request returned status 400 (tool_use_failed), but successfully recovered tool call from failed_generation: plugin="${pluginName}"`, pluginArgs);
+            } catch (e) {
+              logger.error(`[AI Agent] Failed to parse recovered tool call args:`, e);
+            }
           }
+        }
+
+        // If we didn't recover a valid tool call, log warning and retry WITHOUT tools
+        if (!pluginName || !pluginArgs) {
+          logger.warn(`[AI Agent] Groq request with tools failed (Status ${response.status}). Details: ${errorDetails}. Retrying WITHOUT tools for compatibility...`);
+          response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${config.groq.apiKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: config.groq.model,
+              messages: messages,
+              temperature: 0.7
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`Groq API returned status ${response.status}`);
+          }
+
+          const resBody = await response.json();
+          logger.info(`[AI Agent Debug] Groq raw response: ${JSON.stringify(resBody)}`);
+          const choice = resBody.choices?.[0];
+          const assistantMessage = choice?.message;
+
+          if (assistantMessage?.content) {
+            // Match standard XML format: <instagram={"username": "test"}></instagram>
+            const xmlMatch = assistantMessage.content.match(/<(\w+)=({.*?})><\/\1>/s);
+            if (xmlMatch) {
+              pluginName = xmlMatch[1];
+              try {
+                pluginArgs = JSON.parse(xmlMatch[2]);
+                logger.info(`[AI Agent] Extracted tool call from text content: plugin="${pluginName}"`, pluginArgs);
+              } catch (e) {
+                logger.error(`[AI Agent] Failed to parse JSON from XML tool tag:`, e);
+              }
+            } else {
+              // Fallback: Match looser XML tags
+              const looseMatch = assistantMessage.content.match(/<(\w+)>\s*({.*?})["']?\s*<\/(?:\1|function)>/s);
+              if (looseMatch) {
+                pluginName = looseMatch[1];
+                try {
+                  const cleanedJson = looseMatch[2].trim();
+                  pluginArgs = JSON.parse(cleanedJson);
+                  logger.info(`[AI Agent] Extracted loose tool call from text content: plugin="${pluginName}"`, pluginArgs);
+                } catch (e) {
+                  logger.error(`[AI Agent] Failed to parse loose JSON from XML tool tag:`, e);
+                }
+              }
+            }
+          }
+
+          // If still no plugin and we have assistantMessage content, handle simple conversational response
+          if (!pluginName && assistantMessage?.content) {
+            const responseText = assistantMessage.content;
+            await recordChat({ guildId, userId, role: 'assistant', content: responseText });
+            return {
+              agentExecuted: false,
+              responseText
+            };
+          }
+        }
+      } else {
+        const resBody = await response.json();
+        logger.info(`[AI Agent Debug] Groq raw response: ${JSON.stringify(resBody)}`);
+        const choice = resBody.choices?.[0];
+        const assistantMessage = choice?.message;
+
+        if (assistantMessage?.tool_calls && assistantMessage.tool_calls.length > 0) {
+          const toolCall = assistantMessage.tool_calls[0];
+          pluginName = toolCall.function.name;
+          pluginArgs = JSON.parse(toolCall.function.arguments);
+          toolCallId = toolCall.id;
+        } else if (assistantMessage?.content) {
+          // Match standard XML format
+          const xmlMatch = assistantMessage.content.match(/<(\w+)=({.*?})><\/\1>/s);
+          if (xmlMatch) {
+            pluginName = xmlMatch[1];
+            try {
+              pluginArgs = JSON.parse(xmlMatch[2]);
+              logger.info(`[AI Agent] Extracted tool call from text content: plugin="${pluginName}"`, pluginArgs);
+            } catch (e) {
+              logger.error(`[AI Agent] Failed to parse JSON from XML tool tag:`, e);
+            }
+          } else {
+            const looseMatch = assistantMessage.content.match(/<(\w+)>\s*({.*?})["']?\s*<\/(?:\1|function)>/s);
+            if (looseMatch) {
+              pluginName = looseMatch[1];
+              try {
+                const cleanedJson = looseMatch[2].trim();
+                pluginArgs = JSON.parse(cleanedJson);
+                logger.info(`[AI Agent] Extracted loose tool call from text content: plugin="${pluginName}"`, pluginArgs);
+              } catch (e) {
+                logger.error(`[AI Agent] Failed to parse loose JSON from XML tool tag:`, e);
+              }
+            }
+          }
+        }
+
+        // If no plugin but has content, handle simple conversational response
+        if (!pluginName && assistantMessage?.content) {
+          const responseText = assistantMessage.content;
+          await recordChat({ guildId, userId, role: 'assistant', content: responseText });
+          return {
+            agentExecuted: false,
+            responseText
+          };
         }
       }
 

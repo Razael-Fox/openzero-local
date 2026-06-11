@@ -3,6 +3,7 @@ import { V2Embed } from '../utils/v2Embed.js';
 
 export const translatePlugin = {
   name: 'translate',
+  commands: ['Translate to English'],
   description: 'Translate text from one language to another (default translates to English).',
   parameters: {
     type: 'object',

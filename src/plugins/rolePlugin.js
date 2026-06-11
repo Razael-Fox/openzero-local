@@ -2,6 +2,7 @@ import { V2Embed } from '../utils/v2Embed.js';
 
 export const rolePlugin = {
   name: 'role',
+  commands: ['role'],
   description: 'Manage member roles in the guild. Actions include "add" (assigns role to a user), "remove" (removes role from a user), and "info" (retrieves details about a role).',
   parameters: {
     type: 'object',

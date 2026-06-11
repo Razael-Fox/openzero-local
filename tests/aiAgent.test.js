@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import { runAgent, classifyIntentMock } from '../src/utils/aiManager.js';
 import { recordChat, getChatHistory, clearChatHistory } from '../src/utils/aiHistory.js';
+import { config } from '../src/config.js';
 
 // Mock symbols
 jest.unstable_mockModule('../src/utils/symbols.js', () => ({
@@ -127,6 +128,64 @@ describe('AI Agent Plugin and Extension System', () => {
 
       expect(result.agentExecuted).toBe(false);
       expect(result.responseText).toContain('Fox (AI)');
+    });
+
+    test('should recover tool call from failed_generation on Groq 400 error', async () => {
+      // Temporarily set API key and bypass test check
+      const originalApiKey = config.groq.apiKey;
+      const originalNodeEnv = config.nodeEnv;
+      config.groq.apiKey = 'mock-key';
+      config.nodeEnv = 'development';
+
+      const originalFetch = global.fetch;
+      
+      // Mock the failed Groq API call returning 400 with failed_generation error details
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: false,
+        status: 400,
+        json: async () => ({
+          error: {
+            message: "Failed to call a function. Please adjust your prompt.",
+            type: "invalid_request_error",
+            code: "tool_use_failed",
+            failed_generation: "<function=instagram>{\"username\": \"markzuckerberg\"}"
+          }
+        })
+      });
+
+      const mockInstagramResult = {
+        success: true,
+        responseText: 'Successfully stalked instagram markzuckerberg'
+      };
+
+      // Mock the instagram plugin execute method
+      const { plugins } = await import('../src/utils/pluginManager.js');
+      const originalInstagramExecute = plugins.instagram.execute;
+      plugins.instagram.execute = jest.fn().mockResolvedValue(mockInstagramResult);
+
+      const prompt = "cek username instagram mark zuckerberg";
+      const context = {
+        guild: { id: mockGuildId },
+        user: { id: mockUserId, tag: 'User#1234' }
+      };
+
+      try {
+        const result = await runAgent(prompt, context);
+
+        expect(result.agentExecuted).toBe(true);
+        expect(result.pluginUsed).toBe('instagram');
+        expect(result.result.responseText).toContain('Successfully stalked instagram markzuckerberg');
+        expect(plugins.instagram.execute).toHaveBeenCalledWith(
+          { username: 'markzuckerberg' },
+          context
+        );
+      } finally {
+        // Restore mocks
+        global.fetch = originalFetch;
+        config.groq.apiKey = originalApiKey;
+        config.nodeEnv = originalNodeEnv;
+        plugins.instagram.execute = originalInstagramExecute;
+      }
     });
   });
 });

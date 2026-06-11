@@ -162,6 +162,19 @@ export default {
       return;
     }
 
+    // Memproses Autocomplete
+    if (interaction.isAutocomplete()) {
+      const command = interaction.client.commands.get(interaction.commandName);
+      if (command && typeof command.autocomplete === 'function') {
+        try {
+          await command.autocomplete(interaction);
+        } catch (error) {
+          logger.error(`[Autocomplete Error] Gagal memproses autocomplete untuk /${interaction.commandName}:`, error);
+        }
+      }
+      return;
+    }
+
     // Memproses command berbasis Slash Commands (Chat Input) atau Context Menu Commands
     if (!interaction.isChatInputCommand() && !interaction.isContextMenuCommand()) return;
 

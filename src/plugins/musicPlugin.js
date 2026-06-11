@@ -3,6 +3,7 @@ import { V2Embed } from '../utils/v2Embed.js';
 
 export const musicPlugin = {
   name: 'music',
+  commands: ['play', 'pause', 'resume', 'skip', 'stop', 'queue'],
   description: 'Play and control YouTube music playback in voice channels. Actions include "play" (add and play a song), "pause" (pause playback), "resume" (resume playback), "skip" (skip current song), "stop" (stop playback and disconnect), and "queue" (view upcoming songs).',
   parameters: {
     type: 'object',

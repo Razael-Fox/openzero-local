@@ -4,6 +4,7 @@ import { resolveEmoji } from '../utils/symbols.js';
 
 export const webhookPlugin = {
   name: 'webhook',
+  commands: ['webhook'],
   description: 'Manage webhooks in the guild. Actions include "create" (creates a new webhook in a channel), "info" (retrieves info about an existing webhook by ID or URL), and "list" (lists all webhooks in the guild).',
   parameters: {
     type: 'object',
