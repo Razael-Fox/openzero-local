@@ -3,6 +3,7 @@ import { deployCommands } from '../handlers/commandHandler.js';
 import logger from '../utils/logger.js';
 import { config } from '../config.js';
 import { Symbols } from '../utils/symbols.js';
+import { initScamFilter } from '../moderation/scamFilter.js';
 
 export default {
   name: Events.ClientReady,
@@ -12,6 +13,13 @@ export default {
    */
   async execute(client) {
     logger.info(`[Client] Login successful! Bot is active as ${client.user.tag}`);
+
+    // Initialize anti-phishing/scam links database cache
+    try {
+      await initScamFilter();
+    } catch (err) {
+      logger.error('[Scam Filter Startup] Failed to initialize scam filter:', err);
+    }
 
     // Pre-fetch custom emojis guild cache reference globally
     if (config.guildId) {

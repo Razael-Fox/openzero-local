@@ -7,6 +7,8 @@ import { handleDevCommand } from '../handlers/devCommandHandler.js';
 import { needsAIReview } from '../moderation/preFilter.js';
 import { isOnCooldown, setCooldown } from '../moderation/cooldown.js';
 import { analyzeWithAI } from '../moderation/aiAnalyzer.js';
+import { containsScamLink } from '../moderation/scamFilter.js';
+import { t } from '../utils/i18n.js';
 
 export default {
   name: Events.MessageCreate,
@@ -45,6 +47,19 @@ export default {
     logger.info(
       `[Message] [${message.guild?.name || 'DM'}] #${message.channel.name || 'unknown'} | ${message.author.tag}: ${finalContent}`
     );
+
+    // Anti-Phishing/Scam Link Filter
+    if (message.guild && containsScamLink(finalContent)) {
+      const isDev = process.env.NODE_ENV === 'development';
+      const hasPermission = message.member && message.member.permissions.has(PermissionFlagsBits.ManageGuild);
+      if (isDev || !hasPermission) {
+        logger.warn(`[Scam Filter] Detected scam link from ${message.author.tag} in #${message.channel.name}. Deleting message...`);
+        await message.delete().catch(() => null);
+        const warningMsg = t('scamLinkWarning', message.guild.preferredLocale || 'en', { username: message.author.username });
+        await message.channel.send(warningMsg).catch(() => null);
+        return;
+      }
+    }
 
     // AI Moderation Filters
     if (message.guild && needsAIReview(finalContent) && !isOnCooldown(message.author.id)) {

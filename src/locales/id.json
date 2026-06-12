@@ -75,5 +75,8 @@
   "helpNoCommands": "Tidak ada perintah di kategori ini.",
   "greetingsTitle": "Terima Kasih Telah Menambahkan OZL! 🎉",
   "greetingsDescription": "Halo {owner}! Terima kasih telah mengundang **OZL** ke server **{guildName}**. Silakan ikuti instruksi berikut untuk memulai:\n\n### 🛠️ Langkah Memulai & Panduan Penggunaan\n\n*   **1. Temukan Command Bot**\n    Ketik `/help` atau `/menu` untuk melihat semua daftar perintah (*Slash Commands*) yang tersedia.\n\n*   **2. Integrasi AI Assistant (Fox)**\n    Gunakan command `/fox` atau tag/mention bot untuk berinteraksi langsung dengan AI.\n    > ⚠️ **Catatan Penting:** Respons AI terkadang tidak 100% akurat. Jika bot melakukan tindakan/pemanggilan tool yang tidak diinginkan di server Anda, mohon kick atau mute bot segera!\n\n*   **3. Sistem Music Streaming**\n    Putar musik dengan command `/play`. Fitur musik mungkin tidak selalu 100% berhasil karena pembatasan platform. Jika Anda mengalami kendala/error, silakan laporkan ke `me@razael-fox.my.id`.\n\n*   **4. Modularitas Plugin**\n    Bot ini berbasis plugin! Beberapa fitur (seperti moderasi, badword filter, dll.) mungkin dinonaktifkan secara bawaan. Gunakan command `/plugin list` dan `/plugin install <nama_plugin>` untuk mengaktifkannya.\n\nSelamat menggunakan bot! Semoga membantu meningkatkan keseruan server Anda!",
-  "greetingsDocButton": "Dokumentasi 📖"
+  "greetingsDocButton": "Dokumentasi 📖",
+  "music247Title": "Mode 24/7 Aktif 📻",
+  "music247Desc": "Antrean habis. Memutar musik santai acak untuk menemani saluran suara.\n\n*Catatan: Musik lofi otomatis ini menandakan bot sedang menunggu pengguna untuk menambahkan lagu berikutnya.*",
+  "scamLinkWarning": "⚠️ @{username}, pesan Anda dihapus karena mengandung tautan phising atau scam yang mencurigakan!"
 }
