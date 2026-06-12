@@ -84,5 +84,8 @@
   "customScamLinkNotFound": "❌ Domain scam kustom **{domain}** tidak ditemukan di basis data.",
   "supabaseNotConfiguredError": "❌ Konfigurasi Supabase tidak ditemukan! Silakan atur `SUPABASE_URL` dan `SUPABASE_KEY` pada file `.env` bot untuk menggunakan fitur manajemen link scam kustom.",
   "customScamLinksListTitle": "🛡️ Daftar Domain Scam yang Diblokir (Kustom)",
-  "customScamLinksListEmpty": "Tidak ada daftar domain scam kustom yang tersimpan di basis data saat ini."
+  "customScamLinksListEmpty": "Tidak ada daftar domain scam kustom yang tersimpan di basis data saat ini.",
+  "scamLinkWarningTitle": "🛡️ Peringatan Keamanan",
+  "scamAlertTitle": "🛡️ Laporan Link Phising/Scam",
+  "scamAlertDescription": "**Pengirim:** {userMention} ({userTag} / ID: {userId})\\n**Saluran:** {channelMention}\\n**Pesan Asli:**\\n```\\n{messageContent}\\n```"
 }

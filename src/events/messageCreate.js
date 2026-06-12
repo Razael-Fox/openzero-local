@@ -64,7 +64,7 @@ export default {
         const description = aiWarning || t('scamLinkWarning', message.guild.preferredLocale || 'en', { username: message.author.username });
         
         const embed = new V2Embed(message.guild)
-          .setTitle(message.guild.preferredLocale === 'id' ? '🛡️ Peringatan Keamanan' : '🛡️ Security Warning')
+          .setTitle(t('scamLinkWarningTitle', message.guild.preferredLocale || 'en'))
           .setDescription(description)
           .setColor(0xff3333) // Red accent
           .build();
@@ -78,15 +78,15 @@ export default {
           const mentionString = adminRole ? `<@${message.guild.ownerId}> | ${adminRole}` : `<@${message.guild.ownerId}>`;
           
           const alertEmbed = new V2Embed(message.guild)
-            .setTitle(message.guild.preferredLocale === 'id' ? '🛡️ Laporan Link Phising/Scam' : '🛡️ Scam/Phishing Link Alert')
+            .setTitle(t('scamAlertTitle', message.guild.preferredLocale || 'en'))
             .setDescription(
-              message.guild.preferredLocale === 'id'
-                ? `**Pengirim:** ${message.author} (${message.author.tag} / ID: ${message.author.id})\n` +
-                  `**Saluran:** ${message.channel}\n` +
-                  `**Pesan Asli:**\n\`\`\`\n${finalContent}\n\`\`\``
-                : `**User:** ${message.author} (${message.author.tag} / ID: ${message.author.id})\n` +
-                  `**Channel:** ${message.channel}\n` +
-                  `**Original Message:**\n\`\`\`\n${finalContent}\n\`\`\``
+              t('scamAlertDescription', message.guild.preferredLocale || 'en', {
+                userMention: message.author.toString(),
+                userTag: message.author.tag,
+                userId: message.author.id,
+                channelMention: message.channel.toString(),
+                messageContent: finalContent
+              })
             )
             .setColor(0xff3333)
             .build();
