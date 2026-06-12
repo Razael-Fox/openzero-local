@@ -1,5 +1,7 @@
-import { Events, MessageFlags } from 'discord.js';
+import { Events, MessageFlags, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { V2Embed } from '../utils/v2Embed.js';
+import { t } from '../utils/i18n.js';
+import { resolveEmoji } from '../utils/symbols.js';
 import logger from '../utils/logger.js';
 
 export default {
@@ -11,7 +13,10 @@ export default {
   async execute(guild) {
     logger.info(`[GuildCreate] Bot has been added to a new guild: ${guild.name} (${guild.id})`);
 
-    // Dapatkan owner guild secara dinamis untuk menyapa dengan mention
+    // Determine locale based on server preferredLocale
+    const locale = guild.preferredLocale && guild.preferredLocale.startsWith('id') ? 'id' : 'en';
+
+    // Dynamically get the guild owner to greet them with a mention
     let ownerMention = 'Server Owner';
     try {
       const owner = await guild.fetchOwner();
@@ -22,7 +27,7 @@ export default {
       logger.warn(`[GuildCreate] Failed to fetch guild owner: ${err.message}`);
     }
 
-    // Temukan channel sistem atau channel teks pertama di mana bot bisa mengirim pesan
+    // Find system channel or the first text channel where bot can send messages
     const channel = guild.systemChannel || guild.channels.cache.find(
       (c) => c.isTextBased() && c.permissionsFor(guild.members.me).has('SendMessages')
     );
@@ -33,22 +38,26 @@ export default {
     }
 
     try {
+      // Resolve title and description dynamically using the i18n translation engine
+      const resolvedTitle = t('greetingsTitle', locale);
+      const resolvedDescription = t('greetingsDescription', locale, {
+        owner: ownerMention,
+        guildName: guild.name
+      });
+
+      // Build documentation link button row
+      const buttonRow = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setLabel(t('greetingsDocButton', locale))
+          .setStyle(ButtonStyle.Link)
+          .setURL('https://razael-fox.my.id/openzero-local')
+          .setEmoji(resolveEmoji(guild, '📖'))
+      );
+
       const embed = new V2Embed()
-        .setTitle('Terima Kasih Telah Menambahkan OZL! 🎉')
-        .setDescription(
-          `Halo ${ownerMention}! Terima kasih telah mengundang **OZL** ke server **${guild.name}**. Silakan ikuti instruksi berikut untuk memulai:\n\n` +
-          `### 🛠️ Langkah Memulai & Panduan Penggunaan\n\n` +
-          `*   **1. Temukan Command Bot**\n` +
-          `    Ketik \`/help\` atau \`/menu\` untuk melihat semua daftar perintah (*Slash Commands*) yang tersedia.\n\n` +
-          `*   **2. Integrasi AI Assistant (Fox)**\n` +
-          `    Gunakan command \`/fox\` atau tag/mention bot untuk berinteraksi langsung dengan AI.\n` +
-          `    > ⚠️ **Catatan Penting:** Respons AI terkadang tidak 100% akurat. Jika bot melakukan tindakan/pemanggilan tool yang tidak diinginkan di server Anda, mohon kick atau mute bot segera!\n\n` +
-          `*   **3. Sistem Music Streaming**\n` +
-          `    Putar musik dengan command \`/play\`. Fitur musik mungkin tidak selalu 100% berhasil karena pembatasan platform. Jika Anda mengalami kendala/error, silakan laporkan ke \`me@razael-fox.my.id\`.\n\n` +
-          `*   **4. Modularitas Plugin**\n` +
-          `    Bot ini berbasis plugin! Beberapa fitur (seperti moderasi, badword filter, dll.) mungkin dinonaktifkan secara bawaan. Gunakan command \`/plugin list\` dan \`/plugin install <nama_plugin>\` untuk mengaktifkannya.\n\n` +
-          `Selamat menggunakan bot! Semoga membantu meningkatkan keseruan server Anda!`
-        )
+        .setTitle(resolvedTitle)
+        .setDescription(resolvedDescription)
+        .addActionRow(buttonRow)
         .build();
 
       await channel.send({
@@ -56,7 +65,7 @@ export default {
         flags: MessageFlags.IsComponentsV2
       });
 
-      logger.info(`[GuildCreate] Optimized greetings message sent successfully to channel: ${channel.name} in guild: ${guild.name}`);
+      logger.info(`[GuildCreate] Greetings message (${locale}) sent successfully to channel: ${channel.name} in guild: ${guild.name}`);
     } catch (err) {
       logger.error(`[GuildCreate] Failed to send greetings message in guild ${guild.name}:`, err);
     }

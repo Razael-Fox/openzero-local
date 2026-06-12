@@ -72,5 +72,8 @@
   "welcomeMessage": "Welcome to the server, {user}! We are glad to have you here.",
   "helpCommandsSuffix": "{count} commands",
   "helpFooter": "\n*Use the buttons below to filter commands by category.*\n\n",
-  "helpNoCommands": "No commands found in this category."
+  "helpNoCommands": "No commands found in this category.",
+  "greetingsTitle": "Thank You for Adding OZL! 🎉",
+  "greetingsDescription": "Hello {owner}! Thank you for inviting **OZL** to the server **{guildName}**. Please follow these instructions to get started:\n\n### 🛠️ Getting Started & Setup Guide\n\n*   **1. Find Bot Commands**\n    Type `/help` or `/menu` to view the list of all available commands (*Slash Commands*).\n\n*   **2. AI Assistant Integration (Fox)**\n    Use the `/fox` command or tag/mention the bot to interact directly with the AI.\n    > ⚠️ **Important Note:** AI responses may not always be 100% accurate. If the bot performs unintended actions or tool calls in your server, please kick or mute the bot immediately!\n\n*   **3. Music Streaming System**\n    Play music using the `/play` command. The music feature may not always work 100% of the time due to platform restrictions. If you encounter any issues/errors, please report them to `me@razael-fox.my.id`.\n\n*   **4. Plugin Modularity**\n    This bot is plugin-based! Some features (like moderation, badword filter, etc.) might be disabled by default. Use `/plugin list` and `/plugin install <plugin_name>` to enable them.\n\nEnjoy using the bot! We hope it brings more fun to your server!",
+  "greetingsDocButton": "Documentation 📖"
 }
