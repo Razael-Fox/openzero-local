@@ -9,6 +9,7 @@ import { isOnCooldown, setCooldown } from '../moderation/cooldown.js';
 import { analyzeWithAI } from '../moderation/aiAnalyzer.js';
 import { containsScamLink } from '../moderation/scamFilter.js';
 import { t } from '../utils/i18n.js';
+import { config } from '../config.js';
 
 export default {
   name: Events.MessageCreate,
@@ -52,7 +53,8 @@ export default {
     if (message.guild && containsScamLink(finalContent)) {
       const isDev = process.env.NODE_ENV === 'development';
       const hasPermission = message.member && message.member.permissions.has(PermissionFlagsBits.ManageGuild);
-      if (isDev || !hasPermission) {
+      const isOwner = message.author.id === config.ownerId;
+      if (isDev || !hasPermission || isOwner) {
         logger.warn(`[Scam Filter] Detected scam link from ${message.author.tag} in #${message.channel.name}. Deleting message...`);
         await message.delete().catch(() => null);
         const warningMsg = t('scamLinkWarning', message.guild.preferredLocale || 'en', { username: message.author.username });
