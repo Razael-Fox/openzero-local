@@ -48,8 +48,6 @@ const BASE_PATTERNS = [
   /\bl+[\s\W_*@-]*o+[\s\W_*@-]*n+[\s\W_*@-]*t+[\s\W_*@-]*[e1*]+\b/i
 ];
 
-export let TRIGGER_PATTERNS = [...BASE_PATTERNS];
-
 /**
  * Builds a robust regex pattern matching spaced/repeated/symbol/leetspeak/homoglyph variations of a raw word.
  * @param {string} word Raw bad word (e.g. "pantek")
@@ -72,20 +70,36 @@ export function buildRobustRegex(word) {
   return new RegExp(`\\b${pattern}\\b`, 'i');
 }
 
+// Memory cache for custom bad word regex compilation
+let cachedBadWordsString = '';
+let compiledCustomPatterns = [];
+
 /**
- * Reloads all custom bad words from the database and updates active patterns.
+ * Get active trigger patterns dynamically.
+ * Synchronizes with database updates immediately without requiring a restart.
+ * @returns {RegExp[]}
  */
-export function reloadPatterns() {
+export function getTriggerPatterns() {
   const customWords = getBadWordsLocally();
-  const customPatterns = customWords.map((entry) => {
-    const rawWord = typeof entry === 'object' ? entry.word : entry;
-    return buildRobustRegex(rawWord);
-  });
-  TRIGGER_PATTERNS = [...BASE_PATTERNS, ...customPatterns];
+  const currentWordsString = JSON.stringify(customWords);
+
+  if (currentWordsString !== cachedBadWordsString) {
+    cachedBadWordsString = currentWordsString;
+    compiledCustomPatterns = customWords.map((entry) => {
+      const rawWord = typeof entry === 'object' ? entry.word : entry;
+      return buildRobustRegex(rawWord);
+    });
+  }
+
+  return [...BASE_PATTERNS, ...compiledCustomPatterns];
 }
 
-// Perform initial reload
-reloadPatterns();
+/**
+ * Legacy support for testing or commands that reference TRIGGER_PATTERNS directly.
+ */
+export function reloadPatterns() {
+  getTriggerPatterns();
+}
 
 /**
  * Checks if the content matches any trigger patterns requiring AI review, excluding whitelisted contexts.
@@ -94,11 +108,12 @@ reloadPatterns();
  */
 export function needsAIReview(content) {
   if (!content) return false;
-  
+
   const whitelist = getWhitelistLocally();
   const lowerContent = content.toLowerCase();
+  const activePatterns = getTriggerPatterns();
 
-  for (const pattern of TRIGGER_PATTERNS) {
+  for (const pattern of activePatterns) {
     const match = content.match(pattern);
     if (match) {
       const matchedString = match[0].toLowerCase();
