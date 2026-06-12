@@ -1,4 +1,4 @@
-import { Events, PermissionFlagsBits, MessageFlags } from 'discord.js';
+import { Events, PermissionFlagsBits, MessageFlags, SeparatorBuilder, SeparatorSpacingSize, TextDisplayBuilder } from 'discord.js';
 import logger from '../utils/logger.js';
 import { incrementMessageCount } from '../utils/database.js';
 import { recordMessage } from '../utils/supabase.js';
@@ -95,20 +95,28 @@ export default {
 
           const mentionString = adminRole ? `<@${message.guild.ownerId}> | ${adminRole}` : `<@${message.guild.ownerId}>`;
           
+          const isId = message.guild.preferredLocale === 'id';
           const alertEmbed = new V2Embed(message.guild)
             .setTitle(t('scamAlertTitle', message.guild.preferredLocale || 'en'))
-            .setDescription(
-              t('scamAlertDescription', message.guild.preferredLocale || 'en', {
-                userMention: message.author.toString(),
-                userTag: message.author.tag,
-                userId: message.author.id,
-                channelMention: message.channel.toString(),
-                messageContent: finalContent
-              })
-            )
             .setColor(0xff3333)
             .build();
-            
+
+          alertEmbed.addTextDisplayComponents(
+            new TextDisplayBuilder().setContent(isId ? `**Pengirim:** ${message.author} (${message.author.tag} / ID: ${message.author.id})` : `**User:** ${message.author} (${message.author.tag} / ID: ${message.author.id})`)
+          );
+          alertEmbed.addSeparatorComponents(
+            new SeparatorBuilder().setDivider(true).setSpacing(SeparatorSpacingSize.Small)
+          );
+          alertEmbed.addTextDisplayComponents(
+            new TextDisplayBuilder().setContent(isId ? `**Saluran:** ${message.channel}` : `**Channel:** ${message.channel}`)
+          );
+          alertEmbed.addSeparatorComponents(
+            new SeparatorBuilder().setDivider(true).setSpacing(SeparatorSpacingSize.Small)
+          );
+          alertEmbed.addTextDisplayComponents(
+            new TextDisplayBuilder().setContent(isId ? `**Pesan Asli:**\n\`\`\`\n${finalContent}\n\`\`\`` : `**Original Message:**\n\`\`\`\n${finalContent}\n\`\`\``)
+          );
+          
           await logChannel.send({ content: mentionString }).catch(() => null);
           await logChannel.send({
             components: [alertEmbed],
