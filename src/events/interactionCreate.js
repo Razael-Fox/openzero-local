@@ -156,6 +156,16 @@ export default {
             error
           );
         }
+      } else if (
+        interaction.customId.startsWith('ai_approve_healing_') ||
+        interaction.customId.startsWith('ai_reject_healing_')
+      ) {
+        try {
+          const { handleHealingInteraction } = await import('../utils/selfHealing.js');
+          await handleHealingInteraction(interaction);
+        } catch (error) {
+          logger.error('[Button Error] Failed to handle self healing interaction:', error);
+        }
       }
       return;
     }

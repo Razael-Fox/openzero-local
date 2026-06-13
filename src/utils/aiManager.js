@@ -516,6 +516,18 @@ ${responseLangInstruction} Current User: ${context.user?.tag || 'Unknown'}`
           while ((match3 = regex3.exec(assistantMessage.content)) !== null) {
             xmlToolCalls.push({ name: match3[1], args: safeJsonParse(match3[2]) });
           }
+
+          // Match plain text function calling fallback: pluginName {"arg": "val"}
+          const regex4 = /^(\w+)\s*({[\s\S]*?})\s*$/g;
+          let match4;
+          while ((match4 = regex4.exec(assistantMessage.content.trim())) !== null) {
+            const possiblePlugin = match4[1];
+            if (plugins[possiblePlugin]) {
+              try {
+                xmlToolCalls.push({ name: possiblePlugin, args: safeJsonParse(match4[2]) });
+              } catch (e) {}
+            }
+          }
         }
 
         const toolCalls = assistantMessage.tool_calls || [];
@@ -549,12 +561,20 @@ ${responseLangInstruction} Current User: ${context.user?.tag || 'Unknown'}`
               } else {
                 try {
                   logger.info(`[AI Agent] Triggering plugin "${pName}" with arguments:`, pArgs);
-                  if (pName === 'webhook' && pArgs.action === 'create' && context.channel) {
+                  if (pName === 'webhook' && pArgs?.action === 'create' && context.channel) {
                     pArgs.channelId = context.channel.id;
                   }
                   result = await plugin.execute(pArgs, context);
                 } catch (err) {
                   result = { success: false, error: err.message };
+                  logger.info(`[Self-Healing Debug] Catch block triggered for plugin "${pName}":`, err.message);
+                  // Trigger self-healing asynchronously
+                  import('./selfHealing.js').then(({ triggerSelfHealing }) => {
+                    logger.info(`[Self-Healing Debug] Dynamically loaded selfHealing.js for "${pName}". Triggering...`);
+                    triggerSelfHealing(pName, err.message, err.stack, context).catch(e =>
+                      logger.error('[Self-Healing] Trigger failed:', e)
+                    );
+                  }).catch(e => logger.error('[Self-Healing] Import failed:', e));
                 }
               }
             } else {
@@ -562,7 +582,7 @@ ${responseLangInstruction} Current User: ${context.user?.tag || 'Unknown'}`
             }
 
             isAgentExecuted = true;
-            executedPlugins.push({ name: pName, action: pArgs.action, result });
+            executedPlugins.push({ name: pName, action: pArgs?.action, result });
 
             messages.push({
               role: 'tool',
@@ -597,6 +617,14 @@ ${responseLangInstruction} Current User: ${context.user?.tag || 'Unknown'}`
                   result = await plugin.execute(pArgs, context);
                 } catch (err) {
                   result = { success: false, error: err.message };
+                  logger.info(`[Self-Healing Debug] Catch block (XML) triggered for plugin "${pName}":`, err.message);
+                  // Trigger self-healing asynchronously
+                  import('./selfHealing.js').then(({ triggerSelfHealing }) => {
+                    logger.info(`[Self-Healing Debug] Dynamically loaded selfHealing.js (XML) for "${pName}". Triggering...`);
+                    triggerSelfHealing(pName, err.message, err.stack, context).catch(e =>
+                      logger.error('[Self-Healing] Trigger failed:', e)
+                    );
+                  }).catch(e => logger.error('[Self-Healing] Import failed:', e));
                 }
               }
             } else {
@@ -694,6 +722,12 @@ ${responseLangInstruction} Current User: ${context.user?.tag || 'Unknown'}`
         };
       } catch (err) {
         logger.error(`[AI Agent] Plugin execution failed:`, err);
+        // Trigger self-healing asynchronously
+        import('./selfHealing.js').then(({ triggerSelfHealing }) => {
+          triggerSelfHealing(pluginName, err.message, err.stack, context).catch(e =>
+            logger.error('[Self-Healing] Trigger failed:', e)
+          );
+        }).catch(e => logger.error('[Self-Healing] Import failed:', e));
         return {
           agentExecuted: true,
           pluginUsed: pluginName,
