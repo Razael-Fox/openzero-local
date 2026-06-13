@@ -135,6 +135,20 @@ The bot features a highly modular, decoupled AI agent architecture:
 
 ---
 
+## AI Agent Self-Healing System
+The bot features a self-healing system (`src/utils/selfHealing.js`) to automatically patch errors on AI-triggered plugins:
+- **Detection & Catching:** When a plugin executed by the AI manager throws an error, it is caught in `src/utils/aiManager.js` and triggers the self-healing system asynchronously.
+- **Git Branching Isolation:** Creates a patch branch `ai-patch/[pluginName]-[timestamp]` to perform edits, keeping the `dev` working branch clean.
+- **Data Sanitization:** Stack traces and errors are fully sanitized (`sanitizeData`) to hide credentials (Discord tokens, Supabase keys, Groq API keys, and environment variables).
+- **Targeted Test Validation:** Runs only the unit test suite matching the plugin being patched (`npm test tests/[pluginName].test.js`) to prevent external API rate-limit blocks (429), timeouts, and DB conflicts.
+- **Bot Owner Approval DM:** If tests pass, it returns to `dev` and dispatches two consecutive messages to the Bot Owner (`process.env.OWNER_ID`):
+  1. Text warning (`content` payload).
+  2. Interactive card (`V2Embed` + Approve/Reject button components) with `MessageFlags.IsComponentsV2`.
+- **Merge/Discard routing:** Handled in `src/events/interactionCreate.js`. If approved, merges changes into `dev` and deletes the patch branch. If rejected, deletes the patch branch directly. Both actions clean up the branch instantly.
+
+---
+
+
 ## Posting & Editing Server Rules (`src/scripts/sendRules.js`)
 
 To publish or update rules in the rules channel, run the script from the terminal:

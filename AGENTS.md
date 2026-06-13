@@ -190,7 +190,18 @@ When extending or editing this codebase, you **must** strictly follow these rule
 - **V2 Component Limits:** To avoid Discord's `MESSAGE_CANNOT_USE_LEGACY_FIELDS_WITH_COMPONENTS_V2` API errors, the owner/admin ping (`content`) and the `V2Embed` (`components`) must be sent separately rather than combined in a single payload containing `IsComponentsV2`.
 - **Neat Separation:** The alert embed utilizes a native `SeparatorBuilder` with `.setDivider(true)` and `.setSpacing('small')` to separate section fields neatly.
 
+### 14. AI Agent Self-Healing System
+- **Automatic Exception Interceptor:** If an AI-triggered plugin throws an error, the catch blocks in `src/utils/aiManager.js` intercept the failure and asynchronously trigger the self-healing system in [selfHealing.js](file:///data/data/com.termux/files/home/openzero-local/src/utils/selfHealing.js).
+- **Isolation Git Branching:** Creates a patch branch `ai-patch/[pluginName]-[timestamp]` to perform edits, preserving clean working directory environments.
+- **Data Sanitization:** Stack traces and errors are fully sanitized in `sanitizeData` to redact Discord tokens, Supabase keys, Groq API keys, and environment secrets before dispatching to the Groq patch generator.
+- **Targeted Test Execution:** During healing, the bot runs only the specific test suite matching the plugin being patched (e.g. `npm test tests/[pluginName].test.js`). This prevents API rate limits (429), network timeouts, and database state conflicts associated with the full test suite.
+- **Human-in-the-Loop DM approval:** If targeted tests pass, the bot checks out the `dev` branch again and sends two separate DMs to the Bot Owner (`process.env.OWNER_ID` in `.env`):
+  1. Text warning (`content` payload).
+  2. Interactive approval card (`V2Embed` + Approve/Reject button components) with `MessageFlags.IsComponentsV2` (complying with Discord's V2 component separation requirements).
+- **Merge/Reject Actions:** Intercepted in `src/events/interactionCreate.js`, clicking **Approve & Merge** runs `git merge` into `dev` and deletes the patch branch. Clicking **Reject & Discard** directly deletes the patch branch. Both update the DM embed with status.
+
 ---
+
 
 ## Logging Guidelines
 Always utilize the custom logger imported from `src/utils/logger.js`. The console logger dynamically resolves and color-codes log output according to these recognized log types:

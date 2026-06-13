@@ -182,6 +182,21 @@ Bot ini dilengkapi dengan arsitektur agen cerdas modular di bawah direktori `src
 
 ---
 
+## Sistem AI Agent Self-Healing (Perbaikan Mandiri)
+Bot dilengkapi dengan mekanisme *self-healing* otomatis di dalam [src/utils/selfHealing.js](file:///data/data/com.termux/files/home/openzero-local/src/utils/selfHealing.js) untuk memperbaiki kesalahan/crash pada plugin saat runtime:
+*   **Deteksi & Intersepsi**: Jika plugin yang dipicu oleh AI melempar exception/error, blok `catch` di `aiManager.js` akan menangkapnya secara asinkron dan memulai proses perbaikan mandiri.
+*   **Isolasi Git Branch**: Bot membuat branch sementara `ai-patch/[namaPlugin]-[timestamp]` untuk mengisolasi modifikasi kode dan menjaga kebersihan direktori kerja `dev`.
+*   **Sanitasi Data Sensitif**: Pesan error dan stack trace disanitasi secara ketat (`sanitizeData`) untuk menghapus Token Discord, Supabase Key, Groq API Key, dan env secrets lainnya sebelum dikirim ke Groq API.
+*   **Permintaan Patch (Groq AI)**: Bot mengirim kode sumber yang rusak serta pesan error ter-sanitasi ke Groq API untuk mendapatkan file JavaScript perbaikan baru secara utuh.
+*   **Eksekusi Test Terarah (Targeted Jest Run)**: Bot hanya akan menjalankan file pengujian unit yang relevan dengan plugin yang bersangkutan (misal: `npm test tests/[namaPlugin].test.js`) untuk menghindari limitasi API 429 pada Groq, timeout jaringan, serta tabrakan status database lokal pada pengujian suite lengkap.
+*   **Persetujuan Owner Melalui DM Discord**: Jika test berhasil lolos, bot kembali ke branch `dev` dan mengirimkan pesan notifikasi terpisah berupa:
+    1. Teks peringatan sistem.
+    2. Kartu interaktif persetujuan patch (`V2Embed` + tombol **Approve & Merge** / **Reject & Discard**) menggunakan *Message Components V2* (mematuhi pemisahan payload teks dan V2 komponen).
+*   **Eksekusi Aksi**: Aksi tombol ditangani oleh `interactionCreate.js`. Jika disetujui, branch digabungkan (*git merge*) ke branch `dev` lokal dan branch patch langsung dihapus. Jika ditolak, branch patch langsung dihapus seketika.
+
+---
+
+
 ## Cara Menjalankan & Menguji Proyek
 
 1. Pasang dependensi proyek:
